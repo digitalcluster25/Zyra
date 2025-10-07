@@ -11,7 +11,7 @@ async function seedTestData() {
       data: {
         email: 'test@example.com',
         name: 'Test User',
-        avatar: 'https://i.pravatar.cc/150?img=1',
+        image: 'https://i.pravatar.cc/150?img=1',
       },
     });
     console.log('✅ Created user:', user.name);
