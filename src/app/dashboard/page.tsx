@@ -1,5 +1,6 @@
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { RecoveryCard } from "@/components/dashboard/recovery-card";
+import { TrendChart } from "@/components/dashboard/trend-chart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -46,6 +47,9 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Trend Chart */}
+        <TrendChart />
 
         {/* Recent Activity */}
         <Card>
