@@ -28,9 +28,51 @@ npm run db:studio
 
 ## Database
 
-Currently using SQLite for development (`dev.db`). The database file is gitignored.
+### Development
+Using SQLite for local development (`dev.db`). Update your local `.env`:
+```
+DATABASE_URL="file:./dev.db"
+```
 
-To switch to PostgreSQL or another database:
-1. Update `DATABASE_URL` in `.env`
-2. Change `provider` in `schema.prisma`
-3. Run `npx prisma migrate dev`
+### Production (Railway)
+Using PostgreSQL on Railway. The DATABASE_URL is automatically provided by Railway:
+```
+DATABASE_URL="postgresql://postgres:PASSWORD@postgres.railway.internal:5432/railway"
+```
+
+Railway automatically sets the DATABASE_URL environment variable in production.
+
+### Switching Databases
+
+**Local Development (SQLite):**
+```prisma
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL") // "file:./dev.db"
+}
+```
+
+**Production on Railway (PostgreSQL):**
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Railway provides this
+}
+```
+
+**Steps to switch:**
+1. Update `provider` in `schema.prisma`
+2. Update `DATABASE_URL` in your environment
+3. Run migrations:
+   - Dev: `npx prisma migrate dev`
+   - Production: `railway run npx prisma migrate deploy`
+
+**Note:** The project is configured for SQLite in development. Railway automatically uses PostgreSQL in production with the correct DATABASE_URL.
+
+### Railway Deployment
+
+The project is configured for Railway deployment:
+- Project: Digital Cluster 25
+- Service: Postgres (PostgreSQL database)
+- Environment: production
+- DATABASE_URL is automatically injected by Railway
