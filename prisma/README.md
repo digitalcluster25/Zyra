@@ -12,6 +12,7 @@ This directory contains the Prisma database schema and migrations.
 
 ## Commands
 
+### Database Management
 ```bash
 # Generate Prisma Client
 npm run db:generate
@@ -24,6 +25,18 @@ npm run db:migrate
 
 # Open Prisma Studio (database GUI)
 npm run db:studio
+```
+
+### Testing & Data
+```bash
+# Test database connection
+npm run db:test
+
+# Seed test data
+npm run db:seed
+
+# Verify database contents
+npm run db:verify
 ```
 
 ## Database
