@@ -4,10 +4,19 @@ This document describes how to deploy Zyra to Railway.
 
 ## Project Setup
 
+Currently linked to:
 - **Project Name**: Digital Cluster 25
 - **Service Name**: Postgres
 - **Environment**: production
 - **Database**: PostgreSQL
+
+Alternative standalone project available:
+- **Project Name**: Zyra (ID: aef7625d-578e-4016-a0dc-c2fe680eabe7)
+
+To switch to the standalone Zyra project:
+```bash
+railway link aef7625d-578e-4016-a0dc-c2fe680eabe7
+```
 
 ## Prerequisites
 
