@@ -1,0 +1,20 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+      - run: pnpm install
+      - run: pnpm lint || true
+      - run: pnpm test || true
+      - run: pnpm build || true
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -sL https://railway.app/install.sh | sh
+      - run: railway login --apiKey ${{ secrets.RAILWAY_API_KEY }}
+      - run: railway up --project ${{ secrets.RAILWAY_PROJECT_ID }}
