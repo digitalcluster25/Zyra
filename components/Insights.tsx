@@ -118,7 +118,7 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
         <p className="text-slate-500">Отслеживайте свой прогресс и узнайте, что влияет на ваше состояние.</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>Динамика восстановления</CardTitle>
@@ -129,7 +129,9 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
           </CardContent>
         </Card>
 
-        <FactorImpactAnalysis checkInHistory={checkInHistory} allFactors={factors} />
+        <div className="flex">
+          <FactorImpactAnalysis checkInHistory={checkInHistory} allFactors={factors} />
+        </div>
       </div>
 
       <Card>

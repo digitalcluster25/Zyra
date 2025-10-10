@@ -79,11 +79,11 @@ const generateSummaryText = (delta_R: number, influences: FactorInfluence[]): st
 export const FactorImpactAnalysis: React.FC<FactorImpactAnalysisProps> = ({ checkInHistory, allFactors }) => {
   if (checkInHistory.length < 2) {
     return (
-      <Card>
+      <Card className="flex flex-col h-full">
         <CardHeader>
           <CardTitle>Анализ влияния факторов</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-1">
           <p className="text-slate-500">Завершите еще хотя бы один чекин, чтобы увидеть, как факторы влияют на ваше состояние.</p>
         </CardContent>
       </Card>
@@ -100,11 +100,11 @@ export const FactorImpactAnalysis: React.FC<FactorImpactAnalysisProps> = ({ chec
   const maxAbsInfluence = Math.max(...influences.map(f => Math.abs(f.influenceValue)), 0.1);
 
   return (
-    <Card>
+    <Card className="flex flex-col h-full">
       <CardHeader>
         <CardTitle>Анализ влияния факторов</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-1">
         <div className="mb-4 p-3 bg-slate-50 rounded-lg">
           <div className="flex items-baseline gap-2">
             <span className="text-slate-600 text-sm">Изменение балла между последними чекинами:</span>
