@@ -92,7 +92,7 @@ const MetricSquare: React.FC<{ value: number; isInverted?: boolean }> = ({ value
         'bg-accent', 'bg-accent/80', 'bg-accent/60'
     ];
     const color = colorClasses[Math.max(0, Math.min(normalizedValue - 1, 6))];
-    return <div className={`w-6 h-6 rounded-md ${color} flex items-center justify-center font-bold text-xs text-slate-700`}>{value}</div>
+    return <div className={`w-18 h-18 rounded-md ${color} flex items-center justify-center font-bold text-base text-slate-700`}>{value}</div>
 };
 
 // Helper to group check-ins by week
@@ -165,9 +165,7 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                           </div>
                       </div>
 
-                      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-3 text-center text-xs text-slate-500">
-                          <span>💤</span><span>💪</span><span>🙂</span><span>🤯</span>
-                          <span>🎯</span><span>🧠</span><span>🤕</span><span>🏋️</span>
+                      <div className="grid grid-cols-4 sm:grid-cols-8 gap-3 mb-3">
                           <MetricSquare value={record.data.sleepQuality} />
                           <MetricSquare value={record.data.energyLevel} />
                           <MetricSquare value={record.data.mood} />
