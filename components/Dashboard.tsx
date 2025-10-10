@@ -122,23 +122,64 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
             </Button>
         </header>
 
-      <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:divide-slate-200 gap-6 md:gap-0">
-            <div className="text-center md:pr-6 flex flex-col justify-center">
-                <h3 className="text-slate-500 text-sm font-medium mb-2">Ваш балл восстановления</h3>
-                <p className="text-6xl font-bold text-slate-800">{latestCheckIn ? latestCheckIn.recoveryScore.toFixed(1) : '--'}</p>
-                <p className="font-semibold text-slate-600 mt-1">{interpretation.state}</p>
-                <p className="text-xs text-slate-400 mt-2">Отражает ваше текущее состояние по шкале от 1 до 7.</p>
-            </div>
-            <div className="text-center flex flex-col justify-center md:pl-6">
-                <h3 className="text-slate-500 text-sm font-medium mb-2">Рекомендация на сегодня</h3>
-                <p className="text-lg font-semibold text-slate-700">{interpretation.recommendation}</p>
-                <p className="text-xs text-slate-400 mt-2">Основана на вашем балле восстановления.</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardContent className="p-6 flex flex-col justify-center items-center text-center min-h-[250px]">
+            <h3 className="text-slate-500 text-sm font-medium mb-2">Ваш балл восстановления</h3>
+            <p className="text-6xl font-bold text-slate-800">{latestCheckIn ? latestCheckIn.recoveryScore.toFixed(1) : '--'}</p>
+            <p className="font-semibold text-slate-600 mt-1">{interpretation.state}</p>
+            <p className="text-xs text-slate-400 mt-2">Отражает ваше текущее состояние по шкале от 1 до 7.</p>
+            <p className="text-sm font-semibold text-slate-700 mt-4">{interpretation.recommendation}</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Прогноз на завтра</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {predictedScore !== null && predictionDetails ? (
+              <div className="space-y-4">
+                <div className="text-center pb-4 border-b border-slate-200">
+                  <p className="text-5xl font-bold text-slate-800">{predictedScore.toFixed(1)}</p>
+                  <p className="font-semibold text-slate-600 mt-1">{predictedInterpretation.state}</p>
+                  <p className="text-xs text-slate-400 mt-2">Ожидаемый балл через 24 часа</p>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600">Текущий балл:</span>
+                      <span className="font-bold text-slate-800">{predictionDetails.currentScore.toFixed(1)}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600">Естественное восстановление:</span>
+                      <span className="font-bold text-slate-800">+{predictionDetails.naturalRecovery.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600">Штраф за нагрузку:</span>
+                      <span className="font-bold text-slate-800">-{predictionDetails.loadPenalty.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600">Влияние факторов:</span>
+                      <span className="font-bold text-slate-800">
+                        {predictionDetails.factorEffect >= 0 ? '+' : ''}{predictionDetails.factorEffect.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <p className="text-slate-500 text-center py-8">Прогноз будет доступен после вашего первого чекина.</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <MetricCard title="Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} />
@@ -150,59 +191,6 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           <MetricCard title="Боль в мышцах" value={latestCheckIn?.data.muscleSoreness ?? null} isInverted={true} />
           <MetricCard title="TSS" value={latestCheckIn?.data.tss ?? null} isInverted={true} />
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Детализация прогноза</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {predictedScore !== null && predictionDetails ? (
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex flex-col items-center justify-center text-center">
-                <h3 className="text-slate-500 text-sm font-medium mb-1">Прогноз на завтра</h3>
-                <p className="text-6xl font-bold text-slate-800">{predictedScore.toFixed(1)}</p>
-                <p className="font-semibold text-slate-600">{predictedInterpretation.state}</p>
-                <p className="text-xs text-slate-400 mt-2">Ожидаемый балл (1-7) через 24 часа.</p>
-              </div>
-              <div className="w-full md:w-px bg-slate-200 h-px md:h-32"></div>
-              <div className="space-y-3 text-sm flex-grow w-full max-w-sm">
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Текущий балл:</span>
-                      <span className="font-bold text-slate-800">{predictionDetails.currentScore.toFixed(1)}</span>
-                    </div>
-                    <p className="text-xs text-slate-400 mt-1">Ваш последний рассчитанный балл восстановления.</p>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Естественное восстановление:</span>
-                      <span className="font-bold text-slate-800">+{predictionDetails.naturalRecovery.toFixed(2)}</span>
-                    </div>
-                    <p className="text-xs text-slate-400 mt-1">Прогнозируемое улучшение за счет естественных процессов отдыха.</p>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Штраф за нагрузку:</span>
-                      <span className="font-bold text-slate-800">-{predictionDetails.loadPenalty.toFixed(2)}</span>
-                    </div>
-                    <p className="text-xs text-slate-400 mt-1">Негативное влияние последней тренировки на завтрашний день.</p>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Влияние факторов (завтра):</span>
-                      <span className="font-bold text-slate-800">
-                        {predictionDetails.factorEffect >= 0 ? '+' : ''}{predictionDetails.factorEffect.toFixed(2)}
-                      </span>
-                    </div>
-                    <p className="text-xs text-slate-400 mt-1">Остаточный эффект от отмеченных вами факторов на следующий день.</p>
-                  </div>
-              </div>
-            </div>
-          ) : (
-            <p className="text-slate-500">Прогноз будет доступен после вашего первого чекина.</p>
-          )}
-        </CardContent>
-      </Card>
       
        <div>
           <h3 className="text-lg font-semibold text-slate-700 mb-3">Влияющие факторы сегодня</h3>
