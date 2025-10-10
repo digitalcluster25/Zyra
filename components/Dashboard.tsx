@@ -105,7 +105,7 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
     <div className="space-y-8">
        <header className="flex justify-between items-start">
             <div>
-                <h2 className="text-2xl font-bold text-slate-800">Добрый день, {nickname} 🌿</h2>
+                <h2 className="text-2xl font-bold text-slate-800">Добрый день, {nickname}</h2>
                 <p className="text-slate-500">
                   {latestCheckIn 
                     ? 'Вот ваше последнее обновление.'
@@ -141,14 +141,14 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
       </Card>
       
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <MetricCard title="💤 Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} />
-          <MetricCard title="💪 Энергия" value={latestCheckIn?.data.energyLevel ?? null} />
-          <MetricCard title="🙂 Настроение" value={latestCheckIn?.data.mood ?? null} />
-          <MetricCard title="🤯 Стресс" value={latestCheckIn?.data.stressLevel ?? null} isInverted={true} />
-          <MetricCard title="🎯 Мотивация" value={latestCheckIn?.data.motivation ?? null} />
-          <MetricCard title="🧠 Концентрация" value={latestCheckIn?.data.focus ?? null} />
-          <MetricCard title="🤕 Боль в мышцах" value={latestCheckIn?.data.muscleSoreness ?? null} isInverted={true} />
-          <MetricCard title="🏋️ TSS" value={latestCheckIn?.data.tss ?? null} isInverted={true} />
+          <MetricCard title="Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} />
+          <MetricCard title="Энергия" value={latestCheckIn?.data.energyLevel ?? null} />
+          <MetricCard title="Настроение" value={latestCheckIn?.data.mood ?? null} />
+          <MetricCard title="Стресс" value={latestCheckIn?.data.stressLevel ?? null} isInverted={true} />
+          <MetricCard title="Мотивация" value={latestCheckIn?.data.motivation ?? null} />
+          <MetricCard title="Концентрация" value={latestCheckIn?.data.focus ?? null} />
+          <MetricCard title="Боль в мышцах" value={latestCheckIn?.data.muscleSoreness ?? null} isInverted={true} />
+          <MetricCard title="TSS" value={latestCheckIn?.data.tss ?? null} isInverted={true} />
       </div>
 
       <Card>

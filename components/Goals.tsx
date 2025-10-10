@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Goal } from '../types';
-import { GOAL_ICONS } from '../constants';
 
 interface GoalsProps {
   goals: Goal[];
@@ -84,11 +83,9 @@ const Goals: React.FC<GoalsProps> = ({ goals, setGoals }) => {
         <h3 className="text-xl font-semibold text-slate-700 mb-4">Текущие цели</h3>
         <div className="space-y-4">
           {goals.map(goal => {
-            const icon = goal.isCustom ? GOAL_ICONS['custom-goal'] : GOAL_ICONS[goal.id];
             return (
               <div key={goal.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div className="flex items-center space-x-4 flex-1">
-                  <span className="text-primary">{icon}</span>
                   <div className="flex-1">
                     <h4 className="font-semibold text-slate-800">{goal.title}</h4>
                     {goal.description && <p className="text-sm text-slate-500">{goal.description}</p>}

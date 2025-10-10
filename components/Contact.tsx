@@ -20,9 +20,6 @@ const Contact: React.FC = () => {
               <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                      <span className="text-xl">📧</span>
-                    </div>
                     <h3 className="font-semibold text-slate-800">Email</h3>
                   </div>
                   <p className="text-sm text-slate-600">support@zyra.app</p>
@@ -33,9 +30,6 @@ const Contact: React.FC = () => {
               <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                      <span className="text-xl">💬</span>
-                    </div>
                     <h3 className="font-semibold text-slate-800">Telegram</h3>
                   </div>
                   <p className="text-sm text-slate-600">@zyra_support</p>
@@ -46,9 +40,6 @@ const Contact: React.FC = () => {
               <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                      <span className="text-xl">🐙</span>
-                    </div>
                     <h3 className="font-semibold text-slate-800">GitHub</h3>
                   </div>
                   <p className="text-sm text-slate-600">github.com/digitalcluster25/Zyra</p>
@@ -59,9 +50,6 @@ const Contact: React.FC = () => {
               <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                      <span className="text-xl">🌐</span>
-                    </div>
                     <h3 className="font-semibold text-slate-800">Документация</h3>
                   </div>
                   <p className="text-sm text-slate-600">docs/pbr.md</p>

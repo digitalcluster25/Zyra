@@ -1,19 +1,4 @@
-import React from 'react';
 import { Factor } from './types';
-
-export const EMOJI_SCALE = [
-  { emoji: '😔', label: 'Очень низкое' },
-  { emoji: '😟', label: 'Низкое' },
-  { emoji: '😐', label: 'Нейтральное' },
-  { emoji: '🙂', label: 'Хорошее' },
-  { emoji: '😄', label: 'Отличное' },
-];
-
-// FIX: Add GOAL_ICONS to fix import errors in Goals.tsx and LogGoalFlow.tsx.
-export const GOAL_ICONS: { [key: string]: React.ReactNode } = {
-  'custom-goal': '🎯',
-  // Other predefined goal IDs and their icons could be added here.
-};
 
 export const INITIAL_FACTORS: Factor[] = [
     { id: 'lack_sleep', name: 'Недосып', weight: -0.30, tau: 24 },
