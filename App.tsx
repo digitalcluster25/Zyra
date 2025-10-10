@@ -62,7 +62,7 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
       <div className="flex-grow">
-        <div className="container mx-auto p-4 md:p-8 max-w-screen-2xl">
+        <div className="container mx-auto p-4 md:p-8 max-w-[1382px]">
           <header className="flex justify-between items-center mb-8">
             <div 
               onClick={() => setView(View.Dashboard)}
