@@ -1,87 +1,80 @@
 import React, { useState } from 'react';
 import { CheckInRecord, Factor } from '../types';
 import { FactorImpactAnalysis } from './FactorImpactAnalysis';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
 
 interface InsightsProps {
   checkInHistory: CheckInRecord[];
   factors: Factor[];
 }
 
+const chartConfig = {
+  recoveryScore: {
+    label: "Балл восстановления",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig;
+
 const RecoveryChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
   if (data.length < 2) {
     return <p className="text-slate-500">Нужно больше данных для построения графика. Сделайте еще несколько чекинов.</p>;
   }
 
-  const chartWidth = 500;
-  const chartHeight = 220;
-  const padding = 40;
-
-  const scores = data.map(d => d.recoveryScore).reverse();
-  const maxScore = 7;
-  const minScore = 1;
-
-  const points = scores.map((score, index) => {
-    const x = (index / (scores.length - 1)) * (chartWidth - 2 * padding) + padding;
-    const y = chartHeight - padding - ((score - minScore) / (maxScore - minScore)) * (chartHeight - 2 * padding);
-    return `${x},${y}`;
-  }).join(' ');
-
-  const xLabels = data.map((d, i) => {
-      const date = new Date(d.id);
-      return {
-          x: (i / (data.length - 1)) * (chartWidth - 2 * padding) + padding,
-          label: `${date.getDate()}.${date.getMonth() + 1}`
-      }
-  }).reverse();
+  const chartData = data.slice().reverse().map(record => {
+    const date = new Date(record.id);
+    return {
+      date: `${date.getDate()}.${date.getMonth() + 1}`,
+      recoveryScore: parseFloat(record.recoveryScore.toFixed(1)),
+    };
+  });
 
   return (
-    <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-auto">
-       <text x={chartWidth / 2} y={15} textAnchor="middle" className="text-sm font-semibold fill-current text-slate-600">Динамика восстановления</text>
-      {/* Y axis labels and grid lines */}
-      <text x={padding - 15} y={padding - 20} textAnchor="middle" className="text-xs fill-current text-slate-400 -rotate-90 origin-center">Балл</text>
-      {[1, 2, 3, 4, 5, 6, 7].map(val => (
-        <g key={val}>
-          <text
-            x={padding - 10}
-            y={chartHeight - padding - ((val - minScore) / (maxScore - minScore)) * (chartHeight - 2 * padding)}
-            className="text-xs fill-current text-slate-400"
-            textAnchor="end"
-            alignmentBaseline="middle"
-          >
-            {val}
-          </text>
-          <line
-            x1={padding}
-            x2={chartWidth - padding}
-            y1={chartHeight - padding - ((val - minScore) / (maxScore - minScore)) * (chartHeight - 2 * padding)}
-            y2={chartHeight - padding - ((val - minScore) / (maxScore - minScore)) * (chartHeight - 2 * padding)}
-            className="stroke-current text-slate-200"
-            strokeWidth="1"
-          />
-        </g>
-      ))}
-      
-      {/* X axis labels */}
-      <text x={chartWidth / 2} y={chartHeight - 5} textAnchor="middle" className="text-xs fill-current text-slate-400">Дата</text>
-      {xLabels.map(({x, label}, index) => (
-        <text key={`${label}-${index}`} x={x} y={chartHeight - padding + 20} className="text-xs fill-current text-slate-400" textAnchor="middle">
-          {label}
-        </text>
-      ))}
-
-      {/* Data line */}
-      <polyline fill="none" strokeWidth="2" className="stroke-current text-primary" points={points} />
-
-      {/* Data points */}
-      {points.split(' ').map((p, index) => {
-        if (!p) return null;
-        const [x, y] = p.split(',');
-        return <circle key={index} cx={x} cy={y} r="3" className="fill-current text-primary" />;
-      })}
-    </svg>
+    <ChartContainer config={chartConfig}>
+      <LineChart
+        accessibilityLayer
+        data={chartData}
+        margin={{
+          left: 12,
+          right: 12,
+          top: 12,
+          bottom: 12,
+        }}
+      >
+        <CartesianGrid vertical={false} />
+        <XAxis
+          dataKey="date"
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
+        <YAxis
+          domain={[1, 7]}
+          tickLine={false}
+          axisLine={false}
+          tickMargin={8}
+        />
+        <ChartTooltip
+          cursor={false}
+          content={<ChartTooltipContent hideLabel />}
+        />
+        <Line
+          dataKey="recoveryScore"
+          type="natural"
+          stroke="var(--color-recoveryScore)"
+          strokeWidth={2}
+          dot={{
+            fill: "var(--color-recoveryScore)",
+          }}
+          activeDot={{
+            r: 6,
+          }}
+        />
+      </LineChart>
+    </ChartContainer>
   );
 };
 
@@ -123,13 +116,21 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
         <p className="text-slate-500">Отслеживайте свой прогресс и узнайте, что влияет на ваше состояние.</p>
       </div>
 
-      <Card>
-        <CardContent className="p-6">
-          <RecoveryChart data={checkInHistory} />
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Динамика восстановления</CardTitle>
+            <CardDescription>Изменение балла восстановления за последние дни</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RecoveryChart data={checkInHistory} />
+          </CardContent>
+        </Card>
 
-      <FactorImpactAnalysis checkInHistory={checkInHistory} allFactors={factors} />
+        <div className="lg:col-span-1">
+          <FactorImpactAnalysis checkInHistory={checkInHistory} allFactors={factors} />
+        </div>
+      </div>
 
       <Card>
         <CardHeader>
