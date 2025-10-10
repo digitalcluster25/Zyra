@@ -117,7 +117,6 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
              <Button
                 onClick={onStartCheckIn}
                 size="lg"
-                variant="default"
             >
                 {latestCheckIn ? 'Начать новый чекин' : 'Начать первый чекин' }
             </Button>
