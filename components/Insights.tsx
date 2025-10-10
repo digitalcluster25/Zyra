@@ -34,7 +34,7 @@ const RecoveryChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
 
   return (
     <div className="h-[180px]">
-      <ChartContainer config={chartConfig}>
+      <ChartContainer config={chartConfig} className="h-full w-full">
         <LineChart
           accessibilityLayer
           data={chartData}
