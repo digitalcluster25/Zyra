@@ -1,10 +1,10 @@
 import React from 'react';
-import { LoginForm } from './LoginForm';
+import { LoginForm } from './login-form';
 
 const Login: React.FC = () => {
   return (
-    <div className="flex min-h-[60vh] flex-col items-center justify-center py-12">
-      <div className="w-full max-w-sm bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+    <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-4xl">
         <LoginForm />
       </div>
     </div>
