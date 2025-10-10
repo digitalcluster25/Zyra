@@ -97,37 +97,63 @@ export const FactorImpactAnalysis: React.FC<FactorImpactAnalysisProps> = ({ chec
   return (
     <div className="bg-white p-6 rounded-xl border border-slate-100">
       <h3 className="text-xl font-semibold text-slate-700 mb-2">Анализ влияния факторов</h3>
-      <p className="text-slate-500 mb-4">
-        {summaryText}
-      </p>
+      
+      <div className="mb-4 p-3 bg-slate-50 rounded-lg">
+        <div className="flex items-baseline gap-2">
+          <span className="text-slate-600 text-sm">Изменение балла между последними чекинами:</span>
+          <span className={`text-2xl font-bold ${delta_R > 0 ? 'text-primary' : delta_R < 0 ? 'text-red-600' : 'text-slate-600'}`}>
+            {delta_R > 0 ? '+' : ''}{delta_R.toFixed(2)}
+          </span>
+        </div>
+        <p className="text-xs text-slate-500 mt-1">
+          Ниже показано, какой вклад внёс каждый активный фактор в это изменение
+        </p>
+      </div>
 
       <div className="space-y-3">
-        {influences.length > 0 ? influences.map(({ factorName, influenceValue }) => (
-          <div key={factorName} className="flex items-center text-sm">
-            <div className="w-1/3 truncate pr-2 text-slate-600">{factorName}</div>
-            <div className="w-2/3 flex items-center">
-              <div className="flex-1 h-6 bg-red-100 rounded-l-md flex justify-end">
-                {influenceValue < 0 && (
-                  <div
-                    className="bg-red-400 h-6 rounded-l-md"
-                    style={{ width: `${(Math.abs(influenceValue) / maxAbsInfluence) * 100}%` }}
-                  ></div>
-                )}
+        {influences.length > 0 ? (
+          <>
+            <div className="flex items-center text-xs text-slate-400 mb-2">
+              <div className="w-1/3"></div>
+              <div className="w-2/3 flex items-center">
+                <div className="flex-1 text-center">← Ухудшает</div>
+                <div className="flex-1 text-center">Улучшает →</div>
+                <div className="w-16 ml-2 text-right">Вклад</div>
               </div>
-              <div className="flex-1 h-6 bg-accent rounded-r-md">
-                {influenceValue > 0 && (
-                  <div
-                    className="bg-primary/60 h-6 rounded-r-md"
-                    style={{ width: `${(influenceValue / maxAbsInfluence) * 100}%` }}
-                  ></div>
-                )}
-              </div>
-              <span className={`w-16 text-right font-semibold ml-2 ${influenceValue > 0 ? 'text-primary' : 'text-red-600'}`}>
-                {influenceValue > 0 ? '+' : ''}{influenceValue.toFixed(2)}
-              </span>
             </div>
-          </div>
-        )) : <p className="text-slate-500">Нет активных факторов для анализа за прошлый день.</p>}
+            {influences.map(({ factorName, influenceValue }) => (
+              <div key={factorName} className="flex items-center text-sm">
+                <div className="w-1/3 truncate pr-2 text-slate-600 font-medium">{factorName}</div>
+                <div className="w-2/3 flex items-center">
+                  <div className="flex-1 h-6 bg-red-100 rounded-l-md flex justify-end">
+                    {influenceValue < 0 && (
+                      <div
+                        className="bg-red-400 h-6 rounded-l-md"
+                        style={{ width: `${(Math.abs(influenceValue) / maxAbsInfluence) * 100}%` }}
+                      ></div>
+                    )}
+                  </div>
+                  <div className="flex-1 h-6 bg-accent rounded-r-md">
+                    {influenceValue > 0 && (
+                      <div
+                        className="bg-primary/60 h-6 rounded-r-md"
+                        style={{ width: `${(influenceValue / maxAbsInfluence) * 100}%` }}
+                      ></div>
+                    )}
+                  </div>
+                  <span className={`w-16 text-right font-bold ml-2 ${influenceValue > 0 ? 'text-primary' : 'text-red-600'}`}>
+                    {influenceValue > 0 ? '+' : ''}{influenceValue.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div className="text-xs text-slate-500 mt-3 p-2 bg-slate-50 rounded">
+              💡 Длина полосы показывает силу влияния фактора относительно других факторов
+            </div>
+          </>
+        ) : (
+          <p className="text-slate-500">Нет активных факторов для анализа за прошлый день.</p>
+        )}
       </div>
     </div>
   );
