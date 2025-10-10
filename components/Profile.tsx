@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 const EditableField: React.FC<{
   label: string;
@@ -21,30 +25,29 @@ const EditableField: React.FC<{
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-1">
-        <label className="block text-sm font-medium text-slate-600">{label}</label>
+    <div className="space-y-2">
+      <div className="flex justify-between items-center">
+        <Label>{label}</Label>
         {!isEditing ? (
-          <button onClick={() => setIsEditing(true)} className="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+          <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
             Редактировать
-          </button>
+          </Button>
         ) : (
           <div className="flex space-x-2">
-            <button onClick={handleSave} className="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+            <Button variant="ghost" size="sm" onClick={handleSave}>
               Сохранить
-            </button>
-            <button onClick={handleCancel} className="text-sm font-semibold text-slate-600 hover:text-slate-700">
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleCancel}>
               Отмена
-            </button>
+            </Button>
           </div>
         )}
       </div>
       {isEditing ? (
-        <input
+        <Input
           type={inputType}
           value={editValue}
           onChange={(e) => setEditValue(e.target.value)}
-          className="w-full p-2 border border-slate-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
           autoFocus
         />
       ) : (
@@ -67,9 +70,11 @@ const Profile: React.FC = () => {
 
   return (
     <div className="space-y-8">
-      <div className="bg-white p-6 rounded-xl border border-slate-100">
-        <h2 className="text-3xl font-bold text-slate-800 mb-6">Профиль</h2>
-        <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Профиль</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <EditableField
             label="Никнейм"
             value={nickname}
@@ -81,19 +86,26 @@ const Profile: React.FC = () => {
             onSave={setEmail}
             inputType="email"
           />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
       
-      <div className="border-t-4 border-red-200 bg-white p-6 rounded-xl">
-          <h3 className="text-lg font-semibold text-red-700">Опасная зона</h3>
-          <p className="text-sm text-slate-500 mt-1 mb-4">Это действие нельзя будет отменить. Все ваши данные чекинов будут навсегда удалены.</p>
-          <button
-              onClick={handleDeleteAccount}
-              className="w-full text-center font-semibold text-red-600 hover:text-white p-3 bg-red-50 hover:bg-red-600 rounded-lg transition-colors"
+      <Card className="border-t-4 border-red-200">
+        <CardHeader>
+          <CardTitle className="text-red-700">Опасная зона</CardTitle>
+          <CardDescription>
+            Это действие нельзя будет отменить. Все ваши данные чекинов будут навсегда удалены.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button
+            onClick={handleDeleteAccount}
+            variant="destructive"
+            className="w-full"
           >
-              Удалить аккаунт
-          </button>
-      </div>
+            Удалить аккаунт
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };

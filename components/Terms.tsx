@@ -1,12 +1,14 @@
 import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 const Terms: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto py-8">
-      <div className="bg-white p-8 rounded-xl border border-slate-200">
-        <h1 className="text-3xl font-bold text-slate-800 mb-6">Публичная оферта</h1>
-        
-        <div className="space-y-6 text-slate-700">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">Публичная оферта</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 text-slate-700">
           <section>
             <h2 className="text-xl font-semibold text-slate-800 mb-3">1. Общие положения</h2>
             <p className="leading-relaxed">
@@ -64,8 +66,8 @@ const Terms: React.FC = () => {
               Дата последнего обновления: 10 октября 2025 г.
             </p>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

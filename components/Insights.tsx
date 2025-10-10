@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { CheckInRecord, Factor } from '../types';
 import { FactorImpactAnalysis } from './FactorImpactAnalysis';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Badge } from './ui/badge';
 
 interface InsightsProps {
   checkInHistory: CheckInRecord[];
@@ -120,69 +123,75 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
         <p className="text-slate-500">Отслеживайте свой прогресс и узнайте, что влияет на ваше состояние.</p>
       </div>
 
-      <div className="bg-white p-6 rounded-xl border border-slate-100">
-        <RecoveryChart data={checkInHistory} />
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <RecoveryChart data={checkInHistory} />
+        </CardContent>
+      </Card>
 
       <FactorImpactAnalysis checkInHistory={checkInHistory} allFactors={factors} />
 
-      <div className="bg-white p-6 rounded-xl border border-slate-100">
-        <h3 className="text-xl font-semibold text-slate-700 mb-4">История чекинов</h3>
-        {checkInHistory.length > 0 ? (
-          <div>
-            <div className="border-b border-slate-200 mb-4 flex space-x-4">
-              {weeks.map(([weekKey], index) => {
-                const startDate = new Date(weekKey);
-                const endDate = new Date(startDate);
-                endDate.setDate(startDate.getDate() + 6);
-                const label = `${startDate.getDate()}.${startDate.getMonth() + 1} - ${endDate.getDate()}.${endDate.getMonth() + 1}`;
-                return (
-                  <button 
-                    key={weekKey}
-                    onClick={() => setSelectedWeekIndex(index)}
-                    className={`pb-2 text-sm font-medium ${selectedWeekIndex === index ? 'border-b-2 border-emerald-500 text-emerald-600' : 'text-slate-500 hover:text-slate-700'}`}
-                  >{label}</button>
-                )
-              })}
-            </div>
-            <div className="space-y-4">
-              {selectedWeekRecords.map(record => (
-                <div key={record.id} className="p-4 bg-slate-50 rounded-lg">
-                  <div className="flex justify-between items-center mb-4">
-                      <div>
-                          <p className="font-semibold text-slate-800">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                          <div className="flex items-baseline space-x-2">
-                            <p className="text-sm text-slate-500 font-medium">Балл:</p>
-                            <p className="text-2xl font-bold text-slate-800">{record.recoveryScore.toFixed(1)}</p>
+      <Card>
+        <CardHeader>
+          <CardTitle>История чекинов</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {checkInHistory.length > 0 ? (
+            <Tabs value={selectedWeekIndex.toString()} onValueChange={(val) => setSelectedWeekIndex(parseInt(val))}>
+              <TabsList>
+                {weeks.map(([weekKey], index) => {
+                  const startDate = new Date(weekKey);
+                  const endDate = new Date(startDate);
+                  endDate.setDate(startDate.getDate() + 6);
+                  const label = `${startDate.getDate()}.${startDate.getMonth() + 1} - ${endDate.getDate()}.${endDate.getMonth() + 1}`;
+                  return (
+                    <TabsTrigger key={weekKey} value={index.toString()}>
+                      {label}
+                    </TabsTrigger>
+                  )
+                })}
+              </TabsList>
+              {weeks.map(([weekKey, records], index) => (
+                <TabsContent key={weekKey} value={index.toString()} className="space-y-4 mt-4">
+                  {records.map(record => (
+                    <div key={record.id} className="p-4 bg-slate-50 rounded-lg">
+                      <div className="flex justify-between items-center mb-4">
+                          <div>
+                              <p className="font-semibold text-slate-800">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                              <div className="flex items-baseline space-x-2">
+                                <p className="text-sm text-slate-500 font-medium">Балл:</p>
+                                <p className="text-2xl font-bold text-slate-800">{record.recoveryScore.toFixed(1)}</p>
+                              </div>
                           </div>
                       </div>
-                  </div>
 
-                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-3 text-center text-xs text-slate-500">
-                      <span>💤</span><span>💪</span><span>🙂</span><span>🤯</span>
-                      <span>🎯</span><span>🧠</span><span>🤕</span><span>🏋️</span>
-                      <MetricSquare value={record.data.sleepQuality} />
-                      <MetricSquare value={record.data.energyLevel} />
-                      <MetricSquare value={record.data.mood} />
-                      <MetricSquare value={record.data.stressLevel} isInverted />
-                      <MetricSquare value={record.data.motivation} />
-                      <MetricSquare value={record.data.focus} />
-                      <MetricSquare value={record.data.muscleSoreness} isInverted />
-                      <MetricSquare value={record.data.tss} isInverted />
-                  </div>
-                  {record.data.factors.length > 0 && (
-                      <div className="pt-3 border-t border-slate-200">
-                           <div className="flex flex-wrap gap-2">
-                            {record.data.factors.map(f => <span key={f} className="text-xs bg-slate-200 text-slate-700 font-semibold px-2 py-1 rounded-md">{f}</span>)}
-                           </div>
+                      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-3 text-center text-xs text-slate-500">
+                          <span>💤</span><span>💪</span><span>🙂</span><span>🤯</span>
+                          <span>🎯</span><span>🧠</span><span>🤕</span><span>🏋️</span>
+                          <MetricSquare value={record.data.sleepQuality} />
+                          <MetricSquare value={record.data.energyLevel} />
+                          <MetricSquare value={record.data.mood} />
+                          <MetricSquare value={record.data.stressLevel} isInverted />
+                          <MetricSquare value={record.data.motivation} />
+                          <MetricSquare value={record.data.focus} />
+                          <MetricSquare value={record.data.muscleSoreness} isInverted />
+                          <MetricSquare value={record.data.tss} isInverted />
                       </div>
-                  )}
-                </div>
+                      {record.data.factors.length > 0 && (
+                          <div className="pt-3 border-t border-slate-200">
+                              <div className="flex flex-wrap gap-2">
+                                {record.data.factors.map(f => <Badge key={f} variant="secondary">{f}</Badge>)}
+                              </div>
+                          </div>
+                      )}
+                    </div>
+                  ))}
+                </TabsContent>
               ))}
-            </div>
-          </div>
-        ) : <p className="text-slate-500">Ваша история чекинов появится здесь.</p>}
-      </div>
+            </Tabs>
+          ) : <p className="text-slate-500">Ваша история чекинов появится здесь.</p>}
+        </CardContent>
+      </Card>
 
     </div>
   );

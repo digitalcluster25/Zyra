@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { CheckInData, CheckInRecord, Factor } from '../types';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
 
 interface CheckInFlowProps {
   onCheckInComplete: (record: CheckInRecord) => void;
@@ -39,17 +42,19 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ options, selectedValue,
     <div className="flex justify-between items-start space-x-1">
       {options.map((option, index) => (
         <div key={option} className="flex flex-col items-center flex-1 text-center">
-          <button
+          <Button
             type="button"
             onClick={() => onSelect(option)}
-            className={`w-10 h-10 rounded-lg text-sm font-bold transition-colors flex items-center justify-center mb-2 ${
-              selectedValue === option
-                ? 'bg-emerald-500 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+            variant={selectedValue === option ? "default" : "outline"}
+            size="sm"
+            className={`w-10 h-10 mb-2 ${
+              selectedValue === option 
+                ? 'bg-emerald-500 hover:bg-emerald-600 text-white' 
+                : ''
             }`}
           >
             {option}
-          </button>
+          </Button>
           <p className="text-xs text-slate-500 leading-tight">
             {labels[index]}
           </p>
@@ -127,14 +132,6 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
     onCheckInComplete(newRecord);
   };
 
-  const ProgressBar = ({ current, total }: { current: number, total: number }) => (
-    <div className="w-full bg-slate-200 rounded-full h-2">
-      <div
-        className="bg-emerald-500 h-2 rounded-full transition-all duration-300 ease-in-out"
-        style={{ width: `${(current / total) * 100}%` }}
-      ></div>
-    </div>
-  );
 
   const renderStep = () => {
     const options1to7 = Array.from({ length: 7 }, (_, i) => i + 1);
@@ -250,18 +247,16 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
             <p className="text-slate-500 mb-6">Выберите факторы, которые могли на вас повлиять сегодня.</p>
             <div className="flex flex-wrap gap-3">
               {factors.map(factor => (
-                <button
+                <Button
                   key={factor.id}
                   type="button"
                   onClick={() => toggleFactorSelection(factor.name)}
-                  className={`px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium ${
-                    data.factors.includes(factor.name)
-                      ? 'bg-emerald-500 text-white'
-                      : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-100'
-                  }`}
+                  variant={data.factors.includes(factor.name) ? "default" : "outline"}
+                  size="sm"
+                  className={data.factors.includes(factor.name) ? 'bg-emerald-500 hover:bg-emerald-600' : ''}
                 >
                   {factor.name}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -285,35 +280,37 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
   return (
     <div className="bg-slate-50 p-4 sm:p-8 rounded-xl border border-slate-200 max-w-2xl mx-auto">
       <div className="mb-6">
-        <ProgressBar current={step} total={totalSteps} />
+        <Progress value={(step / totalSteps) * 100} className="bg-slate-200" />
       </div>
       <div className="mb-8 min-h-[220px] flex flex-col justify-center">
         {renderStep()}
       </div>
       <div className="flex justify-between items-center">
         {step > 1 ? (
-          <button
+          <Button
             onClick={handleBack}
-            className="text-slate-600 font-bold py-2 px-4 rounded-lg hover:bg-slate-200 transition-colors"
+            variant="outline"
           >
             Назад
-          </button>
+          </Button>
         ) : <div />}
         
         {step < totalSteps ? (
-          <button
+          <Button
             onClick={handleNext}
-            className="bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors"
+            size="lg"
+            className="bg-emerald-500 hover:bg-emerald-600"
           >
             Далее
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             onClick={handleSubmit}
-            className="bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors"
+            size="lg"
+            className="bg-emerald-500 hover:bg-emerald-600"
           >
             Завершить чекин
-          </button>
+          </Button>
         )}
       </div>
     </div>
