@@ -117,17 +117,17 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 flex flex-col">
           <CardHeader>
             <CardTitle>Динамика восстановления</CardTitle>
             <CardDescription>Изменение балла восстановления за последние дни</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <RecoveryChart data={checkInHistory} />
           </CardContent>
         </Card>
 
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 flex flex-col">
           <FactorImpactAnalysis checkInHistory={checkInHistory} allFactors={factors} />
         </div>
       </div>

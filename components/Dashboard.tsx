@@ -130,7 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           <CardContent>
             {latestCheckIn ? (
               <div className="flex items-start gap-6">
-                <div className="text-center">
+                <div className="flex-1 text-center">
                   <p className="text-5xl font-bold text-slate-800">{latestCheckIn.recoveryScore.toFixed(1)}</p>
                   <p className="font-semibold text-slate-600 mt-1">{interpretation.state}</p>
                   <p className="text-xs text-slate-400 mt-2">Текущее состояние</p>
@@ -153,7 +153,7 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           <CardContent>
             {predictedScore !== null && predictionDetails ? (
               <div className="flex items-start gap-6">
-                <div className="text-center">
+                <div className="flex-1 text-center">
                   <p className="text-5xl font-bold text-slate-800">{predictedScore.toFixed(1)}</p>
                   <p className="font-semibold text-slate-600 mt-1">{predictedInterpretation.state}</p>
                   <p className="text-xs text-slate-400 mt-2">Ожидаемый балл</p>
