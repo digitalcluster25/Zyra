@@ -116,7 +116,7 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
              <Button
                 onClick={onStartCheckIn}
                 size="lg"
-                className="bg-emerald-500 hover:bg-emerald-600 whitespace-nowrap"
+                className="whitespace-nowrap"
             >
                 {latestCheckIn ? 'Начать новый чекин' : 'Начать первый чекин' }
             </Button>

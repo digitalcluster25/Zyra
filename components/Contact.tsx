@@ -17,10 +17,10 @@ const Contact: React.FC = () => {
             </p>
             
             <div className="grid md:grid-cols-2 gap-6">
-              <Card className="hover:border-emerald-300 transition-colors">
+              <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                       <span className="text-xl">📧</span>
                     </div>
                     <h3 className="font-semibold text-slate-800">Email</h3>
@@ -30,10 +30,10 @@ const Contact: React.FC = () => {
                 </CardContent>
               </Card>
 
-              <Card className="hover:border-emerald-300 transition-colors">
+              <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                       <span className="text-xl">💬</span>
                     </div>
                     <h3 className="font-semibold text-slate-800">Telegram</h3>
@@ -43,10 +43,10 @@ const Contact: React.FC = () => {
                 </CardContent>
               </Card>
 
-              <Card className="hover:border-emerald-300 transition-colors">
+              <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                       <span className="text-xl">🐙</span>
                     </div>
                     <h3 className="font-semibold text-slate-800">GitHub</h3>
@@ -56,10 +56,10 @@ const Contact: React.FC = () => {
                 </CardContent>
               </Card>
 
-              <Card className="hover:border-emerald-300 transition-colors">
+              <Card className="hover:border-border/80 transition-colors">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                       <span className="text-xl">🌐</span>
                     </div>
                     <h3 className="font-semibold text-slate-800">Документация</h3>

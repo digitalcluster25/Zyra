@@ -37,15 +37,15 @@ const LogGoalFlow: React.FC<LogGoalFlowProps> = ({ activeGoals, onLogComplete, o
                         onClick={() => toggleSelection(goal.title)}
                         className={`w-full flex items-center p-4 rounded-lg border-2 transition-all ${
                             selectedGoals.includes(goal.title)
-                            ? 'border-emerald-500 bg-emerald-50'
+                            ? 'border-primary bg-accent'
                             : 'border-slate-200 bg-white hover:border-slate-300'
                         }`}
                     >
                         {/* FIX: Correctly display the icon for custom goals. */}
-                        <span className="text-emerald-500 mr-4">{goal.isCustom ? GOAL_ICONS['custom-goal'] : GOAL_ICONS[goal.id]}</span>
+                        <span className="text-primary mr-4">{goal.isCustom ? GOAL_ICONS['custom-goal'] : GOAL_ICONS[goal.id]}</span>
                         <span className="font-semibold text-slate-700">{goal.title}</span>
                         {selectedGoals.includes(goal.title) && (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-auto text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-auto text-primary" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
                         )}
@@ -65,7 +65,7 @@ const LogGoalFlow: React.FC<LogGoalFlowProps> = ({ activeGoals, onLogComplete, o
                 </button>
                 <button
                     onClick={handleSubmit}
-                    className="bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-600 transition-colors"
+                    className="bg-primary text-primary-foreground font-bold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors"
                     disabled={selectedGoals.length === 0}
                 >
                     Сохранить

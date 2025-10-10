@@ -114,15 +114,15 @@ export const FactorImpactAnalysis: React.FC<FactorImpactAnalysisProps> = ({ chec
                   ></div>
                 )}
               </div>
-              <div className="flex-1 h-6 bg-emerald-100 rounded-r-md">
+              <div className="flex-1 h-6 bg-accent rounded-r-md">
                 {influenceValue > 0 && (
                   <div
-                    className="bg-emerald-400 h-6 rounded-r-md"
+                    className="bg-primary/60 h-6 rounded-r-md"
                     style={{ width: `${(influenceValue / maxAbsInfluence) * 100}%` }}
                   ></div>
                 )}
               </div>
-              <span className={`w-16 text-right font-semibold ml-2 ${influenceValue > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              <span className={`w-16 text-right font-semibold ml-2 ${influenceValue > 0 ? 'text-primary' : 'text-red-600'}`}>
                 {influenceValue > 0 ? '+' : ''}{influenceValue.toFixed(2)}
               </span>
             </div>

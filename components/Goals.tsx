@@ -72,7 +72,7 @@ const Goals: React.FC<GoalsProps> = ({ goals, setGoals }) => {
             <button
               type="button"
               onClick={handleAddGoal}
-              className="bg-emerald-500 text-white font-semibold px-4 py-2 rounded-md hover:bg-emerald-600 disabled:bg-slate-300"
+              className="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-md hover:bg-primary/90 disabled:bg-slate-300"
               disabled={!newGoalTitle.trim()}
             >
               Добавить цель
@@ -88,7 +88,7 @@ const Goals: React.FC<GoalsProps> = ({ goals, setGoals }) => {
             return (
               <div key={goal.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div className="flex items-center space-x-4 flex-1">
-                  <span className="text-emerald-500">{icon}</span>
+                  <span className="text-primary">{icon}</span>
                   <div className="flex-1">
                     <h4 className="font-semibold text-slate-800">{goal.title}</h4>
                     {goal.description && <p className="text-sm text-slate-500">{goal.description}</p>}
@@ -114,7 +114,7 @@ const Goals: React.FC<GoalsProps> = ({ goals, setGoals }) => {
                         checked={goal.active}
                         onChange={() => toggleGoalActive(goal.id)}
                       />
-                      <div className="block w-14 h-8 rounded-full bg-slate-200 peer-checked:bg-emerald-500"></div>
+                      <div className="block w-14 h-8 rounded-full bg-slate-200 peer-checked:bg-primary"></div>
                       <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform peer-checked:translate-x-full"></div>
                     </div>
                   </label>

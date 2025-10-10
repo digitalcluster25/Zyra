@@ -12,26 +12,26 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="text-sm text-slate-500">
             © 2025 ZYRA. Все права защищены.
           </div>
-          <nav className="flex gap-6 text-sm">
-            <button
-              onClick={() => onNavigate('TERMS')}
-              className="text-slate-600 hover:text-emerald-600 transition-colors"
-            >
-              Публичная оферта
-            </button>
-            <button
-              onClick={() => onNavigate('CONTACT')}
-              className="text-slate-600 hover:text-emerald-600 transition-colors"
-            >
-              Контакты
-            </button>
-            <button
-              onClick={() => onNavigate('LOGIN')}
-              className="text-slate-600 hover:text-emerald-600 transition-colors"
-            >
-              Вход
-            </button>
-          </nav>
+            <nav className="flex gap-6 text-sm">
+              <button
+                onClick={() => onNavigate('TERMS')}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Публичная оферта
+              </button>
+              <button
+                onClick={() => onNavigate('CONTACT')}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Контакты
+              </button>
+              <button
+                onClick={() => onNavigate('LOGIN')}
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Вход
+              </button>
+            </nav>
         </div>
       </div>
     </footer>

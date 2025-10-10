@@ -73,13 +73,13 @@ const RecoveryChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
       ))}
 
       {/* Data line */}
-      <polyline fill="none" strokeWidth="2" className="stroke-current text-emerald-500" points={points} />
+      <polyline fill="none" strokeWidth="2" className="stroke-current text-primary" points={points} />
 
       {/* Data points */}
       {points.split(' ').map((p, index) => {
         if (!p) return null;
         const [x, y] = p.split(',');
-        return <circle key={index} cx={x} cy={y} r="3" className="fill-current text-emerald-500" />;
+        return <circle key={index} cx={x} cy={y} r="3" className="fill-current text-primary" />;
       })}
     </svg>
   );
@@ -89,7 +89,7 @@ const MetricSquare: React.FC<{ value: number; isInverted?: boolean }> = ({ value
     const normalizedValue = isInverted ? 8 - value : value;
     const colorClasses = [
         'bg-red-200', 'bg-red-300', 'bg-orange-300', 'bg-yellow-300',
-        'bg-lime-300', 'bg-green-300', 'bg-emerald-400'
+        'bg-accent', 'bg-accent/80', 'bg-accent/60'
     ];
     const color = colorClasses[Math.max(0, Math.min(normalizedValue - 1, 6))];
     return <div className={`w-6 h-6 rounded-md ${color} flex items-center justify-center font-bold text-xs text-slate-700`}>{value}</div>

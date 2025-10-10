@@ -47,11 +47,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ options, selectedValue,
             onClick={() => onSelect(option)}
             variant={selectedValue === option ? "default" : "outline"}
             size="sm"
-            className={`w-10 h-10 mb-2 ${
-              selectedValue === option 
-                ? 'bg-emerald-500 hover:bg-emerald-600 text-white' 
-                : ''
-            }`}
+            className="w-10 h-10 mb-2"
           >
             {option}
           </Button>
@@ -253,7 +249,6 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
                   onClick={() => toggleFactorSelection(factor.name)}
                   variant={data.factors.includes(factor.name) ? "default" : "outline"}
                   size="sm"
-                  className={data.factors.includes(factor.name) ? 'bg-emerald-500 hover:bg-emerald-600' : ''}
                 >
                   {factor.name}
                 </Button>
@@ -269,7 +264,7 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
             <p className="text-slate-500 mb-6">Вот сводка вашего чекина и рассчитанный балл восстановления.</p>
             <div className="p-6 bg-white rounded-xl border border-slate-100 flex items-center justify-between">
               <h3 className="text-lg font-semibold text-slate-700">Ваш балл (1-7)</h3>
-              <p className={`text-4xl font-bold ${score < 4 ? 'text-red-500' : score < 5 ? 'text-yellow-500' : 'text-emerald-500'}`}>{score.toFixed(1)}</p>
+              <p className={`text-4xl font-bold ${score < 4 ? 'text-destructive' : score < 5 ? 'text-muted-foreground' : 'text-primary'}`}>{score.toFixed(1)}</p>
             </div>
           </div>
         );
@@ -299,7 +294,6 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
           <Button
             onClick={handleNext}
             size="lg"
-            className="bg-emerald-500 hover:bg-emerald-600"
           >
             Далее
           </Button>
@@ -307,7 +301,6 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
           <Button
             onClick={handleSubmit}
             size="lg"
-            className="bg-emerald-500 hover:bg-emerald-600"
           >
             Завершить чекин
           </Button>

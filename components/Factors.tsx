@@ -39,7 +39,7 @@ const Factors: React.FC<FactorsProps> = ({ factors, setFactors }) => {
                       checked={factor.active}
                       onChange={() => toggleFactorActive(factor.id)}
                     />
-                    <div className="block w-14 h-8 rounded-full bg-slate-200 peer-checked:bg-emerald-500"></div>
+                    <div className="block w-14 h-8 rounded-full bg-slate-200 peer-checked:bg-primary"></div>
                     <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform peer-checked:translate-x-full"></div>
                   </div>
                 </label>

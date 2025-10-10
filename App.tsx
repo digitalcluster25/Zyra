@@ -73,40 +73,40 @@ const App: React.FC = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuLink
-                    onClick={() => setView(View.Dashboard)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer ${
-                      view === View.Dashboard 
-                        ? 'text-emerald-600 bg-emerald-100' 
-                        : 'text-slate-500 hover:bg-slate-100'
-                    }`}
-                  >
-                    Панель
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    onClick={() => setView(View.Insights)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer ${
-                      view === View.Insights 
-                        ? 'text-emerald-600 bg-emerald-100' 
-                        : 'text-slate-500 hover:bg-slate-100'
-                    }`}
-                  >
-                    Аналитика
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink
-                    onClick={() => setView(View.Profile)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer ${
-                      view === View.Profile 
-                        ? 'text-emerald-600 bg-emerald-100' 
-                        : 'text-slate-500 hover:bg-slate-100'
-                    }`}
-                  >
-                    Профиль
-                  </NavigationMenuLink>
+            <NavigationMenuLink
+              onClick={() => setView(View.Dashboard)}
+              className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer ${
+                view === View.Dashboard 
+                  ? 'bg-accent text-accent-foreground' 
+                  : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
+              }`}
+            >
+              Панель
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              onClick={() => setView(View.Insights)}
+              className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer ${
+                view === View.Insights 
+                  ? 'bg-accent text-accent-foreground' 
+                  : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
+              }`}
+            >
+              Аналитика
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              onClick={() => setView(View.Profile)}
+              className={`px-3 py-2 text-sm font-medium rounded-md cursor-pointer ${
+                view === View.Profile 
+                  ? 'bg-accent text-accent-foreground' 
+                  : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
+              }`}
+            >
+              Профиль
+            </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
