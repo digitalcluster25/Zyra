@@ -1,0 +1,42 @@
+import React from 'react';
+
+interface FooterProps {
+  onNavigate: (view: string) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  return (
+    <footer className="border-t border-slate-200 bg-white mt-16">
+      <div className="container mx-auto px-4 py-8 max-w-screen-2xl">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-sm text-slate-500">
+            © 2025 ZYRA. Все права защищены.
+          </div>
+          <nav className="flex gap-6 text-sm">
+            <button
+              onClick={() => onNavigate('TERMS')}
+              className="text-slate-600 hover:text-emerald-600 transition-colors"
+            >
+              Публичная оферта
+            </button>
+            <button
+              onClick={() => onNavigate('CONTACT')}
+              className="text-slate-600 hover:text-emerald-600 transition-colors"
+            >
+              Контакты
+            </button>
+            <button
+              onClick={() => onNavigate('LOGIN')}
+              className="text-slate-600 hover:text-emerald-600 transition-colors"
+            >
+              Вход
+            </button>
+          </nav>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+

@@ -5,6 +5,9 @@ export enum View {
   CheckIn = 'CHECKIN',
   Insights = 'INSIGHTS',
   Profile = 'PROFILE',
+  Login = 'LOGIN',
+  Terms = 'TERMS',
+  Contact = 'CONTACT',
 }
 
 // FIX: Add Goal interface for use in Goals and LogGoalFlow components.
