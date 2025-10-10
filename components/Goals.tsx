@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { Goal } from '../types';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
+import { Switch } from './ui/switch';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 interface GoalsProps {
   goals: Goal[];
@@ -51,76 +57,88 @@ const Goals: React.FC<GoalsProps> = ({ goals, setGoals }) => {
         <p className="text-slate-500">Выберите направления, которые важны для вас прямо сейчас.</p>
       </div>
       
-      <div className="bg-white p-6 rounded-xl border border-slate-100">
-        <h3 className="text-xl font-semibold text-slate-700 mb-4">Добавить новую цель</h3>
-        <div className="space-y-4">
-            <input
-              type="text"
-              value={newGoalTitle}
-              onChange={e => setNewGoalTitle(e.target.value)}
-              placeholder="Название цели, например, 'Читать больше книг'"
-              className="w-full p-2 border border-slate-300 rounded-md"
-            />
-            <textarea
-              value={newGoalDescription}
-              onChange={e => setNewGoalDescription(e.target.value)}
-              placeholder="Краткое описание цели (необязательно)"
-              className="w-full p-2 border border-slate-300 rounded-md"
-              rows={2}
-            />
-            <button
-              type="button"
-              onClick={handleAddGoal}
-              className="bg-primary text-primary-foreground font-semibold px-4 py-2 rounded-md hover:bg-primary/90 disabled:bg-slate-300"
-              disabled={!newGoalTitle.trim()}
-            >
-              Добавить цель
-            </button>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Добавить новую цель</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+              <div>
+                <Label htmlFor="goal-title">Название цели</Label>
+                <Input
+                  id="goal-title"
+                  type="text"
+                  value={newGoalTitle}
+                  onChange={e => setNewGoalTitle(e.target.value)}
+                  placeholder="Например, 'Читать больше книг'"
+                />
+              </div>
+              <div>
+                <Label htmlFor="goal-description">Описание (необязательно)</Label>
+                <Textarea
+                  id="goal-description"
+                  value={newGoalDescription}
+                  onChange={e => setNewGoalDescription(e.target.value)}
+                  placeholder="Краткое описание цели"
+                  rows={2}
+                />
+              </div>
+              <Button
+                type="button"
+                onClick={handleAddGoal}
+                disabled={!newGoalTitle.trim()}
+              >
+                Добавить цель
+              </Button>
+          </div>
+        </CardContent>
+      </Card>
       
-      <div className="bg-white p-6 rounded-xl border border-slate-100">
-        <h3 className="text-xl font-semibold text-slate-700 mb-4">Текущие цели</h3>
-        <div className="space-y-4">
-          {goals.map(goal => {
-            return (
-              <div key={goal.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                <div className="flex items-center space-x-4 flex-1">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-slate-800">{goal.title}</h4>
-                    {goal.description && <p className="text-sm text-slate-500">{goal.description}</p>}
+      <Card>
+        <CardHeader>
+          <CardTitle>Текущие цели</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {goals.map(goal => {
+              return (
+                <div key={goal.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                  <div className="flex items-center space-x-4 flex-1">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-slate-800">{goal.title}</h4>
+                      {goal.description && <p className="text-sm text-slate-500">{goal.description}</p>}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-4 ml-4">
+                    {goal.isCustom && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteGoal(goal.id)}
+                          className="text-destructive hover:text-destructive"
+                          aria-label={`Удалить цель ${goal.title}`}
+                        >
+                          Удалить
+                        </Button>
+                      )}
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        id={`toggle-${goal.id}`}
+                        checked={goal.active}
+                        onCheckedChange={() => toggleGoalActive(goal.id)}
+                      />
+                      <Label htmlFor={`toggle-${goal.id}`} className="cursor-pointer sr-only">
+                        {goal.active ? 'Деактивировать' : 'Активировать'}
+                      </Label>
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex items-center space-x-4 ml-4">
-                  {goal.isCustom && (
-                      <button
-                        onClick={() => handleDeleteGoal(goal.id)}
-                        className="text-sm text-red-500 hover:text-red-700 font-semibold"
-                        aria-label={`Удалить цель ${goal.title}`}
-                      >
-                        Удалить
-                      </button>
-                    )}
-                  <label htmlFor={`toggle-${goal.id}`} className="flex items-center cursor-pointer">
-                    <div className="relative">
-                      <input
-                        type="checkbox"
-                        id={`toggle-${goal.id}`}
-                        className="sr-only peer"
-                        checked={goal.active}
-                        onChange={() => toggleGoalActive(goal.id)}
-                      />
-                      <div className="block w-14 h-8 rounded-full bg-slate-200 peer-checked:bg-primary"></div>
-                      <div className="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform peer-checked:translate-x-full"></div>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

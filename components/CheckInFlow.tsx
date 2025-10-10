@@ -3,6 +3,7 @@ import { CheckInData, CheckInRecord, Factor } from '../types';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
+import { Card, CardContent } from './ui/card';
 
 interface CheckInFlowProps {
   onCheckInComplete: (record: CheckInRecord) => void;
@@ -262,10 +263,12 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Готовы завершить?</h2>
             <p className="text-slate-500 mb-6">Вот сводка вашего чекина и рассчитанный балл восстановления.</p>
-            <div className="p-6 bg-white rounded-xl border border-slate-100 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-slate-700">Ваш балл (1-7)</h3>
-              <p className={`text-4xl font-bold ${score < 4 ? 'text-destructive' : score < 5 ? 'text-muted-foreground' : 'text-primary'}`}>{score.toFixed(1)}</p>
-            </div>
+            <Card>
+              <CardContent className="pt-6 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-700">Ваш балл (1-7)</h3>
+                <p className={`text-4xl font-bold ${score < 4 ? 'text-destructive' : score < 5 ? 'text-muted-foreground' : 'text-primary'}`}>{score.toFixed(1)}</p>
+              </CardContent>
+            </Card>
           </div>
         );
       default: return null;

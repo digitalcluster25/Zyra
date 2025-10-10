@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from './ui/button';
 
 interface FooterProps {
   onNavigate: (view: string) => void;
@@ -13,24 +14,27 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             © 2025 ZYRA. Все права защищены.
           </div>
             <nav className="flex gap-6 text-sm">
-              <button
+              <Button
+                variant="link"
                 onClick={() => onNavigate('TERMS')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground p-0 h-auto"
               >
                 Публичная оферта
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="link"
                 onClick={() => onNavigate('CONTACT')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground p-0 h-auto"
               >
                 Контакты
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="link"
                 onClick={() => onNavigate('LOGIN')}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-muted-foreground hover:text-foreground p-0 h-auto"
               >
                 Вход
-              </button>
+              </Button>
             </nav>
         </div>
       </div>

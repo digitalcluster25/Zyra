@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Goal } from '../types';
+import { Button } from './ui/button';
 
 interface LogGoalFlowProps {
   activeGoals: Goal[];
@@ -30,18 +31,19 @@ const LogGoalFlow: React.FC<LogGoalFlowProps> = ({ activeGoals, onLogComplete, o
             </div>
             <div className="mb-8 min-h-[200px] space-y-3">
                 {activeGoals.length > 0 ? activeGoals.map(goal => (
-                    <button
+                    <Button
                         key={goal.id}
                         type="button"
+                        variant="outline"
                         onClick={() => toggleSelection(goal.title)}
-                        className={`w-full flex items-center p-4 rounded-lg border-2 transition-all ${
+                        className={`w-full flex items-center p-4 h-auto ${
                             selectedGoals.includes(goal.title)
                             ? 'border-primary bg-accent'
-                            : 'border-slate-200 bg-white hover:border-slate-300'
+                            : ''
                         }`}
                     >
-                        <span className="font-semibold text-slate-700">{goal.title}</span>
-                    </button>
+                        <span className="font-semibold">{goal.title}</span>
+                    </Button>
                 )) : (
                      <div className="flex items-center justify-center h-full min-h-[150px]">
                         <p className="text-slate-500 text-center">У вас нет активных целей. <br/>Перейдите на страницу "Цели", чтобы добавить их.</p>
@@ -49,19 +51,18 @@ const LogGoalFlow: React.FC<LogGoalFlowProps> = ({ activeGoals, onLogComplete, o
                 )}
             </div>
             <div className="flex justify-between items-center">
-                <button
+                <Button
+                    variant="ghost"
                     onClick={onCancel}
-                    className="text-slate-600 font-bold py-2 px-4 rounded-lg hover:bg-slate-200 transition-colors"
                 >
                     Отмена
-                </button>
-                <button
+                </Button>
+                <Button
                     onClick={handleSubmit}
-                    className="bg-primary text-primary-foreground font-bold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors"
                     disabled={selectedGoals.length === 0}
                 >
                     Сохранить
-                </button>
+                </Button>
             </div>
         </div>
     );
