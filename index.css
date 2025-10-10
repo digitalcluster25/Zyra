@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  /* 
+   * ВАЖНО: Цвета используют формат OKLCH (не HSL)
+   * При изменении цветов в tailwind.config.js НЕ оборачивайте в hsl()
+   * Используйте: primary: 'var(--primary)' (БЕЗ hsl())
+   */
   :root {
     --radius: 0.5rem;
     --background: oklch(0.9900 0 0);

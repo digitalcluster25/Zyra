@@ -15,6 +15,9 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+  		// ВАЖНО: Не оборачивайте в hsl()! CSS переменные в index.css используют формат OKLCH
+  		// ✅ Правильно: 'var(--primary)'
+  		// ❌ Неправильно: 'hsl(var(--primary))' — это сломает цвета
   		colors: {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
