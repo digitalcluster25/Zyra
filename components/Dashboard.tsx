@@ -42,11 +42,12 @@ const MetricCard: React.FC<{ title: string; value: number | null; isInverted?: b
                 <CardTitle className="text-sm font-semibold text-slate-600">{title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow flex flex-col justify-end">
-                <p className="text-3xl font-bold text-slate-800">
-                    {value !== null ? value : '–'}
-                    <span className="text-xl text-slate-400">/7</span>
-                </p>
-                {value !== null && <p className="text-sm font-semibold text-slate-600">{interpretation.label}</p>}
+                <div className="flex items-baseline gap-2">
+                    <p className="text-3xl font-bold text-slate-800">
+                        {value !== null ? value : '–'}
+                    </p>
+                    {value !== null && <p className="text-sm font-semibold text-slate-600">{interpretation.label}</p>}
+                </div>
             </CardContent>
         </Card>
     );
@@ -116,7 +117,6 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
              <Button
                 onClick={onStartCheckIn}
                 size="lg"
-                className="whitespace-nowrap"
             >
                 {latestCheckIn ? 'Начать новый чекин' : 'Начать первый чекин' }
             </Button>
@@ -124,12 +124,25 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
-          <CardContent className="p-6 flex flex-col justify-center items-center text-center min-h-[250px]">
-            <h3 className="text-slate-500 text-sm font-medium mb-2">Ваш балл восстановления</h3>
-            <p className="text-6xl font-bold text-slate-800">{latestCheckIn ? latestCheckIn.recoveryScore.toFixed(1) : '--'}</p>
-            <p className="font-semibold text-slate-600 mt-1">{interpretation.state}</p>
-            <p className="text-xs text-slate-400 mt-2">Отражает ваше текущее состояние по шкале от 1 до 7.</p>
-            <p className="text-sm font-semibold text-slate-700 mt-4">{interpretation.recommendation}</p>
+          <CardHeader>
+            <CardTitle>Ваш балл восстановления</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {latestCheckIn ? (
+              <div className="flex items-start gap-6">
+                <div className="text-center">
+                  <p className="text-5xl font-bold text-slate-800">{latestCheckIn.recoveryScore.toFixed(1)}</p>
+                  <p className="font-semibold text-slate-600 mt-1">{interpretation.state}</p>
+                  <p className="text-xs text-slate-400 mt-2">Текущее состояние</p>
+                </div>
+                <div className="w-px bg-slate-200 self-stretch"></div>
+                <div className="flex-1 flex flex-col justify-center">
+                  <p className="text-sm font-semibold text-slate-700">{interpretation.recommendation}</p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-slate-500 text-center py-8">Завершите чекин, чтобы получить оценку.</p>
+            )}
           </CardContent>
         </Card>
 
@@ -139,38 +152,27 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           </CardHeader>
           <CardContent>
             {predictedScore !== null && predictionDetails ? (
-              <div className="space-y-4">
-                <div className="text-center pb-4 border-b border-slate-200">
+              <div className="flex items-start gap-6">
+                <div className="text-center">
                   <p className="text-5xl font-bold text-slate-800">{predictedScore.toFixed(1)}</p>
                   <p className="font-semibold text-slate-600 mt-1">{predictedInterpretation.state}</p>
-                  <p className="text-xs text-slate-400 mt-2">Ожидаемый балл через 24 часа</p>
+                  <p className="text-xs text-slate-400 mt-2">Ожидаемый балл</p>
                 </div>
-                <div className="space-y-3 text-sm">
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Текущий балл:</span>
-                      <span className="font-bold text-slate-800">{predictionDetails.currentScore.toFixed(1)}</span>
-                    </div>
+                <div className="w-px bg-slate-200 self-stretch"></div>
+                <div className="flex-1 space-y-2 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">Естественное восстановление:</span>
+                    <span className="font-bold text-slate-800">+{predictionDetails.naturalRecovery.toFixed(2)}</span>
                   </div>
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Естественное восстановление:</span>
-                      <span className="font-bold text-slate-800">+{predictionDetails.naturalRecovery.toFixed(2)}</span>
-                    </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">Штраф за нагрузку:</span>
+                    <span className="font-bold text-slate-800">-{predictionDetails.loadPenalty.toFixed(2)}</span>
                   </div>
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Штраф за нагрузку:</span>
-                      <span className="font-bold text-slate-800">-{predictionDetails.loadPenalty.toFixed(2)}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-600">Влияние факторов:</span>
-                      <span className="font-bold text-slate-800">
-                        {predictionDetails.factorEffect >= 0 ? '+' : ''}{predictionDetails.factorEffect.toFixed(2)}
-                      </span>
-                    </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">Влияние факторов:</span>
+                    <span className="font-bold text-slate-800">
+                      {predictionDetails.factorEffect >= 0 ? '+' : ''}{predictionDetails.factorEffect.toFixed(2)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -181,7 +183,7 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
         </Card>
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
           <MetricCard title="Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} />
           <MetricCard title="Энергия" value={latestCheckIn?.data.energyLevel ?? null} />
           <MetricCard title="Настроение" value={latestCheckIn?.data.mood ?? null} />
@@ -192,20 +194,22 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           <MetricCard title="TSS" value={latestCheckIn?.data.tss ?? null} isInverted={true} />
       </div>
       
-       <div>
-          <h3 className="text-lg font-semibold text-slate-700 mb-3">Влияющие факторы сегодня</h3>
+       <Card>
+          <CardHeader>
+            <CardTitle>Влияющие факторы сегодня</CardTitle>
+          </CardHeader>
+          <CardContent>
             {latestCheckIn && latestCheckIn.data.factors.length > 0 ? (
-                <div className="max-h-36 overflow-y-auto pr-2">
-                    <div className="flex flex-wrap gap-2">
-                        {latestCheckIn.data.factors.map(factor => (
-                            <Badge key={factor} variant="secondary">{factor}</Badge>
-                        ))}
-                    </div>
+                <div className="flex flex-wrap gap-2">
+                    {latestCheckIn.data.factors.map(factor => (
+                        <Badge key={factor} variant="secondary">{factor}</Badge>
+                    ))}
                 </div>
             ) : (
                 <p className="text-slate-500 text-sm">Факторы, которые вы отметите в чекине, появятся здесь.</p>
             )}
-      </div>
+          </CardContent>
+      </Card>
 
     </div>
   );
