@@ -33,48 +33,50 @@ const RecoveryChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
   });
 
   return (
-    <ChartContainer config={chartConfig}>
-      <LineChart
-        accessibilityLayer
-        data={chartData}
-        margin={{
-          left: 12,
-          right: 12,
-          top: 12,
-          bottom: 12,
-        }}
-      >
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="date"
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-        />
-        <YAxis
-          domain={[1, 7]}
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-        />
-        <ChartTooltip
-          cursor={false}
-          content={<ChartTooltipContent hideLabel />}
-        />
-        <Line
-          dataKey="recoveryScore"
-          type="natural"
-          stroke="var(--color-recoveryScore)"
-          strokeWidth={2}
-          dot={{
-            fill: "var(--color-recoveryScore)",
+    <div className="h-[250px]">
+      <ChartContainer config={chartConfig}>
+        <LineChart
+          accessibilityLayer
+          data={chartData}
+          margin={{
+            left: 12,
+            right: 12,
+            top: 12,
+            bottom: 12,
           }}
-          activeDot={{
-            r: 6,
-          }}
-        />
-      </LineChart>
-    </ChartContainer>
+        >
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="date"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+          />
+          <YAxis
+            domain={[1, 7]}
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+          />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Line
+            dataKey="recoveryScore"
+            type="natural"
+            stroke="var(--color-recoveryScore)"
+            strokeWidth={2}
+            dot={{
+              fill: "var(--color-recoveryScore)",
+            }}
+            activeDot={{
+              r: 6,
+            }}
+          />
+        </LineChart>
+      </ChartContainer>
+    </div>
   );
 };
 
