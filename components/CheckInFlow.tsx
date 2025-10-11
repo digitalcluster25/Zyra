@@ -4,32 +4,59 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { Card, CardContent } from './ui/card';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { AthleteMonitoringService } from '../utils/athleteMonitoring';
 
 interface CheckInFlowProps {
   onCheckInComplete: (record: CheckInRecord) => void;
   factors: Factor[];
+  previousRecord?: CheckInRecord;
 }
 
 const initialCheckInData: CheckInData = {
+  // Индекс Хупера (1=отлично, 7=ужасно)
   sleepQuality: 4,
-  energyLevel: 4,
-  muscleSoreness: 1,
-  stressLevel: 4,
+  fatigue: 4,
+  muscleSoreness: 4,
+  stress: 4,
   mood: 4,
+  // Дополнительные метрики
   focus: 4,
   motivation: 4,
-  tss: 4,
+  // sRPE
+  hadTraining: false,
+  trainingDuration: undefined,
+  rpe: undefined,
+  trainingLoad: 0,
+  // Факторы
   factors: [],
 };
 
-const sleepQualityLabels = ["Ужасно", "Плохо", "Так себе", "Нормально", "Хорошо", "Отлично", "Идеально"];
-const energyLevelLabels = ["Истощение", "Вялость", "Низкий тонус", "Нормально", "Бодрость", "Энергичность", "На пике"];
-const muscleSorenessLabels = ["Нет боли", "Слабая", "Ноющая", "Средняя", "Сильная", "Мешает", "Острая"];
-const stressLevelLabels = ["Спокойствие", "Расслаблен", "Небольшой", "Напряжение", "Стресс", "Сильный", "На грани"];
-const moodLabels = ["Подавленное", "Грустное", "Так себе", "Нейтрально", "Хорошее", "Радостное", "Отличное"];
-const focusLabels = ["Рассеян", "Отвлекаюсь", "Средне", "Нормально", "Собран", "Сфокусирован", "Поток"];
-const motivationLabels = ["Нет желания", "Неохотно", "С трудом", "Нейтрально", "Есть желание", "Мотивирован", "Заряжен"];
-const tssLabels = ["Отдых", "Очень легко", "Легко", "Средне", "Тяжело", "Очень тяжело", "Максимум"];
+// ВАЖНО: Шкалы теперь инвертированы под Индекс Хупера
+// 1 = отлично/нет проблем, 7 = ужасно/максимальная проблема
+const sleepQualityLabels = ["Идеально", "Отлично", "Хорошо", "Нормально", "Так себе", "Плохо", "Ужасно"];
+const fatigueLabels = ["Нет усталости", "Слегка устал", "Лёгкая усталость", "Средняя усталость", "Устал", "Очень устал", "Истощён"];
+const muscleSorenessLabels = ["Нет боли", "Слабая", "Лёгкая", "Средняя", "Ноющая", "Сильная", "Острая боль"];
+const stressLabels = ["Расслаблен", "Спокоен", "Лёгкое напряжение", "Умеренный стресс", "Напряжён", "Сильный стресс", "На грани"];
+const moodLabels = ["Отличное", "Радостное", "Хорошее", "Нейтральное", "Так себе", "Грустное", "Подавленное"];
+const focusLabels = ["Поток", "Сфокусирован", "Хорошо концентрируюсь", "Нормально", "Отвлекаюсь", "Рассеян", "Не могу сосредоточиться"];
+const motivationLabels = ["Заряжен", "Мотивирован", "Есть желание", "Нейтрально", "С трудом", "Неохотно", "Нет желания"];
+
+// RPE шкала Борга (0-10)
+const rpeLabels = [
+  "0 - Отдых",
+  "1 - Очень легко",
+  "2 - Легко",
+  "3 - Умеренно",
+  "4 - Несколько тяжело",
+  "5 - Тяжело",
+  "6",
+  "7 - Очень тяжело",
+  "8",
+  "9 - Крайне тяжело",
+  "10 - Максимум"
+];
 
 interface OptionSelectorProps {
   options: number[];
@@ -61,12 +88,10 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({ options, selectedValue,
   );
 };
 
-const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
-
-const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors }) => {
+const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors, previousRecord }) => {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<CheckInData>(initialCheckInData);
-  const totalSteps = 10; 
+  const totalSteps = 12; // 5 метрик Хупера + 2 доп метрики + 1 тренировка + длительность/RPE + факторы + итог
 
   const handleNext = () => setStep(s => Math.min(s + 1, totalSteps));
   const handleBack = () => setStep(s => Math.max(s - 1, 1));
@@ -83,61 +108,29 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
     handleDataChange('factors', newValues);
   };
 
-  const calculateRecoveryScore = (d: CheckInData, allFactors: Factor[]): number => {
-    // 1. Normalize survey data (1-7 scale) to 0-1 range
-    const normalize = (val: number) => (val - 1) / 6;
-    const sleep_n = normalize(d.sleepQuality);
-    const energy_n = normalize(d.energyLevel);
-    const soreness_n = 1 - normalize(d.muscleSoreness); // Inverted
-    const stress_n = 1 - normalize(d.stressLevel);     // Inverted
-    const mood_n = normalize(d.mood);
-    const focus_n = normalize(d.focus);
-    const motivation_n = normalize(d.motivation);
-    const tss_n = normalize(d.tss);
-
-    // 2. Calculate Subjective Component (S)
-    const S = (sleep_n + energy_n + soreness_n + stress_n + mood_n + focus_n + motivation_n) / 7;
-
-    // 3. Calculate Factor Correction (F_frac)
-    const factorsMap = new Map(allFactors.map(f => [f.name, f]));
-    const F_frac = d.factors.reduce((acc, factorName) => {
-        const factor = factorsMap.get(factorName);
-        // Assuming t_j=0 for a fresh check-in, decay is 1. Weight is w_j = W_j / 100
-        return acc + (factor ? factor.weight : 0);
-    }, 0);
-
-    // 4. Calculate Load Component (L_norm)
-    const L_norm = clamp(1 - 0.6 * tss_n, 0, 1);
-    
-    // 5. Calculate Final Normalized Score (R_frac)
-    const R_frac = clamp(0.75 * S + 0.25 * L_norm + F_frac, 0, 1);
-
-    // 6. Map to 1-7 scale
-    const R_1_7 = 1 + 6 * R_frac;
-
-    return clamp(R_1_7, 1, 7);
-  };
-
-
   const handleSubmit = () => {
-    const recoveryScore = calculateRecoveryScore(data, factors);
-    const newRecord: CheckInRecord = {
-      id: new Date().toISOString(),
-      data: data,
-      recoveryScore: recoveryScore
-    };
+    // Рассчитываем Training Load если была тренировка
+    if (data.hadTraining && data.trainingDuration && data.rpe !== undefined) {
+      data.trainingLoad = AthleteMonitoringService.calculateTrainingLoad(data.trainingDuration, data.rpe);
+    }
+
+    // Создаем новый чекин с расчетными показателями
+    const newRecord = AthleteMonitoringService.createCheckInRecord(data, previousRecord);
     onCheckInComplete(newRecord);
   };
 
-
   const renderStep = () => {
     const options1to7 = Array.from({ length: 7 }, (_, i) => i + 1);
+    const options0to10 = Array.from({ length: 11 }, (_, i) => i);
+
     switch(step) {
+      // Метрика 1: Качество сна
       case 1:
         return (
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Качество сна</h2>
-            <p className="text-slate-500 mb-6">Как ты оцениваешь качество своего сна прошлой ночью?</p>
+            <p className="text-slate-500 mb-2">Как вы оцениваете качество своего сна прошлой ночью?</p>
+            <p className="text-xs text-slate-400 mb-6">1 = идеально выспался, 7 = ужасный сон</p>
             <OptionSelector 
               options={options1to7} 
               selectedValue={data.sleepQuality} 
@@ -146,24 +139,30 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
             />
           </div>
         );
+
+      // Метрика 2: Усталость
       case 2:
         return (
           <div>
-            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Уровень энергии</h2>
-            <p className="text-slate-500 mb-6">Насколько у тебя сейчас есть энергия для активностей?</p>
+            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Уровень усталости</h2>
+            <p className="text-slate-500 mb-2">Насколько вы устали прямо сейчас?</p>
+            <p className="text-xs text-slate-400 mb-6">1 = нет усталости, 7 = полностью истощён</p>
             <OptionSelector 
               options={options1to7} 
-              selectedValue={data.energyLevel} 
-              onSelect={(val) => handleDataChange('energyLevel', val)}
-              labels={energyLevelLabels}
+              selectedValue={data.fatigue} 
+              onSelect={(val) => handleDataChange('fatigue', val)}
+              labels={fatigueLabels}
             />
           </div>
         );
+
+      // Метрика 3: Боль в мышцах
       case 3:
         return (
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Боль в мышцах</h2>
-            <p className="text-slate-500 mb-6">Насколько сильно болят мышцы?</p>
+            <p className="text-slate-500 mb-2">Насколько болят ваши мышцы?</p>
+            <p className="text-xs text-slate-400 mb-6">1 = нет боли, 7 = острая боль</p>
             <OptionSelector 
               options={options1to7} 
               selectedValue={data.muscleSoreness} 
@@ -172,24 +171,30 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
             />
           </div>
         );
+
+      // Метрика 4: Стресс
       case 4:
         return (
-           <div>
+          <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Уровень стресса</h2>
-            <p className="text-slate-500 mb-6">Какой у тебя уровень стресса сегодня?</p>
+            <p className="text-slate-500 mb-2">Какой уровень стресса вы испытываете?</p>
+            <p className="text-xs text-slate-400 mb-6">1 = расслаблен, 7 = на грани</p>
             <OptionSelector 
               options={options1to7} 
-              selectedValue={data.stressLevel} 
-              onSelect={(val) => handleDataChange('stressLevel', val)}
-              labels={stressLevelLabels}
+              selectedValue={data.stress} 
+              onSelect={(val) => handleDataChange('stress', val)}
+              labels={stressLabels}
             />
           </div>
         );
+
+      // Метрика 5: Настроение
       case 5:
         return (
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Настроение</h2>
-            <p className="text-slate-500 mb-6">Какое у тебя настроение?</p>
+            <p className="text-slate-500 mb-2">Какое у вас настроение?</p>
+            <p className="text-xs text-slate-400 mb-6">1 = отличное, 7 = подавленное</p>
             <OptionSelector 
               options={options1to7} 
               selectedValue={data.mood} 
@@ -198,52 +203,144 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
             />
           </div>
         );
+
+      // Доп метрика 6: Концентрация
       case 6:
         return (
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Концентрация</h2>
-            <p className="text-slate-500 mb-6">Насколько легко тебе сейчас концентрироваться?</p>
+            <p className="text-slate-500 mb-6">Насколько легко вам концентрироваться?</p>
             <OptionSelector 
               options={options1to7} 
-              selectedValue={data.focus} 
+              selectedValue={data.focus || 4} 
               onSelect={(val) => handleDataChange('focus', val)}
               labels={focusLabels}
             />
           </div>
         );
+
+      // Доп метрика 7: Мотивация
       case 7:
         return (
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Мотивация</h2>
-            <p className="text-slate-500 mb-6">Насколько тебе хочется тренироваться или быть активным?</p>
+            <p className="text-slate-500 mb-6">Насколько вам хочется тренироваться?</p>
             <OptionSelector 
               options={options1to7} 
-              selectedValue={data.motivation} 
+              selectedValue={data.motivation || 4} 
               onSelect={(val) => handleDataChange('motivation', val)}
               labels={motivationLabels}
             />
           </div>
         );
+
+      // Шаг 8: Была ли тренировка?
       case 8:
         return (
           <div>
-            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Интенсивность тренировки (TSS)</h2>
-            <p className="text-slate-500 mb-6">Как ты оцениваешь интенсивность твоей последней тренировки?</p>
-            <OptionSelector 
-              options={options1to7} 
-              selectedValue={data.tss} 
-              onSelect={(val) => handleDataChange('tss', val)}
-              labels={tssLabels}
-            />
+            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Тренировка</h2>
+            <p className="text-slate-500 mb-6">У вас была тренировка сегодня или вчера вечером?</p>
+            <div className="flex gap-4 justify-center">
+              <Button
+                type="button"
+                onClick={() => {
+                  handleDataChange('hadTraining', true);
+                  handleNext();
+                }}
+                variant={data.hadTraining ? "default" : "outline"}
+                size="lg"
+                className="flex-1 h-24"
+              >
+                <span className="text-lg">Да, была тренировка</span>
+              </Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  handleDataChange('hadTraining', false);
+                  handleDataChange('trainingDuration', undefined);
+                  handleDataChange('rpe', undefined);
+                  handleDataChange('trainingLoad', 0);
+                  setStep(10); // Пропускаем шаги 9-10, идем к факторам
+                }}
+                variant={!data.hadTraining ? "default" : "outline"}
+                size="lg"
+                className="flex-1 h-24"
+              >
+                <span className="text-lg">Нет, не было</span>
+              </Button>
+            </div>
           </div>
         );
+
+      // Шаг 9: Длительность тренировки (только если была тренировка)
       case 9:
+        if (!data.hadTraining) {
+          setStep(10);
+          return null;
+        }
+        return (
+          <div>
+            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Длительность тренировки</h2>
+            <p className="text-slate-500 mb-6">Сколько минут длилась ваша тренировка?</p>
+            <div className="max-w-xs mx-auto">
+              <Label htmlFor="duration" className="text-base mb-2 block">Минуты</Label>
+              <Input
+                id="duration"
+                type="number"
+                min="1"
+                max="600"
+                value={data.trainingDuration || ''}
+                onChange={(e) => handleDataChange('trainingDuration', parseInt(e.target.value) || undefined)}
+                placeholder="Например: 60"
+                className="text-lg h-14 text-center"
+              />
+              <p className="text-xs text-slate-400 mt-2 text-center">
+                Обычно от 30 до 180 минут
+              </p>
+            </div>
+          </div>
+        );
+
+      // Шаг 10: RPE (воспринимаемая нагрузка)
+      case 10:
+        if (!data.hadTraining) {
+          setStep(11);
+          return null;
+        }
+        return (
+          <div>
+            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Интенсивность тренировки</h2>
+            <p className="text-slate-500 mb-2">Насколько тяжёлой была тренировка? (Шкала Борга RPE)</p>
+            <p className="text-xs text-slate-400 mb-6">0 = отдых, 10 = максимальное усилие</p>
+            <div className="grid grid-cols-11 gap-1">
+              {options0to10.map((option) => (
+                <div key={option} className="flex flex-col items-center text-center">
+                  <Button
+                    type="button"
+                    onClick={() => handleDataChange('rpe', option)}
+                    variant={data.rpe === option ? "default" : "outline"}
+                    size="sm"
+                    className="w-full h-12 mb-1"
+                  >
+                    {option}
+                  </Button>
+                  <p className="text-[8px] text-slate-400 leading-tight">
+                    {rpeLabels[option].replace(`${option} - `, '')}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      // Шаг 11: Факторы
+      case 11:
         return (
           <div>
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Внешние факторы</h2>
-            <p className="text-slate-500 mb-6">Выберите факторы, которые могли на вас повлиять сегодня.</p>
+            <p className="text-slate-500 mb-6">Выберите факторы, которые могли повлиять на ваше состояние.</p>
             <div className="flex flex-wrap gap-3">
-              {factors.map(factor => (
+              {factors.filter(f => f.active).map(factor => (
                 <Button
                   key={factor.id}
                   type="button"
@@ -257,21 +354,58 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
             </div>
           </div>
         );
-      case 10:
-        const score = calculateRecoveryScore(data, factors);
+
+      // Шаг 12: Итог
+      case 12:
+        const hooperIndex = AthleteMonitoringService.calculateHooperIndex(data);
+        const interpretation = AthleteMonitoringService.interpretHooperIndex(hooperIndex);
+        const trainingLoad = data.hadTraining && data.trainingDuration && data.rpe !== undefined
+          ? AthleteMonitoringService.calculateTrainingLoad(data.trainingDuration, data.rpe)
+          : 0;
+
         return (
-          <div>
+          <div className="space-y-4">
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Готовы завершить?</h2>
-            <p className="text-slate-500 mb-6">Вот сводка вашего чекина и рассчитанный балл восстановления.</p>
+            <p className="text-slate-500 mb-6">Вот сводка вашего чекина и рассчитанные показатели.</p>
+            
             <Card>
-              <CardContent className="pt-6 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-700">Ваш балл (1-7)</h3>
-                <p className={`text-4xl font-bold ${score < 4 ? 'text-destructive' : score < 5 ? 'text-muted-foreground' : 'text-primary'}`}>{score.toFixed(1)}</p>
+              <CardContent className="pt-6 space-y-4">
+                <div className="flex items-center justify-between pb-4 border-b">
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-700">Индекс Хупера</h3>
+                    <p className="text-sm text-slate-500">{interpretation.description}</p>
+                  </div>
+                  <p className={`text-4xl font-bold ${
+                    interpretation.level === 'excellent' || interpretation.level === 'good' ? 'text-primary' :
+                    interpretation.level === 'moderate' ? 'text-yellow-600' :
+                    interpretation.level === 'high' ? 'text-orange-600' :
+                    'text-destructive'
+                  }`}>
+                    {hooperIndex}
+                  </p>
+                </div>
+                
+                {data.hadTraining && (
+                  <div className="flex items-center justify-between pt-2">
+                    <div>
+                      <h3 className="text-sm font-semibold text-slate-700">Тренировочная нагрузка</h3>
+                      <p className="text-xs text-slate-500">{data.trainingDuration} мин × RPE {data.rpe}</p>
+                    </div>
+                    <p className="text-2xl font-bold text-slate-800">{trainingLoad.toFixed(0)}</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
+
+            <div className="text-sm text-slate-600 bg-slate-50 p-4 rounded-lg">
+              <p className="font-medium mb-1">Рекомендация:</p>
+              <p>{interpretation.recommendation}</p>
+            </div>
           </div>
         );
-      default: return null;
+
+      default: 
+        return null;
     }
   };
 
@@ -279,12 +413,13 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
     <div className="bg-slate-50 p-4 sm:p-8 rounded-xl border border-slate-200 max-w-2xl mx-auto">
       <div className="mb-6">
         <Progress value={(step / totalSteps) * 100} className="bg-slate-200" />
+        <p className="text-xs text-slate-400 mt-2 text-center">Шаг {step} из {totalSteps}</p>
       </div>
-      <div className="mb-8 min-h-[220px] flex flex-col justify-center">
+      <div className="mb-8 min-h-[280px] flex flex-col justify-center">
         {renderStep()}
       </div>
       <div className="flex justify-between items-center">
-        {step > 1 ? (
+        {step > 1 && step !== 8 ? (
           <Button
             onClick={handleBack}
             variant="outline"
@@ -293,21 +428,25 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors })
           </Button>
         ) : <div />}
         
-        {step < totalSteps ? (
+        {step < totalSteps && step !== 8 ? (
           <Button
             onClick={handleNext}
             size="lg"
+            disabled={
+              (step === 9 && !data.trainingDuration) ||
+              (step === 10 && data.rpe === undefined)
+            }
           >
             Далее
           </Button>
-        ) : (
+        ) : step === 12 ? (
           <Button
             onClick={handleSubmit}
             size="lg"
           >
             Завершить чекин
           </Button>
-        )}
+        ) : null}
       </div>
     </div>
   );

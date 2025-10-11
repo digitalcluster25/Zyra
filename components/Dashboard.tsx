@@ -4,6 +4,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
+import { AthleteMonitoringService } from '../utils/athleteMonitoring';
 
 interface DashboardProps {
   checkInHistory: CheckInRecord[];
@@ -11,30 +12,28 @@ interface DashboardProps {
   onStartCheckIn: () => void;
 }
 
-const getRecoveryInterpretation = (score: number | null) => {
-    if (score === null) return { state: 'Нет данных', recommendation: 'Завершите чекин, чтобы получить оценку.' };
-    if (score > 6.0) return { state: 'Отлично', recommendation: 'Можно тренироваться интенсивно.' };
-    if (score > 5.0) return { state: 'Хорошее', recommendation: 'Лёгкая или средняя активность.' };
-    if (score > 4.0) return { state: 'Умеренное', recommendation: 'Лучше восстановиться.' };
-    return { state: 'Переутомление', recommendation: 'Отдых, сон, релаксация.' };
-};
+// Интерпретация для отображения метрик
+// ВАЖНО: Шкалы теперь инвертированы под Индекс Хупера (1=хорошо, 7=плохо)
+const getMetricInterpretation = (value: number | null, fieldName: string) => {
+    if (value === null) return { label: '', color: '' };
 
-const getMetricInterpretation = (value: number | null, isInverted: boolean = false) => {
-    if (value === null) return { label: '' };
-
-    if (isInverted) { // Lower is better (e.g., Stress)
-        if (value <= 2) return { label: 'Низкий' };
-        if (value <= 4) return { label: 'Средний' };
-        return { label: 'Высокий' };
-    } else { // Higher is better
-        if (value >= 6) return { label: 'Отличное' };
-        if (value >= 4) return { label: 'Хорошее' };
-        return { label: 'Низкое' };
+    // Для Индекса Хупера: 1 = хорошо, 7 = плохо
+    if (['sleepQuality', 'fatigue', 'muscleSoreness', 'stress', 'mood'].includes(fieldName)) {
+      if (value <= 2) return { label: 'Отлично', color: 'text-green-600' };
+      if (value <= 4) return { label: 'Хорошо', color: 'text-green-500' };
+      if (value <= 5) return { label: 'Средне', color: 'text-yellow-600' };
+      return { label: 'Плохо', color: 'text-red-600' };
     }
+    
+    // Для доп метрик (motivation, focus): 1 = хорошо, 7 = плохо
+    if (value <= 2) return { label: 'Отлично', color: 'text-green-600' };
+    if (value <= 4) return { label: 'Хорошо', color: 'text-green-500' };
+    if (value <= 5) return { label: 'Средне', color: 'text-yellow-600' };
+    return { label: 'Плохо', color: 'text-red-600' };
 };
 
-const MetricCard: React.FC<{ title: string; value: number | null; isInverted?: boolean }> = ({ title, value, isInverted = false }) => {
-    const interpretation = getMetricInterpretation(value, isInverted);
+const MetricCard: React.FC<{ title: string; value: number | null; fieldName: string }> = ({ title, value, fieldName }) => {
+    const interpretation = getMetricInterpretation(value, fieldName);
 
     return (
         <Card className="flex flex-col">
@@ -42,65 +41,48 @@ const MetricCard: React.FC<{ title: string; value: number | null; isInverted?: b
                 <CardTitle className="text-sm font-semibold text-slate-600">{title}</CardTitle>
             </CardHeader>
             <CardContent className="flex-grow flex flex-col justify-end">
-                <div className="flex items-baseline gap-2">
+                <div className="flex flex-col">
                     <p className="text-3xl font-bold text-slate-800">
                         {value !== null ? value : '–'}
                     </p>
-                    {value !== null && <p className="text-sm font-semibold text-slate-600">{interpretation.label}</p>}
+                    {value !== null && (
+                        <p className={`text-sm font-semibold mt-1 ${interpretation.color}`}>
+                            {interpretation.label}
+                        </p>
+                    )}
                 </div>
             </CardContent>
         </Card>
     );
 };
 
-const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
-
 const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartCheckIn }) => {
   const [nickname] = useLocalStorage('userNickname', 'чемпион');
   const latestCheckIn = checkInHistory?.[0];
-  const interpretation = getRecoveryInterpretation(latestCheckIn?.recoveryScore ?? null);
+  
+  // Индекс Хупера
+  const hooperIndex = latestCheckIn?.hooperIndex ?? null;
+  const hooperInterp = hooperIndex !== null 
+    ? AthleteMonitoringService.interpretHooperIndex(hooperIndex)
+    : null;
 
-  let predictedScore: number | null = null;
-  let predictionDetails: { currentScore: number; naturalRecovery: number; loadPenalty: number; factorEffect: number; } | null = null;
+  // TSB (Training Stress Balance)
+  const tsb = latestCheckIn?.tsb ?? null;
+  const tsbInterp = tsb !== null 
+    ? AthleteMonitoringService.interpretTSB(tsb)
+    : null;
 
-  if (latestCheckIn) {
-      const R_1_7 = latestCheckIn.recoveryScore;
-      const R_frac = (R_1_7 - 1) / 6;
+  // CTL и ATL для отображения
+  const ctl = latestCheckIn?.ctl ?? null;
+  const atl = latestCheckIn?.atl ?? null;
 
-      const tss = latestCheckIn.data.tss;
-      const tss_n = (tss - 1) / 6; // Normalize from 1-7 scale
+  // Training Load за сегодня
+  const dailyLoad = latestCheckIn?.dailyLoad ?? null;
 
-      // --- New Prediction Formula ---
-      const k = 0.20;
-      const R_recov = R_frac + k * (1 - R_frac);
-
-      const lambda = 0.12;
-      const P = lambda * tss_n;
-
-      const factorsMap = new Map(factors.map(f => [f.name, f]));
-      const F_t_plus_1_frac = latestCheckIn.data.factors.reduce((acc, factorName) => {
-          const factor = factorsMap.get(factorName);
-          if (factor) {
-              const w_j = factor.weight;
-              const tau_j = factor.tau || 24;
-              // t_j (time since check-in) is ~0 when calculating prediction right after.
-              const decayedContribution = w_j * Math.exp(-(0 + 24) / tau_j);
-              return acc + decayedContribution;
-          }
-          return acc;
-      }, 0);
-      
-      const R_frac_t_plus_1 = clamp(R_recov - P + F_t_plus_1_frac, 0, 1);
-      predictedScore = 1 + 6 * R_frac_t_plus_1;
-      
-      predictionDetails = {
-        currentScore: R_1_7,
-        naturalRecovery: 6 * (k * (1 - R_frac)), // map effect to 1-7 scale
-        loadPenalty: 6 * P, // map effect to 1-7 scale
-        factorEffect: 6 * F_t_plus_1_frac, // map effect to 1-7 scale
-      };
-  }
-  const predictedInterpretation = getRecoveryInterpretation(predictedScore);
+  // Контекстные рекомендации
+  const contextualRecommendation = hooperIndex !== null && tsb !== null
+    ? AthleteMonitoringService.generateRecommendation(hooperIndex, tsb)
+    : null;
 
   return (
     <div className="space-y-8">
@@ -109,7 +91,7 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
                 <h2 className="text-2xl font-bold text-slate-800">Добрый день, {nickname}</h2>
                 <p className="text-slate-500">
                   {latestCheckIn 
-                    ? 'Вот ваше последнее обновление.'
+                    ? 'Вот ваше последнее обновление на основе научных методологий.'
                     : 'Добро пожаловать! Начните с первого чекина, чтобы заполнить панель.'
                   }
                 </p>
@@ -122,22 +104,53 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
             </Button>
         </header>
 
+      {/* Индекс Хупера и TSB */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Индекс Хупера */}
         <Card>
           <CardHeader>
-            <CardTitle>Ваш балл восстановления</CardTitle>
+            <CardTitle>Индекс Хупера</CardTitle>
+            <CardDescription>Научно-валидированная оценка вашего состояния (5-35)</CardDescription>
           </CardHeader>
           <CardContent>
-            {latestCheckIn ? (
+            {latestCheckIn && hooperInterp ? (
               <div className="flex items-start gap-6">
                 <div className="flex-1 text-center">
-                  <p className="text-5xl font-bold text-slate-800">{latestCheckIn.recoveryScore.toFixed(1)}</p>
-                  <p className="font-semibold text-slate-600 mt-1">{interpretation.state}</p>
-                  <p className="text-xs text-slate-400 mt-2">Текущее состояние</p>
+                  <p className={`text-5xl font-bold ${
+                    hooperInterp.level === 'excellent' || hooperInterp.level === 'good' ? 'text-green-600' :
+                    hooperInterp.level === 'moderate' ? 'text-yellow-600' :
+                    hooperInterp.level === 'high' ? 'text-orange-600' :
+                    'text-red-600'
+                  }`}>
+                    {hooperIndex}
+                  </p>
+                  <p className="font-semibold text-slate-600 mt-1">{hooperInterp.description}</p>
+                  <p className="text-xs text-slate-400 mt-2">Чем ниже, тем лучше</p>
                 </div>
                 <div className="w-px bg-slate-200 self-stretch"></div>
-                <div className="flex-1 flex flex-col justify-center">
-                  <p className="text-sm font-semibold text-slate-700">{interpretation.recommendation}</p>
+                <div className="flex-1 flex flex-col justify-center space-y-2">
+                  <div className="text-xs text-slate-500">
+                    <div className="flex justify-between mb-1">
+                      <span>Сон:</span>
+                      <span className="font-semibold">{latestCheckIn.data.sleepQuality}</span>
+                    </div>
+                    <div className="flex justify-between mb-1">
+                      <span>Усталость:</span>
+                      <span className="font-semibold">{latestCheckIn.data.fatigue}</span>
+                    </div>
+                    <div className="flex justify-between mb-1">
+                      <span>Боль:</span>
+                      <span className="font-semibold">{latestCheckIn.data.muscleSoreness}</span>
+                    </div>
+                    <div className="flex justify-between mb-1">
+                      <span>Стресс:</span>
+                      <span className="font-semibold">{latestCheckIn.data.stress}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Настроение:</span>
+                      <span className="font-semibold">{latestCheckIn.data.mood}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -146,54 +159,111 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           </CardContent>
         </Card>
 
+        {/* Training Stress Balance (TSB) */}
         <Card>
           <CardHeader>
-            <CardTitle>Прогноз на завтра</CardTitle>
+            <CardTitle>Баланс нагрузки (TSB)</CardTitle>
+            <CardDescription>Ваша готовность к тренировкам на основе модели Банистера</CardDescription>
           </CardHeader>
           <CardContent>
-            {predictedScore !== null && predictionDetails ? (
+            {latestCheckIn && tsbInterp ? (
               <div className="flex items-start gap-6">
                 <div className="flex-1 text-center">
-                  <p className="text-5xl font-bold text-slate-800">{predictedScore.toFixed(1)}</p>
-                  <p className="font-semibold text-slate-600 mt-1">{predictedInterpretation.state}</p>
-                  <p className="text-xs text-slate-400 mt-2">Ожидаемый балл</p>
+                  <p className={`text-5xl font-bold ${
+                    tsbInterp.level === 'optimal' ? 'text-green-600' :
+                    tsbInterp.level === 'productive' ? 'text-yellow-600' :
+                    tsbInterp.level === 'fresh' ? 'text-blue-600' :
+                    tsbInterp.level === 'high' ? 'text-orange-600' :
+                    'text-red-600'
+                  }`}>
+                    {tsb.toFixed(1)}
+                  </p>
+                  <p className="font-semibold text-slate-600 mt-1">{tsbInterp.description}</p>
+                  <p className="text-xs text-slate-400 mt-2">Форма / Готовность</p>
                 </div>
                 <div className="w-px bg-slate-200 self-stretch"></div>
-                <div className="flex-1 space-y-2 text-sm">
+                <div className="flex-1 flex flex-col justify-center space-y-2 text-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Естественное восстановление:</span>
-                    <span className="font-bold text-slate-800">+{predictionDetails.naturalRecovery.toFixed(2)}</span>
+                    <span className="text-slate-600">Фитнес (CTL):</span>
+                    <span className="font-bold text-slate-800">{ctl.toFixed(1)}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Штраф за нагрузку:</span>
-                    <span className="font-bold text-slate-800">-{predictionDetails.loadPenalty.toFixed(2)}</span>
+                    <span className="text-slate-600">Усталость (ATL):</span>
+                    <span className="font-bold text-slate-800">{atl.toFixed(1)}</span>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Влияние факторов:</span>
-                    <span className="font-bold text-slate-800">
-                      {predictionDetails.factorEffect >= 0 ? '+' : ''}{predictionDetails.factorEffect.toFixed(2)}
-                    </span>
-                  </div>
+                  {dailyLoad !== null && dailyLoad > 0 && (
+                    <div className="flex justify-between items-center pt-2 border-t">
+                      <span className="text-slate-600">Сегодня (TL):</span>
+                      <span className="font-bold text-slate-800">{dailyLoad.toFixed(0)}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
-              <p className="text-slate-500 text-center py-8">Прогноз будет доступен после вашего первого чекина.</p>
+              <p className="text-slate-500 text-center py-8">TSB будет доступен после вашего первого чекина.</p>
             )}
           </CardContent>
         </Card>
       </div>
+
+      {/* Контекстные рекомендации */}
+      {contextualRecommendation && (
+        <Card className="bg-slate-50 border-slate-300">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <span className="text-lg">💡</span>
+              Рекомендация на основе ваших показателей
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-slate-700 leading-relaxed">{contextualRecommendation}</p>
+          </CardContent>
+        </Card>
+      )}
       
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
-          <MetricCard title="Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} />
-          <MetricCard title="Энергия" value={latestCheckIn?.data.energyLevel ?? null} />
-          <MetricCard title="Настроение" value={latestCheckIn?.data.mood ?? null} />
-          <MetricCard title="Стресс" value={latestCheckIn?.data.stressLevel ?? null} isInverted={true} />
-          <MetricCard title="Мотивация" value={latestCheckIn?.data.motivation ?? null} />
-          <MetricCard title="Концентрация" value={latestCheckIn?.data.focus ?? null} />
-          <MetricCard title="Боль в мышцах" value={latestCheckIn?.data.muscleSoreness ?? null} isInverted={true} />
-          <MetricCard title="TSS" value={latestCheckIn?.data.tss ?? null} isInverted={true} />
+      {/* Метрики чекина */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <MetricCard title="Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} fieldName="sleepQuality" />
+          <MetricCard title="Усталость" value={latestCheckIn?.data.fatigue ?? null} fieldName="fatigue" />
+          <MetricCard title="Боль в мышцах" value={latestCheckIn?.data.muscleSoreness ?? null} fieldName="muscleSoreness" />
+          <MetricCard title="Стресс" value={latestCheckIn?.data.stress ?? null} fieldName="stress" />
+          <MetricCard title="Настроение" value={latestCheckIn?.data.mood ?? null} fieldName="mood" />
       </div>
+
+      {/* Дополнительные метрики (если есть) */}
+      {(latestCheckIn?.data.motivation !== undefined || latestCheckIn?.data.focus !== undefined) && (
+        <div className="grid grid-cols-2 gap-4 max-w-md">
+          {latestCheckIn.data.motivation !== undefined && (
+            <MetricCard title="Мотивация" value={latestCheckIn.data.motivation} fieldName="motivation" />
+          )}
+          {latestCheckIn.data.focus !== undefined && (
+            <MetricCard title="Концентрация" value={latestCheckIn.data.focus} fieldName="focus" />
+          )}
+        </div>
+      )}
+
+      {/* Training Load за сегодня */}
+      {latestCheckIn && latestCheckIn.data.hadTraining && dailyLoad !== null && dailyLoad > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Тренировка сегодня</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-slate-600">Длительность: <span className="font-semibold">{latestCheckIn.data.trainingDuration} минут</span></p>
+                <p className="text-sm text-slate-600">RPE: <span className="font-semibold">{latestCheckIn.data.rpe} / 10</span></p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-slate-500 mb-1">Training Load</p>
+                <p className="text-4xl font-bold text-slate-800">{dailyLoad.toFixed(0)}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       
+      {/* Факторы */}
        <Card>
           <CardHeader>
             <CardTitle>Влияющие факторы сегодня</CardTitle>
@@ -201,8 +271,8 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           <CardContent>
             {latestCheckIn && latestCheckIn.data.factors.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                    {latestCheckIn.data.factors.map(factor => (
-                        <Badge key={factor} variant="secondary">{factor}</Badge>
+                    {latestCheckIn.data.factors.map((factor, idx) => (
+                        <Badge key={idx} variant="secondary">{factor}</Badge>
                     ))}
                 </div>
             ) : (
@@ -211,6 +281,25 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           </CardContent>
       </Card>
 
+      {/* Информационная карточка о методологии */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardHeader>
+          <CardTitle className="text-blue-900">О методологиях</CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm text-blue-800 space-y-2">
+          <p>
+            <strong>Индекс Хупера:</strong> Валидированная система мониторинга из 5 метрик (сон, усталость, боль, стресс, настроение). 
+            Разработана для раннего выявления перетренированности.
+          </p>
+          <p>
+            <strong>sRPE (session RPE):</strong> Метод оценки тренировочной нагрузки как произведение длительности и воспринимаемой интенсивности (шкала Борга 0-10).
+          </p>
+          <p>
+            <strong>Модель Банистера:</strong> Математическая модель "Фитнес-Усталость", отслеживающая долгосрочную адаптацию (CTL) и краткосрочную усталость (ATL). 
+            TSB = CTL - ATL показывает вашу готовность к тренировкам.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -39,6 +39,7 @@ const App: React.FC = () => {
         return <CheckInFlow 
           onCheckInComplete={handleAddCheckIn} 
           factors={factors}
+          previousRecord={checkInHistory[0]}
         />;
       case View.Insights:
         return <Insights checkInHistory={checkInHistory} factors={factors} />;
