@@ -17,11 +17,14 @@ const calculateFactorInfluence = (
   record_t_plus_1: CheckInRecord,
   allFactors: Factor[]
 ): { delta_R: number; influences: FactorInfluence[] } => {
-  const R_t = record_t.recoveryScore;
-  const R_t_plus_1 = record_t_plus_1.recoveryScore;
-  const delta_R = R_t_plus_1 - R_t;
+  // Используем hooperIndex: чем МЕНЬШЕ - тем ЛУЧШЕ (инвертируем для delta)
+  const H_t = record_t.hooperIndex;
+  const H_t_plus_1 = record_t_plus_1.hooperIndex;
+  // Если Хупер снизился - состояние улучшилось (delta_R положительный)
+  const delta_R = H_t - H_t_plus_1;
 
-  const Rn = (R_t - 1) / 6;
+  // Нормализуем Хупер (5-35 -> 0-1, где 0 = лучшее)
+  const Rn = (H_t - 5) / 30;
   const beta = 2.0;
   const nonlinearFactor = 1 - Math.exp(-beta * (1 - Rn));
 
@@ -31,7 +34,9 @@ const calculateFactorInfluence = (
   const activeFactorsWithInfluence = activeFactorNames.map(name => {
     const factor = factorsMap.get(name);
     if (!factor) return { name, influence: 0 };
-    const influence = factor.weight * 1 * nonlinearFactor;
+    // Отрицательный weight = ухудшает состояние (повышает Хупер)
+    // Положительный weight = улучшает состояние (снижает Хупер)
+    const influence = -factor.weight * 1 * nonlinearFactor; // Инвертируем для совместимости с delta_R
     return { name, influence };
   }).filter(f => f.influence !== 0);
 
@@ -117,45 +122,48 @@ export const FactorImpactAnalysis: React.FC<FactorImpactAnalysisProps> = ({ chec
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {influences.length > 0 ? (
             <>
-              <div className="flex items-center text-xs text-slate-400 mb-2">
-                <div className="w-1/3"></div>
-                <div className="w-2/3 flex items-center">
-                  <div className="flex-1 text-center">← Ухудшает</div>
-                  <div className="flex-1 text-center">Улучшает →</div>
-                  <div className="w-16 ml-2 text-right">Вклад</div>
-                </div>
-              </div>
-              {influences.map(({ factorName, influenceValue }) => (
-                <div key={factorName} className="flex items-center text-sm">
-                  <div className="w-1/3 truncate pr-2 text-slate-600 font-medium">{factorName}</div>
-                  <div className="w-2/3 flex items-center">
-                    <div className="flex-1 h-6 bg-red-100 rounded-l-md flex justify-end">
-                      {influenceValue < 0 && (
-                        <div
-                          className="bg-red-400 h-6 rounded-l-md"
-                          style={{ width: `${(Math.abs(influenceValue) / maxAbsInfluence) * 100}%` }}
-                        ></div>
-                      )}
+              {influences.sort((a, b) => b.influenceValue - a.influenceValue).map(({ factorName, influenceValue }) => {
+                const isPositive = influenceValue > 0;
+                const percentage = (Math.abs(influenceValue) / maxAbsInfluence) * 100;
+                
+                return (
+                  <div key={factorName} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-medium text-slate-700">{factorName}</span>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs font-semibold px-2 py-0.5 rounded ${
+                          isPositive 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {isPositive ? '✓ Улучшает' : '✗ Ухудшает'}
+                        </span>
+                        <span className={`text-base font-bold ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                          {influenceValue > 0 ? '+' : ''}{influenceValue.toFixed(2)}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex-1 h-6 bg-accent rounded-r-md">
-                      {influenceValue > 0 && (
-                        <div
-                          className="bg-primary/60 h-6 rounded-r-md"
-                          style={{ width: `${(influenceValue / maxAbsInfluence) * 100}%` }}
-                        ></div>
-                      )}
+                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          isPositive ? 'bg-green-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${percentage}%` }}
+                      ></div>
                     </div>
-                    <span className={`w-16 text-right font-bold ml-2 ${influenceValue > 0 ? 'text-primary' : 'text-red-600'}`}>
-                      {influenceValue > 0 ? '+' : ''}{influenceValue.toFixed(2)}
-                    </span>
                   </div>
-                </div>
-              ))}
-              <div className="text-xs text-slate-500 mt-3 p-2 bg-slate-50 rounded">
-                💡 Длина полосы показывает силу влияния фактора относительно других факторов
+                );
+              })}
+              <div className="text-xs text-slate-500 mt-4 p-3 bg-blue-50 rounded border border-blue-200">
+                <span className="font-semibold text-blue-900">💡 Как читать:</span>
+                <ul className="mt-1 ml-4 space-y-0.5">
+                  <li>• Зелёные факторы улучшают ваше состояние (снижают Индекс Хупера)</li>
+                  <li>• Красные факторы ухудшают состояние (повышают Индекс Хупера)</li>
+                  <li>• Длина полосы показывает силу влияния относительно других</li>
+                </ul>
               </div>
             </>
           ) : (

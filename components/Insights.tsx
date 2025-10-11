@@ -42,13 +42,28 @@ const PMCChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
     return <p className="text-slate-500">Нужно больше данных для построения графика. Сделайте еще несколько чекинов.</p>;
   }
 
+  // Проверяем, есть ли реальные данные о тренировках
+  const hasTrainingData = data.some(record => record.ctl > 0 || record.atl > 0);
+  if (!hasTrainingData) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-slate-500 mb-2">Данных недостаточно для построения PMC</p>
+        <p className="text-xs text-slate-400">
+          PMC отслеживает тренировочную нагрузку на основе sRPE (длительность × RPE).
+          <br />
+          Заполните чекины с данными о тренировках, чтобы увидеть график.
+        </p>
+      </div>
+    );
+  }
+
   const chartData = data.slice().reverse().map(record => {
     const date = new Date(record.id);
     return {
       date: `${date.getDate()}.${date.getMonth() + 1}`,
-      ctl: parseFloat(record.ctl.toFixed(1)),
-      atl: parseFloat(record.atl.toFixed(1)),
-      tsb: parseFloat(record.tsb.toFixed(1)),
+      ctl: parseFloat((record.ctl ?? 0).toFixed(1)),
+      atl: parseFloat((record.atl ?? 0).toFixed(1)),
+      tsb: parseFloat((record.tsb ?? 0).toFixed(1)),
     };
   });
 
@@ -324,16 +339,18 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                                   <p className="text-xs text-slate-500">Индекс Хупера:</p>
                                   <p className="text-2xl font-bold text-slate-800">{record.hooperIndex}</p>
                                 </div>
-                                {record.dailyLoad > 0 && (
+                                {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 && (
                                   <div>
                                     <p className="text-xs text-slate-500">Training Load:</p>
                                     <p className="text-2xl font-bold text-slate-800">{record.dailyLoad.toFixed(0)}</p>
                                   </div>
                                 )}
-                                <div>
-                                  <p className="text-xs text-slate-500">TSB:</p>
-                                  <p className="text-xl font-bold text-slate-800">{record.tsb.toFixed(1)}</p>
-                                </div>
+                                {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) && (
+                                  <div>
+                                    <p className="text-xs text-slate-500">TSB:</p>
+                                    <p className="text-xl font-bold text-slate-800">{record.tsb.toFixed(1)}</p>
+                                  </div>
+                                )}
                               </div>
                           </div>
                       </div>
@@ -366,7 +383,7 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                       )}
 
                       {/* Тренировка */}
-                      {record.data.hadTraining && record.data.trainingDuration && record.data.rpe !== undefined && (
+                      {record.data.hadTraining && record.data.trainingDuration && record.data.rpe !== undefined && record.dailyLoad && (
                         <div className="mb-3 p-2 bg-white rounded border border-slate-200">
                           <p className="text-xs font-semibold text-slate-600 mb-1">Тренировка:</p>
                           <p className="text-sm text-slate-700">

@@ -166,39 +166,50 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
             <CardDescription>Ваша готовность к тренировкам на основе модели Банистера</CardDescription>
           </CardHeader>
           <CardContent>
-            {latestCheckIn && tsbInterp ? (
-              <div className="flex items-start gap-6">
-                <div className="flex-1 text-center">
-                  <p className={`text-5xl font-bold ${
-                    tsbInterp.level === 'optimal' ? 'text-green-600' :
-                    tsbInterp.level === 'productive' ? 'text-yellow-600' :
-                    tsbInterp.level === 'fresh' ? 'text-blue-600' :
-                    tsbInterp.level === 'high' ? 'text-orange-600' :
-                    'text-red-600'
-                  }`}>
-                    {tsb.toFixed(1)}
+            {latestCheckIn ? (
+              (ctl === 0 || ctl === null) && (atl === 0 || atl === null) ? (
+                <div className="text-center py-8">
+                  <p className="text-slate-500 mb-2">Данных недостаточно</p>
+                  <p className="text-xs text-slate-400">
+                    TSB рассчитывается на основе тренировочных нагрузок (длительность × RPE).
+                    <br />
+                    Заполните хотя бы один чекин с данными о тренировке.
                   </p>
-                  <p className="font-semibold text-slate-600 mt-1">{tsbInterp.description}</p>
-                  <p className="text-xs text-slate-400 mt-2">Форма / Готовность</p>
                 </div>
-                <div className="w-px bg-slate-200 self-stretch"></div>
-                <div className="flex-1 flex flex-col justify-center space-y-2 text-sm">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Фитнес (CTL):</span>
-                    <span className="font-bold text-slate-800">{ctl.toFixed(1)}</span>
+              ) : tsbInterp && ctl !== null && atl !== null && tsb !== null ? (
+                <div className="flex items-start gap-6">
+                  <div className="flex-1 text-center">
+                    <p className={`text-5xl font-bold ${
+                      tsbInterp.level === 'optimal' ? 'text-green-600' :
+                      tsbInterp.level === 'productive' ? 'text-yellow-600' :
+                      tsbInterp.level === 'fresh' ? 'text-blue-600' :
+                      tsbInterp.level === 'high' ? 'text-orange-600' :
+                      'text-red-600'
+                    }`}>
+                      {tsb.toFixed(1)}
+                    </p>
+                    <p className="font-semibold text-slate-600 mt-1">{tsbInterp.description}</p>
+                    <p className="text-xs text-slate-400 mt-2">Форма / Готовность</p>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Усталость (ATL):</span>
-                    <span className="font-bold text-slate-800">{atl.toFixed(1)}</span>
-                  </div>
-                  {dailyLoad !== null && dailyLoad > 0 && (
-                    <div className="flex justify-between items-center pt-2 border-t">
-                      <span className="text-slate-600">Сегодня (TL):</span>
-                      <span className="font-bold text-slate-800">{dailyLoad.toFixed(0)}</span>
+                  <div className="w-px bg-slate-200 self-stretch"></div>
+                  <div className="flex-1 flex flex-col justify-center space-y-2 text-sm">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600">Фитнес (CTL):</span>
+                      <span className="font-bold text-slate-800">{ctl.toFixed(1)}</span>
                     </div>
-                  )}
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-600">Усталость (ATL):</span>
+                      <span className="font-bold text-slate-800">{atl.toFixed(1)}</span>
+                    </div>
+                    {dailyLoad !== null && dailyLoad > 0 && (
+                      <div className="flex justify-between items-center pt-2 border-t">
+                        <span className="text-slate-600">Сегодня (TL):</span>
+                        <span className="font-bold text-slate-800">{dailyLoad.toFixed(0)}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : null
             ) : (
               <p className="text-slate-500 text-center py-8">TSB будет доступен после вашего первого чекина.</p>
             )}

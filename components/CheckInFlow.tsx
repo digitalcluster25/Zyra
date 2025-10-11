@@ -340,7 +340,7 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors, p
             <h2 className="text-2xl font-semibold text-slate-700 mb-2">Внешние факторы</h2>
             <p className="text-slate-500 mb-6">Выберите факторы, которые могли повлиять на ваше состояние.</p>
             <div className="flex flex-wrap gap-3">
-              {factors.filter(f => f.active).map(factor => (
+              {factors.filter(f => f.active !== false).map(factor => (
                 <Button
                   key={factor.id}
                   type="button"
