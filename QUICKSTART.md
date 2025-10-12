@@ -1,299 +1,191 @@
-# Быстрый старт Zyra
+# 🚀 Быстрый Старт Zyra
 
-## 🚀 Локальная разработка
+## Текущий Статус
 
-### Prerequis Prerequis
-- Node.js 18+
-- PostgreSQL (или используйте Railway)
-- npm или yarn
+✅ Frontend (React + TypeScript + Tailwind)  
+✅ Backend API (Node.js + Express + PostgreSQL)  
+✅ Админка (/adminko)  
+✅ Proxy настроен (frontend → backend + adminko)  
+✅ Импульсно-откликовая модель (Zyra 3.0)  
+⚠️ **Требуется:** Запуск PostgreSQL
 
 ---
 
-## 1. Backend
+## 📋 Шаги для Запуска Локально
 
+### 1. Запустите Docker Desktop
+Убедитесь, что Docker Desktop запущен на вашем Mac.
+
+### 2. Запустите PostgreSQL
+```bash
+docker run --name zyra-postgres \
+  -e POSTGRES_PASSWORD=zyra2025 \
+  -e POSTGRES_DB=zyra \
+  -p 5432:5432 \
+  -d postgres:15-alpine
+```
+
+### 3. Запустите Миграции и Seed
 ```bash
 cd backend
-
-# Установить зависимости
-npm install
-
-# Создать .env
-cp .env.example .env
-
-# Заполнить .env:
-# DATABASE_URL=postgresql://user:pass@localhost:5432/zyra
-# JWT_SECRET=your-32-char-secret-key
-# JWT_EXPIRES_IN=15m
-# JWT_REFRESH_EXPIRES_IN=7d
-# PORT=3001
-# ALLOWED_ORIGINS=http://localhost:5173
-
-# Применить миграции
 npm run migrate
-
-# Создать админа + факторы
 npm run seed
+```
 
-# Запустить сервер
+**Результат:**
+- ✅ Создана структура БД (users, factors, checkins, goals)
+- ✅ Создан admin пользователь: `digitalcluster25@gmail.com` / `149521MkSF#u*V`
+- ✅ Загружены факторы (сон, стресс, медитация, тренировки и др.)
+
+### 4. Запустите Backend API (порт 3001)
+```bash
+cd backend
 npm run dev
 ```
 
-API запущено на `http://localhost:3001`
+### 5. Запустите Frontend (порт 3000)
+В новом терминале:
+```bash
+npm run dev
+```
 
-Проверка:
+### 6. Запустите Админку (порт 5173)
+В новом терминале:
+```bash
+cd adminko
+npm run dev
+```
+
+---
+
+## 🌐 Доступ
+
+| Сервис | URL | Credentials |
+|--------|-----|-------------|
+| **Frontend** | http://localhost:3000 | - |
+| **Админка** | http://localhost:3000/adminko | digitalcluster25@gmail.com / 149521MkSF#u*V |
+| **Backend API** | http://localhost:3001 | - |
+| **Админка (прямой)** | http://localhost:5173 | digitalcluster25@gmail.com / 149521MkSF#u*V |
+
+---
+
+## 🔧 Альтернатива: Деплой на Railway
+
+Если не хотите запускать локально, задеплойте на Railway:
+
+### 1. Привяжите Backend к Railway
+```bash
+cd backend
+railway up
+```
+
+### 2. Настройте переменные окружения
+Railway автоматически подключит PostgreSQL.
+
+Добавьте вручную:
+- `JWT_SECRET=zyra-super-secret-jwt-key-2025-production`
+- `JWT_EXPIRES_IN=15m`
+- `JWT_REFRESH_EXPIRES_IN=7d`
+- `ADMIN_EMAIL=digitalcluster25@gmail.com`
+- `ADMIN_PASSWORD=149521MkSF#u*V`
+- `ALLOWED_ORIGINS=https://zyra.up.railway.app`
+
+### 3. Запустите Миграции на Railway
+```bash
+railway run npm run migrate
+railway run npm run seed
+```
+
+### 4. Задеплойте Frontend
+```bash
+railway up
+```
+
+---
+
+## ✅ Проверка Работоспособности
+
+### Backend API
 ```bash
 curl http://localhost:3001/health
 ```
 
----
-
-## 2. Frontend
-
-```bash
-# В корне проекта
-
-# Установить зависимости
-npm install
-
-# Создать .env
-echo "VITE_API_URL=http://localhost:3001" > .env
-
-# Запустить dev сервер
-npm run dev
+Ожидаемый ответ:
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-10-12T20:00:00.000Z",
+  "database": "connected"
+}
 ```
 
-Frontend запущен на `http://localhost:5173`
+### Админка - Вход
+1. Перейдите на http://localhost:3000/adminko
+2. Введите `digitalcluster25@gmail.com` / `149521MkSF#u*V`
+3. Вы должны попасть в админ-панель
 
-### Первый запуск
-1. Откройте `http://localhost:5173`
-2. Нажмите "Зарегистрироваться"
-3. Введите:
-   - Никнейм: `Тестовый Спортсмен`
-   - Email: `athlete@example.com`
-   - Пароль: `test123`
-4. Войдите в систему
+### PostgreSQL
+```bash
+docker exec -it zyra-postgres psql -U postgres -d zyra -c "\dt"
+```
 
-Если у вас есть старые данные в localStorage — появится баннер с предложением импортировать.
+Должна отобразиться список таблиц: `users`, `factors`, `checkins`, `checkin_factors`, `goals`.
 
 ---
 
-## 3. Admin Panel
+## 🛠️ Troubleshooting
 
+### Docker не запускается
 ```bash
-cd adminko
+# Проверьте статус
+docker ps
 
-# Установить зависимости
-npm install
-
-# Создать .env
-echo "VITE_API_URL=http://localhost:3001" > .env
-
-# Запустить dev сервер
-npm run dev
+# Если не запущен, запустите:
+open -a Docker
 ```
 
-Админка запущена на `http://localhost:5173`
+### Backend не подключается к PostgreSQL
+```bash
+# Проверьте, что контейнер запущен
+docker ps | grep zyra-postgres
 
-### Вход в админку
-- Email: `digitalcluster25@gmail.com`
-- Пароль: `149521MkSF#u*V`
+# Перезапустите контейнер
+docker restart zyra-postgres
 
-(созданы через `npm run seed` в backend)
+# Проверьте логи
+docker logs zyra-postgres
+```
+
+### Adminko не открывается по /adminko
+Убедитесь, что:
+1. Frontend запущен на порту 3000
+2. Adminko запущена на порту 5173
+3. В `vite.config.ts` настроен proxy для `/adminko`
+
+Если не помогает, откройте adminko напрямую: http://localhost:5173
+
+### Backend ошибка "Invalid environment variables"
+Проверьте `backend/.env`:
+```bash
+cat backend/.env
+```
+
+Убедитесь, что все переменные присутствуют (особенно `ALLOWED_ORIGINS`).
 
 ---
 
-## 📦 Деплой на Railway
+##  Что Дальше?
 
-### Backend
-
-1. В Railway Dashboard:
-   - Создайте сервис "Zyra Backend"
-   - Подключите GitHub репозиторий
-   - Установите Root Directory: `backend`
-
-2. Добавьте переменные окружения:
-   ```env
-   DATABASE_URL=<автоматически из PostgreSQL>
-   JWT_SECRET=<сгенерируйте 32+ символов>
-   JWT_EXPIRES_IN=15m
-   JWT_REFRESH_EXPIRES_IN=7d
-   NODE_ENV=production
-   ALLOWED_ORIGINS=https://zyra.up.railway.app
-   ```
-
-3. Deploy!
-
-Railway автоматически:
-- Соберёт TypeScript (`npm run build`)
-- Применит миграции (`npm run migrate`)
-- Создаст seed данные (`npm run seed`)
-- Запустит сервер (`npm start`)
-
-### Frontend
-
-1. В Railway Dashboard:
-   - Создайте сервис "Zyra Frontend"
-   - Подключите GitHub репозиторий
-   - Установите Root Directory: `/` (корень)
-
-2. Добавьте переменные окружения:
-   ```env
-   VITE_API_URL=https://your-backend.railway.app
-   ```
-
-3. Deploy!
-
-### Admin Panel
-
-1. В Railway Dashboard:
-   - Создайте сервис "Zyra Admin"
-   - Подключите GitHub репозиторий
-   - Установите Root Directory: `adminko`
-
-2. Добавьте переменные окружения:
-   ```env
-   VITE_API_URL=https://your-backend.railway.app
-   ```
-
-3. Deploy!
+1. ✅ **Локальная разработка:** Запустите Docker + PostgreSQL + Backend + Frontend + Adminko
+2. ⏳ **Деплой на Railway:** Задеплойте backend и frontend
+3. ⏳ **Настройка домена:** Привяжите custom domain к Railway
+4. ⏳ **Миграция Frontend на Backend:** Включите авторизацию в `App.tsx`
 
 ---
 
-## 🧪 Тестирование API
+## 📞 Поддержка
 
-### Регистрация
-```bash
-curl -X POST http://localhost:3001/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "athlete@example.com",
-    "password": "test123",
-    "nickname": "Test Athlete"
-  }'
-```
+Если возникли проблемы, свяжитесь с разработчиком или создайте issue в репозитории GitHub.
 
-### Логин
-```bash
-curl -X POST http://localhost:3001/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "athlete@example.com",
-    "password": "test123"
-  }'
-```
-
-### Создать чекин
-```bash
-TOKEN="your-access-token"
-
-curl -X POST http://localhost:3001/api/checkins \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{
-    "checkInData": {
-      "sleep": 3,
-      "stress": 2,
-      "fatigue": 3,
-      "soreness": 2,
-      "hadTraining": true,
-      "trainingDuration": 60,
-      "rpe": 7,
-      "factors": ["Недосып", "Стресс на работе"]
-    }
-  }'
-```
-
----
-
-## 📚 Документация
-
-- **Backend API**: См. `backend/README.md`
-- **Admin Panel**: См. `adminko/README.md`
-- **Deployment**: См. `backend/DEPLOY.md`
-- **Подробный план**: См. `docs/plan2.md`
-
----
-
-## 🔑 Дефолтные креды
-
-### Admin (созданы через seed)
-- Email: `digitalcluster25@gmail.com`
-- Пароль: `149521MkSF#u*V`
-
-### Тестовый пользователь (создайте сами)
-- Email: `athlete@example.com`
-- Пароль: `test123`
-- Никнейм: `Test Athlete`
-
----
-
-## 🛠️ Полезные команды
-
-### Backend
-```bash
-npm run dev         # Dev сервер с hot reload
-npm run build       # Компиляция TypeScript
-npm start           # Запуск production сервера
-npm run migrate     # Применить миграции
-npm run seed        # Создать seed данные
-```
-
-### Frontend / Adminko
-```bash
-npm run dev         # Dev сервер
-npm run build       # Production build
-npm run preview     # Preview production build
-```
-
-### Railway CLI
-```bash
-railway link        # Связать с проектом
-railway up          # Deploy
-railway logs        # Посмотреть логи
-railway run npm run migrate  # Запустить миграции
-railway variables   # Посмотреть env переменные
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Backend не подключается к БД
-- Проверьте `DATABASE_URL` в `.env`
-- Убедитесь, что PostgreSQL запущен
-- Для Railway: проверьте, что DB сервис активен
-
-### Frontend показывает ошибки CORS
-- Убедитесь, что `ALLOWED_ORIGINS` в backend включает ваш frontend URL
-- Для локальной разработки: `http://localhost:5173`
-
-### Миграции не применяются
-```bash
-cd backend
-npm run migrate
-```
-
-### Админ не может войти
-```bash
-cd backend
-npm run seed
-```
-
-Это пересоздаст админа с дефолтными кредами.
-
----
-
-## 📊 Методология
-
-- **Hooper Index**: Сумма сна, стресса, усталости, болезненности (5-35, ниже = лучше)
-- **sRPE**: Training Load = Duration × RPE (session Rating of Perceived Exertion)
-- **Banister Model**:
-  - CTL (Chronic Training Load): долгосрочная нагрузка, 42 дня
-  - ATL (Acute Training Load): краткосрочная усталость, 7 дней
-  - TSB (Training Stress Balance): CTL - ATL (готовность к тренировкам)
-- **Factor Impact**: Экспоненциальная модель влияния внешних факторов
-
----
-
-Готово! Теперь вы можете начать разработку или деплой 🚀
-
+**Email:** digitalcluster25@gmail.com  
+**GitHub:** https://github.com/digitalcluster25/Zyra
