@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../src/hooks/useAuth";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";

@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useAuth } from './hooks/useAuth';
-import { useCheckIns } from './hooks/useCheckIns';
-import { useFactors } from './hooks/useFactors';
+import { useAuth } from './src/hooks/useAuth';
+import { useCheckIns } from './src/hooks/useCheckIns';
+import { useFactors } from './src/hooks/useFactors';
 import Dashboard from './components/Dashboard';
 import CheckInFlow from './components/CheckInFlow';
 import Insights from './components/Insights';
