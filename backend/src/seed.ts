@@ -120,16 +120,23 @@ async function seedDatabase() {
     ];
 
     for (const factor of factors) {
+      // Legacy поля weight и tau (required в таблице)
+      const legacyWeight = factor.k_neg > factor.k_pos ? -factor.k_neg : factor.k_pos;
+      const legacyTau = Math.round((factor.tau_pos + factor.tau_neg) / 2 / 24); // Среднее в днях
+
       await pool.query(
         `INSERT INTO factors (
-          key, name, factor_type, is_active,
+          key, name, weight, tau, factor_type, is_active,
           requires_quantity, requires_duration, requires_intensity,
           default_k_positive, default_tau_positive,
           default_k_negative, default_tau_negative
         )
-        VALUES ($1, $2, $3, true, $4, $5, $6, $7, $8, $9, $10)
+        VALUES ($1, $2, $3, $4, $5, true, $6, $7, $8, $9, $10, $11, $12)
         ON CONFLICT (key) 
         DO UPDATE SET
+          name = EXCLUDED.name,
+          weight = EXCLUDED.weight,
+          tau = EXCLUDED.tau,
           factor_type = EXCLUDED.factor_type,
           requires_quantity = EXCLUDED.requires_quantity,
           requires_duration = EXCLUDED.requires_duration,
@@ -139,7 +146,7 @@ async function seedDatabase() {
           default_k_negative = EXCLUDED.default_k_negative,
           default_tau_negative = EXCLUDED.default_tau_negative`,
         [
-          factor.key, factor.name, factor.factor_type,
+          factor.key, factor.name, legacyWeight, legacyTau, factor.factor_type,
           factor.requires_quantity, factor.requires_duration, factor.requires_intensity,
           factor.k_pos, factor.tau_pos, factor.k_neg, factor.tau_neg
         ]

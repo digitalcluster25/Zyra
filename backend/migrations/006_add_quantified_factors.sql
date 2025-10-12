@@ -31,7 +31,7 @@ COMMENT ON COLUMN factors.default_tau_negative IS 'Временная конст
 
 -- 3. Создаем таблицу для персонализированных параметров модели
 CREATE TABLE IF NOT EXISTS factor_impulse_params (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   factor_id UUID NOT NULL REFERENCES factors(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   
@@ -65,7 +65,7 @@ CREATE INDEX IF NOT EXISTS idx_factor_impulse_params_personalized ON factor_impu
 
 -- 4. Создаем таблицу для хранения импульсов (оптимизация расчетов)
 CREATE TABLE IF NOT EXISTS impulse_cache (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   checkin_id UUID NOT NULL REFERENCES checkins(id) ON DELETE CASCADE,
   factor_id UUID REFERENCES factors(id) ON DELETE SET NULL,
@@ -98,12 +98,19 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Применяем триггер к factor_impulse_params
-DROP TRIGGER IF EXISTS update_factor_impulse_params_updated_at ON factor_impulse_params;
-CREATE TRIGGER update_factor_impulse_params_updated_at
-    BEFORE UPDATE ON factor_impulse_params
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+-- Применяем триггер к factor_impulse_params (если еще не существует)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger 
+        WHERE tgname = 'update_factor_impulse_params_updated_at'
+    ) THEN
+        CREATE TRIGGER update_factor_impulse_params_updated_at
+            BEFORE UPDATE ON factor_impulse_params
+            FOR EACH ROW
+            EXECUTE FUNCTION update_updated_at_column();
+    END IF;
+END$$;
 
 -- 6. Представление для удобного анализа
 CREATE OR REPLACE VIEW v_user_wellness_components AS
