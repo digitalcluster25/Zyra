@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckInRecord, Factor } from '../types';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLocalStorage } from '../src/hooks/useLocalStorage';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
