@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { CheckInRecord, Factor } from '../types';
 import { FactorImpactAnalysis } from './FactorImpactAnalysis';
+import WellnessDecomposition from './WellnessDecomposition';
+import TrainingRecommendation from './TrainingRecommendation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Badge } from './ui/badge';
