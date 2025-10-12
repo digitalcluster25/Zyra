@@ -18,34 +18,134 @@ async function seedDatabase() {
     );
     console.log('  ✅ Admin user created\n');
 
-    // 2. Создать факторы
-    console.log('  Creating factors...');
+    // 2. Создать факторы с параметрами импульсно-откликовой модели
+    console.log('  Creating factors with impulse-response parameters...');
     const factors = [
-      { key: 'lack_sleep', name: 'Недосып', weight: -0.30, tau: 24 },
-      { key: 'alcohol', name: 'Алкоголь (последние 24-48h)', weight: -0.20, tau: 12 },
-      { key: 'caffeine_late', name: 'Кофеин поздний', weight: -0.08, tau: 8 },
-      { key: 'travel_jetlag', name: 'Джетлаг / перелёт', weight: -0.25, tau: 36 },
-      { key: 'illness', name: 'Болезнь / симптомы', weight: -0.40, tau: 72 },
-      { key: 'high_work_stress', name: 'Рабочий/личный стресс', weight: -0.18, tau: 24 },
-      { key: 'heavy_training', name: 'Недавняя очень тяжёлая тренировка', weight: -0.25, tau: 36 },
-      { key: 'light_activity', name: 'Лёгкая прогулка / recovery', weight: 0.12, tau: 8 },
-      { key: 'meditation', name: 'Медитация / дыхание', weight: 0.10, tau: 6 },
-      { key: 'outdoor_time', name: 'Время на природе', weight: 0.12, tau: 12 },
-      { key: 'poor_nutrition', name: 'Плохое питание', weight: -0.12, tau: 24 },
-      { key: 'hydration_low', name: 'Обезвоживание', weight: -0.10, tau: 12 },
-      { key: 'menstrual_phase', name: 'Менструальный фактор', weight: -0.18, tau: 48 },
-      { key: 'sleep_environment', name: 'Плохие условия сна (шум, свет)', weight: -0.15, tau: 12 },
+      // Негативные факторы
+      { 
+        key: 'lack_sleep', 
+        name: 'Недосып', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: false, requires_duration: true, requires_intensity: false,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 3.0, tau_neg: 12.0,
+      },
+      { 
+        key: 'alcohol', 
+        name: 'Алкоголь', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: true, requires_duration: false, requires_intensity: false,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 2.5, tau_neg: 18.0,
+      },
+      { 
+        key: 'caffeine_late', 
+        name: 'Кофеин поздний', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: true, requires_duration: false, requires_intensity: false,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 1.2, tau_neg: 8.0,
+      },
+      { 
+        key: 'poor_nutrition', 
+        name: 'Плохое питание', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: false, requires_duration: false, requires_intensity: false,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 1.8, tau_neg: 14.0,
+      },
+      { 
+        key: 'high_work_stress', 
+        name: 'Высокий стресс', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: false, requires_duration: false, requires_intensity: true,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 2.8, tau_neg: 10.0,
+      },
+      { 
+        key: 'illness', 
+        name: 'Болезнь/простуда', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: false, requires_duration: false, requires_intensity: true,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 5.0, tau_neg: 48.0,
+      },
+      { 
+        key: 'hydration_low', 
+        name: 'Обезвоживание', 
+        factor_type: 'lifestyle_negative',
+        requires_quantity: false, requires_duration: false, requires_intensity: false,
+        k_pos: 0.0, tau_pos: 42.0, k_neg: 1.5, tau_neg: 8.0,
+      },
+      
+      // Позитивные факторы
+      { 
+        key: 'cold_exposure', 
+        name: 'Холодовое воздействие', 
+        factor_type: 'lifestyle_positive',
+        requires_quantity: false, requires_duration: true, requires_intensity: false,
+        k_pos: 2.0, tau_pos: 12.0, k_neg: 0.5, tau_neg: 4.0,
+      },
+      { 
+        key: 'meditation', 
+        name: 'Медитация/йога', 
+        factor_type: 'lifestyle_positive',
+        requires_quantity: false, requires_duration: true, requires_intensity: false,
+        k_pos: 1.8, tau_pos: 16.0, k_neg: 0.0, tau_neg: 7.0,
+      },
+      { 
+        key: 'massage', 
+        name: 'Массаж', 
+        factor_type: 'lifestyle_positive',
+        requires_quantity: false, requires_duration: true, requires_intensity: false,
+        k_pos: 2.5, tau_pos: 24.0, k_neg: 0.0, tau_neg: 7.0,
+      },
+      { 
+        key: 'good_social', 
+        name: 'Социальное взаимодействие', 
+        factor_type: 'lifestyle_positive',
+        requires_quantity: false, requires_duration: true, requires_intensity: false,
+        k_pos: 1.2, tau_pos: 14.0, k_neg: 0.0, tau_neg: 7.0,
+      },
+      
+      // Двойственные факторы
+      { 
+        key: 'outdoor_time', 
+        name: 'Время на природе', 
+        factor_type: 'dual_nature',
+        requires_quantity: false, requires_duration: true, requires_intensity: true,
+        k_pos: 1.5, tau_pos: 20.0, k_neg: 0.8, tau_neg: 6.0,
+      },
+      { 
+        key: 'travel_jetlag', 
+        name: 'Поездка/джетлаг', 
+        factor_type: 'dual_nature',
+        requires_quantity: false, requires_duration: true, requires_intensity: false,
+        k_pos: 0.5, tau_pos: 14.0, k_neg: 2.2, tau_neg: 24.0,
+      },
     ];
 
     for (const factor of factors) {
       await pool.query(
-        `INSERT INTO factors (key, name, weight, tau, is_active)
-         VALUES ($1, $2, $3, $4, $5)
-         ON CONFLICT (key) DO NOTHING`,
-        [factor.key, factor.name, factor.weight, factor.tau, true]
+        `INSERT INTO factors (
+          key, name, factor_type, is_active,
+          requires_quantity, requires_duration, requires_intensity,
+          default_k_positive, default_tau_positive,
+          default_k_negative, default_tau_negative
+        )
+        VALUES ($1, $2, $3, true, $4, $5, $6, $7, $8, $9, $10)
+        ON CONFLICT (key) 
+        DO UPDATE SET
+          factor_type = EXCLUDED.factor_type,
+          requires_quantity = EXCLUDED.requires_quantity,
+          requires_duration = EXCLUDED.requires_duration,
+          requires_intensity = EXCLUDED.requires_intensity,
+          default_k_positive = EXCLUDED.default_k_positive,
+          default_tau_positive = EXCLUDED.default_tau_positive,
+          default_k_negative = EXCLUDED.default_k_negative,
+          default_tau_negative = EXCLUDED.default_tau_negative`,
+        [
+          factor.key, factor.name, factor.factor_type,
+          factor.requires_quantity, factor.requires_duration, factor.requires_intensity,
+          factor.k_pos, factor.tau_pos, factor.k_neg, factor.tau_neg
+        ]
       );
     }
-    console.log(`  ✅ ${factors.length} factors created\n`);
+    console.log(`  ✅ ${factors.length} factors created with impulse-response parameters\n`);
 
     console.log('✅ Database seeding completed successfully');
   } catch (error) {

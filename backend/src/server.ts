@@ -48,11 +48,13 @@ import authRoutes from './routes/auth';
 import checkinRoutes from './routes/checkins';
 import factorRoutes from './routes/factors';
 import adminRoutes from './routes/admin';
+import analyticsRoutes from './routes/analytics';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/checkins', checkinRoutes);
 app.use('/api/factors', factorRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // ==================== Error Handling ====================
 
