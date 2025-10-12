@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../src/services/api';
+import api from '../src/services/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Progress } from './ui/progress';
 
