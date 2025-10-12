@@ -22,7 +22,9 @@ export const Factors: React.FC = () => {
     try {
       setIsLoading(true);
       const response = await factorsAPI.getAll();
-      setFactors(response.data.data);
+      // API возвращает { success: true, data: { factors: [...] } }
+      const factorsData = response.data.data?.factors || response.data.data || response.data;
+      setFactors(Array.isArray(factorsData) ? factorsData : []);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Ошибка загрузки факторов');
     } finally {
