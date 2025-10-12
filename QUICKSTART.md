@@ -63,9 +63,8 @@ npm run dev
 | Сервис | URL | Credentials |
 |--------|-----|-------------|
 | **Frontend** | http://localhost:3000 | - |
-| **Админка** | http://localhost:3000/adminko | digitalcluster25@gmail.com / 149521MkSF#u*V |
 | **Backend API** | http://localhost:3001 | - |
-| **Админка (прямой)** | http://localhost:5173 | digitalcluster25@gmail.com / 149521MkSF#u*V |
+| **Админка** | http://localhost:5173 | digitalcluster25@gmail.com / 149521MkSF#u*V |
 
 ---
 
@@ -120,7 +119,7 @@ curl http://localhost:3001/health
 ```
 
 ### Админка - Вход
-1. Перейдите на http://localhost:3000/adminko
+1. Перейдите на http://localhost:5173
 2. Введите `digitalcluster25@gmail.com` / `149521MkSF#u*V`
 3. Вы должны попасть в админ-панель
 
@@ -156,13 +155,11 @@ docker restart zyra-postgres
 docker logs zyra-postgres
 ```
 
-### Adminko не открывается по /adminko
+### Adminko показывает ошибку
 Убедитесь, что:
-1. Frontend запущен на порту 3000
-2. Adminko запущена на порту 5173
-3. В `vite.config.ts` настроен proxy для `/adminko`
-
-Если не помогает, откройте adminko напрямую: http://localhost:5173
+1. Adminko запущена: `cd adminko && npm run dev`
+2. Порт 5173 свободен
+3. Открываете adminko напрямую: http://localhost:5173 (НЕ через /adminko)
 
 ### Backend ошибка "Invalid environment variables"
 Проверьте `backend/.env`:
