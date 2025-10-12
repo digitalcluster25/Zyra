@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckInData, CheckInRecord, Factor } from '../types';
+import { CheckInData, CheckInRecord, Factor, QuantifiedFactorValue } from '../types';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
@@ -7,6 +7,7 @@ import { Card, CardContent } from './ui/card';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { AthleteMonitoringService } from '../utils/athleteMonitoring';
+import QuantifiedFactorCard from './QuantifiedFactorCard';
 
 interface CheckInFlowProps {
   onCheckInComplete: (record: CheckInRecord) => void;
@@ -31,6 +32,8 @@ const initialCheckInData: CheckInData = {
   trainingLoad: 0,
   // Факторы
   factors: [],
+  // Количественные факторы (Zyra 3.0 - Фаза 5)
+  quantifiedFactors: {},
 };
 
 // ВАЖНО: Шкалы теперь инвертированы под Индекс Хупера
@@ -106,6 +109,22 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors, p
       ? currentValues.filter(v => v !== value)
       : [...currentValues, value];
     handleDataChange('factors', newValues);
+  };
+
+  // Обработчик для количественных факторов (Zyra 3.0 Фаза 5)
+  const handleQuantifiedFactorChange = (factorId: string, value: QuantifiedFactorValue | null) => {
+    setData(prev => {
+      const newQuantifiedFactors = { ...prev.quantifiedFactors };
+      if (value === null) {
+        delete newQuantifiedFactors[factorId];
+      } else {
+        newQuantifiedFactors[factorId] = value;
+      }
+      return {
+        ...prev,
+        quantifiedFactors: newQuantifiedFactors,
+      };
+    });
   };
 
   const handleSubmit = () => {
@@ -333,24 +352,30 @@ const CheckInFlow: React.FC<CheckInFlowProps> = ({ onCheckInComplete, factors, p
           </div>
         );
 
-      // Шаг 11: Факторы
+      // Шаг 11: Факторы (Количественный ввод - Zyra 3.0 Фаза 5)
       case 11:
         return (
           <div>
-            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Внешние факторы</h2>
-            <p className="text-slate-500 mb-6">Выберите факторы, которые могли повлиять на ваше состояние.</p>
-            <div className="flex flex-wrap gap-3">
+            <h2 className="text-2xl font-semibold text-slate-700 mb-2">Факторы образа жизни</h2>
+            <p className="text-slate-500 mb-6">
+              Выберите факторы и укажите детали для более точного анализа
+            </p>
+            <div className="space-y-3 max-w-2xl mx-auto">
               {factors.filter(f => f.active !== false).map(factor => (
-                <Button
+                <QuantifiedFactorCard
                   key={factor.id}
-                  type="button"
-                  onClick={() => toggleFactorSelection(factor.name)}
-                  variant={data.factors.includes(factor.name) ? "default" : "outline"}
-                  size="sm"
-                >
-                  {factor.name}
-                </Button>
+                  factor={factor}
+                  isSelected={!!data.quantifiedFactors?.[factor.id]}
+                  value={data.quantifiedFactors?.[factor.id]}
+                  onChange={(value) => handleQuantifiedFactorChange(factor.id, value)}
+                />
               ))}
+            </div>
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200 max-w-2xl mx-auto">
+              <p className="text-sm text-blue-900">
+                <span className="font-semibold">💡 Zyra 3.0:</span> Количественные данные позволяют 
+                импульсно-откликовой модели точнее рассчитать влияние факторов на ваше состояние.
+              </p>
             </div>
           </div>
         );

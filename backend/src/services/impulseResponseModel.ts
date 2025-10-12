@@ -171,15 +171,56 @@ export function convertLegacyCheckInToImpulses(
     });
   }
   
-  // 2. Факторы образа жизни
+  // 2. Количественные факторы (Zyra 3.0 Фаза 5)
+  const quantifiedFactors = checkIn.check_in_data?.quantifiedFactors || {};
+  const processedFactorIds = new Set<string>();
+  
+  for (const [factorId, quantData] of Object.entries(quantifiedFactors)) {
+    const factor = factors.find(f => f.id === factorId);
+    if (!factor) continue;
+    
+    processedFactorIds.add(factorId);
+    
+    // Рассчитываем magnitude на основе количественных данных
+    let magnitude = 1.0;
+    
+    if (quantData.duration && quantData.intensity) {
+      // sRPE-подобный подход: (duration в часах) × intensity
+      magnitude = (quantData.duration / 60) * quantData.intensity;
+    } else if (quantData.quantity) {
+      // Прямое количество (порции, чашки)
+      magnitude = quantData.quantity;
+    } else if (quantData.duration) {
+      // Только продолжительность (нормализация к 30 минутам)
+      magnitude = quantData.duration / 30;
+    } else if (quantData.intensity) {
+      // Только интенсивность (нормализация к средней = 5)
+      magnitude = quantData.intensity / 5;
+    }
+    
+    impulses.push({
+      timestamp: checkInDate,
+      magnitude,
+      factorId: factor.id,
+      factorName: factor.name,
+      params: {
+        k_positive: factor.default_k_positive || Math.max(0, factor.weight || 0),
+        tau_positive: factor.default_tau_positive || (factor.tau || 42) * 24,
+        k_negative: factor.default_k_negative || Math.max(0, -(factor.weight || 0)),
+        tau_negative: factor.default_tau_negative || ((factor.tau || 7) * 24) / 3,
+      },
+      metadata: quantData,
+    });
+  }
+  
+  // 3. Legacy факторы (бинарные) - пропускаем те, что уже обработаны как quantified
   const selectedFactorNames = checkIn.check_in_data?.factors || [];
   
   for (const factorName of selectedFactorNames) {
     const factor = factors.find(f => f.name === factorName);
-    if (!factor) continue;
+    if (!factor || processedFactorIds.has(factor.id)) continue;
     
     // Legacy data: используем бинарное присутствие как magnitude = 1.0
-    // В новой версии это будет количественная мера
     impulses.push({
       timestamp: checkInDate,
       magnitude: 1.0,

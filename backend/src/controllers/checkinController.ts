@@ -5,6 +5,12 @@ import { AppError } from '../middleware/errorHandler';
 import { AuthRequest } from '../types';
 
 // Validation schema
+const quantifiedFactorSchema = z.object({
+  quantity: z.number().min(0).max(20).optional(),
+  duration: z.number().int().min(1).max(720).optional(),
+  intensity: z.number().min(0).max(10).optional(),
+});
+
 const createCheckInSchema = z.object({
   sleep_quality: z.number().int().min(1).max(7),
   fatigue: z.number().int().min(1).max(7),
@@ -17,6 +23,8 @@ const createCheckInSchema = z.object({
   training_duration: z.number().int().positive().optional(),
   rpe: z.number().int().min(0).max(10).optional(),
   factors: z.array(z.string()).optional(),
+  // Zyra 3.0 Фаза 5: Количественные факторы
+  quantified_factors: z.record(z.string(), quantifiedFactorSchema).optional(),
 });
 
 /**

@@ -65,6 +65,12 @@ export interface CheckIn {
   updated_at: Date;
 }
 
+export interface QuantifiedFactorValue {
+  quantity?: number;
+  duration?: number;
+  intensity?: number;
+}
+
 export interface CheckInCreateInput {
   sleep_quality: number;
   fatigue: number;
@@ -76,7 +82,8 @@ export interface CheckInCreateInput {
   had_training: boolean;
   training_duration?: number;
   rpe?: number;
-  factors?: string[]; // factor keys
+  factors?: string[]; // factor keys (legacy)
+  quantified_factors?: Record<string, QuantifiedFactorValue>; // Zyra 3.0 Фаза 5
 }
 
 export interface CheckInWithFactors extends CheckIn {

@@ -70,9 +70,23 @@ export interface CheckInRecord {
 
 export interface Factor {
   id: string; // factor_key
+  key?: string;
   name: string;
   weight: number;
   tau: number;
-  // FIX: Add optional 'active' property to fix type error in Factors.tsx.
   active?: boolean;
+  factor_type?: 'lifestyle_positive' | 'lifestyle_negative' | 'dual_nature';
+  requires_quantity?: boolean;
+  requires_duration?: boolean;
+  requires_intensity?: boolean;
+  default_k_positive?: number;
+  default_tau_positive?: number;
+  default_k_negative?: number;
+  default_tau_negative?: number;
+}
+
+export interface QuantifiedFactorValue {
+  quantity?: number;
+  duration?: number;
+  intensity?: number;
 }

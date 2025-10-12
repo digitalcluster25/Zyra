@@ -59,7 +59,7 @@ export class CheckInModel {
 
       const checkIn = checkInResult.rows[0];
 
-      // Добавить факторы
+      // Добавить факторы (legacy - бинарные)
       if (input.factors && input.factors.length > 0) {
         for (const factorKey of input.factors) {
           const factor = await FactorModel.findByKey(factorKey);
@@ -69,6 +69,23 @@ export class CheckInModel {
               [checkIn.id, factor.id]
             );
           }
+        }
+      }
+
+      // Добавить количественные факторы (Zyra 3.0 Фаза 5)
+      if (input.quantified_factors) {
+        for (const [factorId, quantData] of Object.entries(input.quantified_factors)) {
+          await client.query(
+            `INSERT INTO checkin_factors (checkin_id, factor_id, quantity, duration_minutes, intensity_rpe)
+             VALUES ($1, $2, $3, $4, $5)`,
+            [
+              checkIn.id,
+              factorId,
+              quantData.quantity || null,
+              quantData.duration || null,
+              quantData.intensity || null,
+            ]
+          );
         }
       }
 
