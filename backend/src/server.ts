@@ -43,11 +43,16 @@ app.get('/health', (_req, res) => {
   });
 });
 
-// API routes (будут добавлены позже)
-// app.use('/api/auth', authRoutes);
-// app.use('/api/checkins', checkinRoutes);
-// app.use('/api/factors', factorRoutes);
-// app.use('/api/admin', adminRoutes);
+// API routes
+import authRoutes from './routes/auth';
+import checkinRoutes from './routes/checkins';
+import factorRoutes from './routes/factors';
+import adminRoutes from './routes/admin';
+
+app.use('/api/auth', authRoutes);
+app.use('/api/checkins', checkinRoutes);
+app.use('/api/factors', factorRoutes);
+app.use('/api/admin', adminRoutes);
 
 // ==================== Error Handling ====================
 
