@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { AuthRequest } from '../middleware/auth';
-import { CheckIn } from '../models/CheckIn';
-import { Factor } from '../models/Factor';
+import { Response } from 'express';
+import { AuthRequest } from '../types';
+import { CheckInModel } from '../models/CheckIn';
+import { FactorModel } from '../models/Factor';
 import { 
   calculateDynamicWellness, 
   convertLegacyCheckInToImpulses,
@@ -14,16 +14,17 @@ import {
  * GET /api/analytics/detailed
  * Детальная аналитика с декомпозицией wellness по факторам
  */
-export const getDetailedAnalytics = async (req: AuthRequest, res: Response) => {
+export const getDetailedAnalytics = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     
     // Получаем все чекины пользователя
-    const checkIns = await CheckIn.findByUserId(userId);
-    const factors = await Factor.findAll();
+    const checkInsData = await CheckInModel.findByUser(userId);
+    const checkIns = checkInsData.checkins;
+    const factors = await FactorModel.findAll();
     
     if (checkIns.length === 0) {
-      return res.json({
+      res.json({
         success: true,
         data: {
           timeline: [],
@@ -77,23 +78,24 @@ export const getDetailedAnalytics = async (req: AuthRequest, res: Response) => {
  * GET /api/analytics/forecast?days=7
  * Прогноз wellness на N дней вперед
  */
-export const getForecast = async (req: AuthRequest, res: Response) => {
+export const getForecast = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     const days = parseInt(req.query.days as string) || 7;
     
     if (days < 1 || days > 30) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Days must be between 1 and 30',
       });
     }
     
-    const checkIns = await CheckIn.findByUserId(userId);
-    const factors = await Factor.findAll();
+    const checkInsData = await CheckInModel.findByUser(userId);
+    const checkIns = checkInsData.checkins;
+    const factors = await FactorModel.findAll();
     
     if (checkIns.length === 0) {
-      return res.json({
+      res.json({
         success: true,
         data: {
           forecast: [],
@@ -136,15 +138,16 @@ export const getForecast = async (req: AuthRequest, res: Response) => {
  * GET /api/analytics/training-recommendation
  * Рекомендация по следующей тренировке
  */
-export const getTrainingRecommendation = async (req: AuthRequest, res: Response) => {
+export const getTrainingRecommendation = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     
-    const checkIns = await CheckIn.findByUserId(userId);
-    const factors = await Factor.findAll();
+    const checkInsData = await CheckInModel.findByUser(userId);
+    const checkIns = checkInsData.checkins;
+    const factors = await FactorModel.findAll();
     
     if (checkIns.length === 0) {
-      return res.json({
+      res.json({
         success: true,
         data: {
           message: 'Not enough data for recommendation. Track for at least a week.',
@@ -186,15 +189,16 @@ export const getTrainingRecommendation = async (req: AuthRequest, res: Response)
  * GET /api/analytics/current-breakdown
  * Текущая декомпозиция wellness (для сегодня)
  */
-export const getCurrentBreakdown = async (req: AuthRequest, res: Response) => {
+export const getCurrentBreakdown = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!.userId;
     
-    const checkIns = await CheckIn.findByUserId(userId);
-    const factors = await Factor.findAll();
+    const checkInsData = await CheckInModel.findByUser(userId);
+    const checkIns = checkInsData.checkins;
+    const factors = await FactorModel.findAll();
     
     if (checkIns.length === 0) {
-      return res.json({
+      res.json({
         success: true,
         data: {
           wellness: 100,

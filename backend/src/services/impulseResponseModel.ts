@@ -175,11 +175,18 @@ export function convertLegacyCheckInToImpulses(
   const quantifiedFactors = checkIn.check_in_data?.quantifiedFactors || {};
   const processedFactorIds = new Set<string>();
   
-  for (const [factorId, quantData] of Object.entries(quantifiedFactors)) {
+  for (const [factorId, quantDataRaw] of Object.entries(quantifiedFactors)) {
     const factor = factors.find(f => f.id === factorId);
     if (!factor) continue;
     
     processedFactorIds.add(factorId);
+    
+    // Типизируем quantData
+    const quantData = quantDataRaw as { 
+      quantity?: number; 
+      duration?: number; 
+      intensity?: number; 
+    };
     
     // Рассчитываем magnitude на основе количественных данных
     let magnitude = 1.0;
