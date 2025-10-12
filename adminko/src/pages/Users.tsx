@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { usersAPI } from '../services/api';
-import { User } from '../types';
+import type { User } from '../types/index';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
