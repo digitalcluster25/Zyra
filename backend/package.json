@@ -8,8 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "migrate": "node dist/migrate.js",
-    "seed": "node dist/seed.js",
-    "postinstall": "npm run build"
+    "seed": "node dist/seed.js"
   },
   "keywords": ["zyra", "athlete", "monitoring", "api"],
   "author": "digitalcluster25",
