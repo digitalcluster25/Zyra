@@ -24,8 +24,15 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port
-EXPOSE 3000
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Set default PORT if not provided
+ENV PORT=3000
+
+# Expose port
+EXPOSE $PORT
+
+# Start nginx with entrypoint
+ENTRYPOINT ["/docker-entrypoint.sh"]
