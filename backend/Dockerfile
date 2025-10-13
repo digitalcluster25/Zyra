@@ -19,7 +19,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # Expose port
-EXPOSE 3001
+EXPOSE $PORT
 
 # Start the application with migrations
 ENTRYPOINT ["/docker-entrypoint.sh"]

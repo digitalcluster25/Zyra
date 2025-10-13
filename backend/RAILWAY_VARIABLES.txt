@@ -1,0 +1,14 @@
+# Скопируйте эти переменные в Railway Dashboard
+# Settings → Variables → Raw Editor
+
+JWT_SECRET=64756a5d3371a82cbbac1fdcf32ee37d8995b6b9d0ca0352a724e01547bfb66e16705e00bedefd826bbb8df3736ecbe83f8c56b708084c9fa79be2f4da39f63b
+JWT_REFRESH_SECRET=fb47beeb8d799c8ef733457a52e58d6c5ffde0d4438c359ac80ab3c2fe7f47199020c78d03cd03ac5e6a2bb27767bf794d37881595f47fd144f98567aaec3279
+NODE_ENV=production
+CORS_ORIGIN=https://zyra.up.railway.app
+JWT_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
+PORT=3001
+ADMIN_EMAIL=admin@zyra.app
+ADMIN_PASSWORD=Admin123!Zyra
+ALLOWED_ORIGINS=https://zyra.up.railway.app
+

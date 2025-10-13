@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 // ==================== Routes ====================
 
 // Health check
-app.get('/health', (_req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({
     success: true,
     message: 'ZYRA API is running',
