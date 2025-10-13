@@ -1,6 +1,9 @@
 import axios, { AxiosError } from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.PROD 
+    ? 'https://zyra-backend-production.up.railway.app' 
+    : 'http://localhost:3001');
 
 // Создаём axios instance
 export const api = axios.create({

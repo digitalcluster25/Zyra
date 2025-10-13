@@ -1,0 +1,2547 @@
+<!DOCTYPE html>
+<html lang="en" class="relative min-h-full">
+<head>
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8">
+  <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://preline.co/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Explore responsive Inbox demo designed for building email or messaging interfaces with a clean and functional design.">
+
+  <meta name="twitter:site" content="@preline">
+  <meta name="twitter:creator" content="@preline">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tailwind CSS Inbox Template | Preline Pro">
+  <meta name="twitter:description" content="Explore responsive Inbox demo designed for building email or messaging interfaces with a clean and functional design.">
+  <meta name="twitter:image" content="https://preline.co/assets/img/og-image.png">
+
+  <meta property="og:url" content="https://preline.co/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Preline">
+  <meta property="og:title" content="Tailwind CSS Inbox Template | Preline Pro">
+  <meta property="og:description" content="Explore responsive Inbox demo designed for building email or messaging interfaces with a clean and functional design.">
+  <meta property="og:image" content="https://preline.co/assets/img/og-image.png">
+
+  <!-- Title -->
+  <title>Tailwind CSS Inbox Template | Preline Pro</title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="../favicon.ico">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS HS -->
+  <link rel="stylesheet" href="../assets/css/main.min.css?v=3.0.1">
+
+  <!-- Theme Check and Update -->
+  <script>
+    const html = document.querySelector('html');
+    const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
+    const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
+    else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
+    else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
+    else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
+  </script>
+
+  <link rel="stylesheet" href="../assets/vendor/apexcharts/dist/apexcharts.css">
+  <style type="text/css">
+    .apexcharts-tooltip.apexcharts-theme-light
+    {
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-neutral-800">
+  <!-- ========== HEADER ========== -->
+  <header class="fixed top-0 inset-x-0 z-61 flex flex-wrap md:justify-start md:flex-nowrap z-50 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
+    <div class="flex justify-between md:grid md:grid-cols-6 basis-full items-center w-full py-2 px-2 sm:px-5">
+      <div class="md:col-span-2 h-full flex items-center">
+        <!-- Logo -->
+        <a class="flex-none rounded-md text-xl inline-block font-semibold focus:outline-hidden focus:opacity-80" href="index.html" aria-label="Preline">
+          <svg class="w-28 h-auto" width="116" height="32" viewBox="0 0 116 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M33.5696 30.8182V11.3182H37.4474V13.7003H37.6229C37.7952 13.3187 38.0445 12.9309 38.3707 12.5369C38.7031 12.1368 39.134 11.8045 39.6634 11.5398C40.1989 11.2689 40.8636 11.1335 41.6577 11.1335C42.6918 11.1335 43.6458 11.4044 44.5199 11.946C45.3939 12.4815 46.0926 13.291 46.6158 14.3743C47.139 15.4515 47.4006 16.8026 47.4006 18.4276C47.4006 20.0095 47.1451 21.3452 46.6342 22.4347C46.1295 23.518 45.4401 24.3397 44.5661 24.8999C43.6982 25.4538 42.7256 25.7308 41.6484 25.7308C40.8852 25.7308 40.2358 25.6046 39.7003 25.3523C39.1709 25.0999 38.737 24.7829 38.3984 24.4013C38.0599 24.0135 37.8014 23.6226 37.6229 23.2287H37.5028V30.8182H33.5696ZM37.4197 18.4091C37.4197 19.2524 37.5367 19.9879 37.7706 20.6158C38.0045 21.2436 38.343 21.733 38.7862 22.0838C39.2294 22.4285 39.768 22.6009 40.402 22.6009C41.0421 22.6009 41.5838 22.4254 42.027 22.0746C42.4702 21.7176 42.8056 21.2251 43.0334 20.5973C43.2673 19.9633 43.3842 19.2339 43.3842 18.4091C43.3842 17.5904 43.2704 16.8703 43.0426 16.2486C42.8149 15.6269 42.4794 15.1406 42.0362 14.7898C41.593 14.4389 41.0483 14.2635 40.402 14.2635C39.7618 14.2635 39.2202 14.4328 38.777 14.7713C38.34 15.1098 38.0045 15.59 37.7706 16.2116C37.5367 16.8333 37.4197 17.5658 37.4197 18.4091ZM49.2427 25.5V11.3182H53.0559V13.7926H53.2037C53.4622 12.9124 53.8961 12.2476 54.5055 11.7983C55.1149 11.3428 55.8166 11.1151 56.6106 11.1151C56.8076 11.1151 57.02 11.1274 57.2477 11.152C57.4754 11.1766 57.6755 11.2105 57.8478 11.2536V14.7436C57.6632 14.6882 57.4077 14.639 57.0815 14.5959C56.7553 14.5528 56.4567 14.5312 56.1859 14.5312C55.6073 14.5312 55.0903 14.6574 54.6348 14.9098C54.1854 15.156 53.8284 15.5007 53.5638 15.9439C53.3052 16.3871 53.176 16.898 53.176 17.4766V25.5H49.2427ZM64.9043 25.777C63.4455 25.777 62.1898 25.4815 61.1373 24.8906C60.0909 24.2936 59.2845 23.4503 58.7182 22.3608C58.1519 21.2652 57.8688 19.9695 57.8688 18.4737C57.8688 17.0149 58.1519 15.7346 58.7182 14.6328C59.2845 13.531 60.0816 12.6723 61.1096 12.0568C62.1437 11.4413 63.3563 11.1335 64.7474 11.1335C65.683 11.1335 66.5539 11.2843 67.3603 11.5859C68.1728 11.8814 68.8806 12.3277 69.4839 12.9247C70.0932 13.5218 70.5672 14.2727 70.9057 15.1776C71.2443 16.0762 71.4135 17.1288 71.4135 18.3352V19.4155H59.4384V16.978H67.7111C67.7111 16.4117 67.588 15.91 67.3418 15.473C67.0956 15.036 66.754 14.6944 66.317 14.4482C65.8861 14.1958 65.3844 14.0696 64.812 14.0696C64.2149 14.0696 63.6856 14.2081 63.2239 14.4851C62.7684 14.7559 62.4114 15.1222 62.1529 15.5838C61.8944 16.0393 61.762 16.5471 61.7559 17.1072V19.4247C61.7559 20.1264 61.8851 20.7327 62.1437 21.2436C62.4083 21.7545 62.7807 22.1484 63.2608 22.4254C63.741 22.7024 64.3103 22.8409 64.9689 22.8409C65.406 22.8409 65.8061 22.7794 66.1692 22.6562C66.5324 22.5331 66.8432 22.3485 67.1018 22.1023C67.3603 21.8561 67.5572 21.5545 67.6927 21.1974L71.3304 21.4375C71.1458 22.3116 70.7672 23.0748 70.1948 23.7273C69.6285 24.3736 68.896 24.8783 67.9974 25.2415C67.1048 25.5985 66.0738 25.777 64.9043 25.777ZM77.1335 6.59091V25.5H73.2003V6.59091H77.1335ZM79.5043 25.5V11.3182H83.4375V25.5H79.5043ZM81.4801 9.49006C80.8954 9.49006 80.3937 9.29616 79.9752 8.90838C79.5628 8.51444 79.3566 8.04356 79.3566 7.49574C79.3566 6.95407 79.5628 6.48935 79.9752 6.10156C80.3937 5.70762 80.8954 5.51065 81.4801 5.51065C82.0649 5.51065 82.5635 5.70762 82.9759 6.10156C83.3944 6.48935 83.6037 6.95407 83.6037 7.49574C83.6037 8.04356 83.3944 8.51444 82.9759 8.90838C82.5635 9.29616 82.0649 9.49006 81.4801 9.49006ZM89.7415 17.3011V25.5H85.8083V11.3182H89.5569V13.8203H89.723C90.037 12.9955 90.5632 12.343 91.3019 11.8629C92.0405 11.3767 92.9361 11.1335 93.9887 11.1335C94.9735 11.1335 95.8322 11.349 96.5647 11.7798C97.2971 12.2107 97.8665 12.8262 98.2728 13.6264C98.679 14.4205 98.8821 15.3684 98.8821 16.4702V25.5H94.9489V17.1719C94.9551 16.304 94.7335 15.6269 94.2841 15.1406C93.8348 14.6482 93.2162 14.402 92.4283 14.402C91.8989 14.402 91.4311 14.5159 91.0249 14.7436C90.6248 14.9714 90.3109 15.3037 90.0831 15.7408C89.8615 16.1716 89.7477 16.6918 89.7415 17.3011ZM107.665 25.777C106.206 25.777 104.951 25.4815 103.898 24.8906C102.852 24.2936 102.045 23.4503 101.479 22.3608C100.913 21.2652 100.63 19.9695 100.63 18.4737C100.63 17.0149 100.913 15.7346 101.479 14.6328C102.045 13.531 102.842 12.6723 103.87 12.0568C104.905 11.4413 106.117 11.1335 107.508 11.1335C108.444 11.1335 109.315 11.2843 110.121 11.5859C110.934 11.8814 111.641 12.3277 112.245 12.9247C112.854 13.5218 113.328 14.2727 113.667 15.1776C114.005 16.0762 114.174 17.1288 114.174 18.3352V19.4155H102.199V16.978H110.472C110.472 16.4117 110.349 15.91 110.103 15.473C109.856 15.036 109.515 14.6944 109.078 14.4482C108.647 14.1958 108.145 14.0696 107.573 14.0696C106.976 14.0696 106.446 14.2081 105.985 14.4851C105.529 14.7559 105.172 15.1222 104.914 15.5838C104.655 16.0393 104.523 16.5471 104.517 17.1072V19.4247C104.517 20.1264 104.646 20.7327 104.905 21.2436C105.169 21.7545 105.542 22.1484 106.022 22.4254C106.502 22.7024 107.071 22.8409 107.73 22.8409C108.167 22.8409 108.567 22.7794 108.93 22.6562C109.293 22.5331 109.604 22.3485 109.863 22.1023C110.121 21.8561 110.318 21.5545 110.454 21.1974L114.091 21.4375C113.907 22.3116 113.528 23.0748 112.956 23.7273C112.389 24.3736 111.657 24.8783 110.758 25.2415C109.866 25.5985 108.835 25.777 107.665 25.777Z" class="fill-blue-600 dark:fill-white" fill="currentColor" />
+            <path d="M1 29.5V16.5C1 9.87258 6.37258 4.5 13 4.5C19.6274 4.5 25 9.87258 25 16.5C25 23.1274 19.6274 28.5 13 28.5H12" class="stroke-blue-600 dark:stroke-white" stroke="currentColor" stroke-width="2" />
+            <path d="M5 29.5V16.66C5 12.1534 8.58172 8.5 13 8.5C17.4183 8.5 21 12.1534 21 16.66C21 21.1666 17.4183 24.82 13 24.82H12" class="stroke-blue-600 dark:stroke-white" stroke="currentColor" stroke-width="2" />
+            <circle cx="13" cy="16.5214" r="5" class="fill-blue-600 dark:fill-white" fill="currentColor" />
+          </svg>
+        </a>
+        <!-- End Logo -->
+
+        <div id="hs-left-sidebar-toggle" class="xl:hidden ms-3">
+          <!-- Sidebar Toggle -->
+          <button type="button" class="w-7 h-9.5 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-pro-inbox-sidebar" aria-label="Toggle navigation" data-hs-overlay="#hs-pro-inbox-sidebar">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 8L21 12L17 16M3 12H13M3 6H13M3 18H13" />
+            </svg>
+          </button>
+          <!-- End Sidebar Toggle -->
+        </div>
+      </div>
+
+      <div class="md:col-span-2 hidden md:block">
+        <!-- Search Input -->
+        <div class="relative">
+          <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+            <svg class="shrink-0 size-4 text-gray-400 dark:text-white/60" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
+          <input type="text" class="py-2 ps-10 px-3 block w-full bg-white border-gray-200 rounded-lg text-sm focus:outline-hidden focus:border-blue-600 focus:ring-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:ring-neutral-600" placeholder="Search accounts or contacts">
+          <div class="hidden absolute inset-y-0 end-0 flex items-center z-20 pe-1">
+            <button type="button" class="inline-flex shrink-0 justify-center items-center size-6 rounded-full text-gray-500 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="m15 9-6 6" />
+                <path d="m9 9 6 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <!-- End Search Input -->
+      </div>
+
+      <div class="md:col-span-2 flex justify-end items-center gap-x-1">
+        <!-- Search Button Icon -->
+        <button type="button" class="md:hidden flex shrink-0 justify-center items-center gap-x-2 size-9.5 rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+        </button>
+        <!-- End Search Button Icon -->
+
+        <!-- Help and Support Button -->
+        <button type="button" class="size-9.5 inline-flex justify-center items-center gap-x-2 rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <path d="M12 17h.01" />
+          </svg>
+        </button>
+        <!-- End Help and Support Button -->
+
+        <!-- Settings Button -->
+        <button type="button" class="size-9.5 inline-flex justify-center items-center gap-x-2 rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </button>
+        <!-- End Settings Button -->
+
+        <div class="h-9.5">
+          <!-- Account Dropdown -->
+          <div class="hs-dropdown inline-flex   [--strategy:absolute] [--auto-close:inside] [--placement:bottom-right] relative text-start">
+            <button id="hs-dnad" type="button" class="inline-flex shrink-0 items-center gap-x-3 text-start rounded-full focus:outline-hidden" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+              <img class="shrink-0 size-9.5 rounded-full" src="https://images.unsplash.com/photo-1659482633369-9fe69af50bfb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80" alt="Avatar">
+            </button>
+
+            <!-- Account Dropdown -->
+            <div class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-60 transition-[opacity,margin] duration opacity-0 hidden z-20 bg-white rounded-xl shadow-xl dark:bg-neutral-900" role="menu" aria-orientation="vertical" aria-labelledby="hs-dnad">
+              <div class="p-1 border-b border-gray-200 dark:border-neutral-800">
+                <a class="py-2 px-3 flex items-center gap-x-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="../../pro/dashboard/user-profile-my-profile.html">
+                  <img class="shrink-0 size-8 rounded-full" src="https://images.unsplash.com/photo-1659482633369-9fe69af50bfb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80" alt="Avatar">
+
+                  <div class="grow">
+                    <span class="text-sm font-semibold text-gray-800 dark:text-neutral-300">
+                      James Collison
+                    </span>
+                    <p class="text-xs text-gray-500 dark:text-neutral-500">
+                      Preline@HS
+                    </p>
+                  </div>
+                </a>
+              </div>
+              <div class="p-1">
+                <a class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                  <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <line x1="2" x2="22" y1="10" y2="10" />
+                  </svg>
+                  Billing
+                </a>
+                <a class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                  <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  Settings
+                </a>
+                <a class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                  <svg class="shrink-0 mt-0.5 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  My account
+                </a>
+              </div>
+              <div class="px-4 py-3.5 border-y border-gray-200 dark:border-neutral-800">
+                <!-- Switch/Toggle -->
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                  <label for="hs-pro-inndm" class="flex-1 cursor-pointer text-sm text-gray-800 dark:text-neutral-300">Dark mode</label>
+                  <label for="hs-pro-inndm" class="relative inline-block w-11 h-6 cursor-pointer">
+                    <input data-hs-theme-switch type="checkbox" id="hs-pro-inndm" class="peer sr-only">
+                    <span class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-blue-600 dark:bg-neutral-700 dark:peer-checked:bg-blue-500 peer-disabled:opacity-50 peer-disabled:pointer-events-none"></span>
+                    <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-sm !transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-neutral-400 dark:peer-checked:bg-white"></span>
+                  </label>
+                </div>
+                <!-- End Switch/Toggle -->
+              </div>
+              <div class="p-1">
+                <a class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                  Customization
+                  <div class="ms-auto">
+                    <span class="ms-auto inline-flex items-center gap-1.5 py-px px-1.5 rounded-sm text-[10px] leading-4 font-medium bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-neutral-300">
+                      New
+                    </span>
+                  </div>
+                </a>
+                <a class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                  Manage team
+                </a>
+                <a class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" href="#">
+                  Sign out
+                </a>
+              </div>
+              <div class="p-1 border-t border-gray-200 dark:border-neutral-800">
+                <button type="button" class="flex mt-0.5 gap-x-3 py-2 px-3 w-full rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-overlay="#hs-pro-dasadam">
+                  <svg class="shrink-0 size-4 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 12h8" />
+                    <path d="M12 8v8" />
+                  </svg>
+                  Add team account
+                </button>
+              </div>
+            </div>
+            <!-- End Account Dropdown -->
+          </div>
+          <!-- End Account Dropdown -->
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ========== END HEADER ========== -->
+
+  <!-- ========== MAIN SIDEBAR ========== -->
+  <aside id="hs-pro-inbox-sidebar" class="hs-overlay [--auto-close:lg]
+      hs-overlay-open:translate-x-0
+      -translate-x-full transition-all duration-300 transform
+      w-64 h-full
+      hidden
+      fixed inset-y-0 start-0 z-60
+      bg-white border-e border-gray-200
+      lg:block lg:translate-x-0 lg:start-auto lg:top-14 lg:-mt-px
+    
+      
+  
+      dark:bg-neutral-900 dark:border-neutral-700" tabindex="-1" aria-label="Sidebar">
+    <div class="size-full flex">
+      <div class="flex flex-col size-full max-h-full">
+        <!-- Body -->
+        <div class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+          <!-- Nav -->
+          <nav class="flex pt-2.5 pb-4 px-2.5 w-full flex flex-col">
+
+            <!-- List -->
+            <div class="py-1.5 space-y-0.5">
+              <!-- Heading -->
+              <div class="pt-3 pb-1.5 ps-2 pe-0.5 flex justify-between items-center gap-x-2">
+                <span class="block text-xs truncate text-gray-500 dark:text-neutral-500">
+                  <span class="truncate">Pages</span>
+                </span>
+                <span class="py-px px-1.5 inline-flex items-center gap-x-1.5 text-xs bg-blue-100 text-blue-800 rounded-md dark:bg-blue-500/10 dark:text-blue-500">
+                  New
+                </span>
+              </div>
+              <!-- End Heading -->
+
+              <!-- Link -->
+              <div>
+                <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800 " href="index.html">
+                  <span class="w-3.5"></span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                    <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                  </svg>
+                  <span class="truncate">Inbox</span>
+                  <span class="ms-auto">
+                    <span class="text-xs opacity-60">
+                      3
+                    </span>
+                  </span>
+                </a>
+              </div>
+              <!-- End Link -->
+
+              <!-- Link -->
+              <div>
+                <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800 " href="contacts.html">
+                  <span class="w-3.5"></span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                  <span class="truncate">Contacts</span>
+                  <span class="ms-auto">
+                    <span class="text-xs opacity-60">
+                      245
+                    </span>
+                  </span>
+                </a>
+              </div>
+              <!-- End Link -->
+
+              <!-- Link -->
+              <div>
+                <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800 bg-gray-100 dark:bg-neutral-700" href="reports.html">
+                  <span class="w-3.5"></span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" x2="18" y1="20" y2="10" />
+                    <line x1="12" x2="12" y1="20" y2="4" />
+                    <line x1="6" x2="6" y1="20" y2="14" />
+                  </svg>
+                  <span class="truncate">Reports</span>
+                </a>
+              </div>
+              <!-- End Link -->
+            </div>
+            <!-- End List -->
+
+            <!-- List -->
+            <div class="py-1.5 space-y-0.5">
+              <!-- Heading -->
+              <div class="pt-3 pb-1.5 ps-2 pe-0.5 flex justify-between items-center gap-x-2">
+                <span class="block text-xs truncate text-gray-500 dark:text-neutral-500">
+                  <span class="truncate">Mailboxes</span>
+                </span>
+              </div>
+              <!-- End Heading -->
+
+              <!-- Link -->
+              <div class="hs-accordion active" id="inbox-accordion">
+                <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" aria-expanded="true" aria-controls="inbox-accordion-sub">
+                  <span class="w-3.5">
+                    <svg class="hs-accordion-active:-rotate-180 shrink-0 size-3.5 transition" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                    <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                  </svg>
+                  <span class="truncate">Inbox</span>
+                  <span class="ms-auto">
+                    <span class="text-xs opacity-60">
+                      1,086
+                    </span>
+                  </span>
+                </button>
+
+                <div id="inbox-accordion-sub" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="inbox-accordion">
+                  <ul class="hs-accordion-group mt-0.5 space-y-0.5" data-hs-accordion-always-open>
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                          <circle cx="9" cy="7" r="4" />
+                          <line x1="19" x2="19" y1="8" y2="14" />
+                          <line x1="22" x2="16" y1="11" y2="11" />
+                        </svg>
+                        <span class="truncate">Assigned to me</span>
+
+                        <span class="ms-auto">
+                          <span class="text-xs opacity-60">
+                            26
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                          <circle cx="9" cy="7" r="4" />
+                          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        <span class="truncate">Shared with me</span>
+
+                        <span class="ms-auto">
+                          <span class="text-xs opacity-60">
+                            9
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                          <path d="M8 10h.01" />
+                          <path d="M12 10h.01" />
+                          <path d="M16 10h.01" />
+                        </svg>
+                        <span class="truncate">Discussions</span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 font-semibold text-sm text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <div class="shrink-0 w-3.5">
+                          <div class="shrink-0 size-2 mx-auto bg-teal-500 rounded-full"></div>
+                        </div>
+                        <span class="truncate">Gmail</span>
+
+                        <span class="ms-auto">
+                          <span class="text-xs opacity-60">
+                            1,048
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!-- End Link -->
+
+              <!-- Link -->
+              <div>
+                <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                  <span class="w-3.5"></span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span class="truncate">Starred</span>
+                </a>
+              </div>
+              <!-- End Link -->
+
+              <!-- Link -->
+              <div>
+                <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                  <span class="w-3.5"></span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z" />
+                    <path d="m21.854 2.147-10.94 10.939" />
+                  </svg>
+                  <span class="truncate">Sent</span>
+                </a>
+              </div>
+              <!-- End Link -->
+
+              <!-- Link -->
+              <div>
+                <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                  <span class="w-3.5"></span>
+                  <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                  </svg>
+                  <span class="truncate">Drafts</span>
+                </a>
+              </div>
+              <!-- End Link -->
+
+              <div id="hs-pro-isnshml-heading" class="hs-collapse hidden w-full overflow-hidden transition-[height] duration-300" aria-labelledby="hs-pro-isnshml">
+                <div class="space-y-0.5">
+                  <!-- Link -->
+                  <div>
+                    <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                      <span class="w-3.5"></span>
+                      <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                      <span class="truncate">Snoozed</span>
+                    </a>
+                  </div>
+                  <!-- End Link -->
+
+                  <!-- Link -->
+                  <div>
+                    <a class="flex items-center gap-x-2 py-1.5 px-2.5 font-semibold text-sm text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                      <span class="w-3.5"></span>
+                      <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" x2="12" y1="8" y2="12" />
+                        <line x1="12" x2="12.01" y1="16" y2="16" />
+                      </svg>
+                      <span class="truncate">Spam</span>
+                      <span class="ms-auto lg:group-hover:opacity-0">
+                        <span class="text-xs opacity-60">
+                          3
+                        </span>
+                      </span>
+                    </a>
+                  </div>
+                  <!-- End Link -->
+
+                  <!-- Link -->
+                  <div>
+                    <a class="flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                      <span class="w-3.5"></span>
+                      <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                        <line x1="10" x2="10" y1="11" y2="17" />
+                        <line x1="14" x2="14" y1="11" y2="17" />
+                      </svg>
+                      <span class="truncate">Trash</span>
+                    </a>
+                  </div>
+                  <!-- End Link -->
+                </div>
+              </div>
+
+              <!-- Link -->
+              <div class="pt-1">
+                <button type="button" class="hs-collapse-toggle py-1 px-2 flex justify-center items-center gap-x-1 text-xs text-gray-500 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden dark:hover:bg-neutral-800 dark:text-neutral-500" id="hs-pro-isnshml" aria-expanded="false" aria-controls="hs-pro-isnshml-heading" data-hs-collapse="#hs-pro-isnshml-heading">
+                  Show
+                  <span class="hs-collapse-open:hidden">more</span>
+                  <span class="hs-collapse-open:block hidden">less</span>
+                  <svg class="hs-collapse-open:-rotate-180 shrink-0 size-3 transition" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </button>
+              </div>
+              <!-- End Link -->
+            </div>
+            <!-- End List -->
+
+            <!-- List -->
+            <div class="py-1.5 space-y-0.5">
+              <!-- Heading -->
+              <div class="ps-2 pe-0.5 flex justify-between items-center gap-x-2">
+                <span class="block text-xs truncate text-gray-500 dark:text-neutral-500">
+                  <span class="truncate">Work</span>
+                </span>
+
+                <!-- Button -->
+                <div class="hs-tooltip [--placement:left] inline-block">
+                  <button type="button" class="hs-tooltip-toggle size-8 flex justify-center items-center gap-x-2 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" data-hs-overlay="#hs-pro-incnlm">
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M8 12h8" />
+                      <path d="M12 8v8" />
+                    </svg>
+                  </button>
+                  <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 inline-block absolute invisible z-20 py-1.5 px-2.5 bg-gray-900 text-xs text-white rounded-lg dark:bg-neutral-800" role="tooltip">
+                    Create new label
+                  </span>
+                </div>
+                <!-- End Button -->
+              </div>
+              <!-- End Heading -->
+
+              <!-- Link -->
+              <div class="hs-accordion active" id="preline-accordion">
+                <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-2 py-1.5 px-2.5 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" aria-expanded="true" aria-controls="preline-accordion-sub">
+                  <span class="w-3.5">
+                    <svg class="hs-accordion-active:-rotate-180 shrink-0 size-3.5 transition" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </span>
+                  <span class="flex shrink-0 justify-center items-center size-3.5 text-[10px] uppercase bg-blue-500 text-white rounded-full">
+                    P
+                  </span>
+                  <span class="truncate">Preline</span>
+                  <span class="ms-auto lg:group-hover:opacity-0">
+                    <span class="text-xs opacity-60">
+                      10
+                    </span>
+                  </span>
+                </button>
+
+                <div id="preline-accordion-sub" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="preline-accordion">
+                  <ul class="hs-accordion-group mt-0.5 space-y-0.5" data-hs-accordion-always-open>
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <div class="shrink-0 w-3.5">
+                          <div class="shrink-0 size-2 mx-auto bg-indigo-500 rounded-full"></div>
+                        </div>
+                        <span class="truncate">Github</span>
+
+                        <span class="ms-auto lg:group-hover:opacity-0">
+                          <span class="text-xs opacity-60">
+                            312
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <div class="shrink-0 w-3.5">
+                          <div class="shrink-0 size-2 mx-auto bg-red-500 rounded-full"></div>
+                        </div>
+                        <span class="truncate">Gmail</span>
+
+                        <span class="ms-auto lg:group-hover:opacity-0">
+                          <span class="text-xs opacity-60">
+                            39
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <div class="shrink-0 w-3.5">
+                          <div class="shrink-0 size-2 mx-auto bg-blue-500 rounded-full"></div>
+                        </div>
+                        <span class="truncate">Crisp</span>
+
+                        <span class="ms-auto lg:group-hover:opacity-0">
+                          <span class="text-xs opacity-60">
+                            494
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="flex items-center gap-x-2 py-1.5 ps-8 pe-3 text-sm truncate text-gray-600 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:focus:bg-neutral-800" href="#">
+                        <div class="shrink-0 w-3.5">
+                          <div class="shrink-0 size-2 mx-auto bg-orange-500 rounded-full"></div>
+                        </div>
+                        <span class="truncate">Slack - Internal</span>
+
+                        <span class="ms-auto lg:group-hover:opacity-0">
+                          <span class="text-xs opacity-60">
+                            203
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <!-- End Link -->
+            </div>
+            <!-- End List -->
+          </nav>
+          <!-- End Nav -->
+        </div>
+        <!-- End Body -->
+
+        <div class="lg:hidden absolute top-3 -end-3 z-10">
+          <!-- Sidebar Close -->
+          <button type="button" class="w-6 h-7 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" data-hs-overlay="#hs-pro-inbox-sidebar">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="7 8 3 12 7 16" />
+              <line x1="21" x2="11" y1="12" y2="12" />
+              <line x1="21" x2="11" y1="6" y2="6" />
+              <line x1="21" x2="11" y1="18" y2="18" />
+            </svg>
+          </button>
+          <!-- End Sidebar Close -->
+        </div>
+      </div>
+    </div>
+  </aside>
+  <!-- ========== END MAIN SIDEBAR ========== -->
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main id="content" class="pt-14 lg:ps-64 -mt-px">
+    <!-- Page Header -->
+    <div class="py-3 px-5 bg-white border-b border-gray-200 dark:bg-neutral-900 dark:border-neutral-700">
+      <div class="flex flex-wrap justify-between items-center gap-x-2">
+        <div>
+          <h1 class="inline-block text-lg font-medium text-gray-800 dark:text-neutral-200">
+            Reports
+          </h1>
+        </div>
+
+        <!-- Button Group -->
+        <div class="flex items-center gap-x-2">
+
+          <!-- Calendar Dropdown -->
+          <div class="hs-dropdown [--auto-close:inside] inline-flex">
+            <button id="hs-pro-dnic" type="button" class="py-1.5 px-2.5 inline-flex items-center gap-x-1.5 text-[13px] rounded-lg border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+              <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                <line x1="16" x2="16" y1="2" y2="6" />
+                <line x1="8" x2="8" y1="2" y2="6" />
+                <line x1="3" x2="21" y1="10" y2="10" />
+                <path d="M8 14h.01" />
+                <path d="M12 14h.01" />
+                <path d="M16 14h.01" />
+                <path d="M8 18h.01" />
+                <path d="M12 18h.01" />
+                <path d="M16 18h.01" />
+              </svg>
+              25 Jul - 25 Aug
+              <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+
+            <div class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-79.5 sm:w-159 transition-[opacity,margin] duration opacity-0 hidden z-50 bg-white rounded-xl shadow-xl dark:bg-neutral-900" role="menu" aria-orientation="vertical" aria-labelledby="hs-pro-dnic">
+
+              <!-- Calendar -->
+              <div class="sm:flex">
+                <!-- Calendar -->
+                <div class="p-3 space-y-0.5">
+                  <!-- Months -->
+                  <div class="grid grid-cols-5 items-center gap-x-3 mx-1.5 pb-3">
+                    <!-- Prev Button -->
+                    <div class="col-span-1">
+                      <button type="button" class="size-8 flex justify-center items-center text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Previous">
+                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m15 18-6-6 6-6" />
+                        </svg>
+                      </button>
+                    </div>
+                    <!-- End Prev Button -->
+
+                    <!-- Month / Year -->
+                    <div class="col-span-3 flex justify-center items-center gap-x-1">
+                      <div class="relative">
+                        <select data-hs-select='{
+                              "placeholder": "Select month",
+                              "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative flex text-nowrap w-full cursor-pointer text-start font-medium text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 before:absolute before:inset-0 before:z-1 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500",
+                              "dropdownClasses": "mt-2 z-50 w-32 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                              "optionClasses": "p-2 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                            }' class="hidden">
+                          <option value="0">January</option>
+                          <option value="1">February</option>
+                          <option value="2">March</option>
+                          <option value="3">April</option>
+                          <option value="4">May</option>
+                          <option value="5">June</option>
+                          <option value="6" selected>July</option>
+                          <option value="7">August</option>
+                          <option value="8">September</option>
+                          <option value="9">October</option>
+                          <option value="10">November</option>
+                          <option value="11">December</option>
+                        </select>
+                      </div>
+
+                      <span class="text-gray-800 dark:text-neutral-200">/</span>
+
+                      <div class="relative">
+                        <select data-hs-select='{
+                              "placeholder": "Select year",
+                              "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative flex text-nowrap w-full cursor-pointer text-start font-medium text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 before:absolute before:inset-0 before:z-1 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500",
+                              "dropdownClasses": "mt-2 z-50 w-20 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                              "optionClasses": "p-2 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                            }' class="hidden">
+                          <option selected>2023</option>
+                          <option>2024</option>
+                          <option>2025</option>
+                          <option>2026</option>
+                          <option>2027</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- End Month / Year -->
+
+                    <!-- Next Button -->
+                    <div class="col-span-1 flex justify-end">
+                      <button type="button" class="opacity-0 pointer-events-none size-8 flex justify-center items-center text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Next">
+                        <svg class="shrink-0 size-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m9 18 6-6-6-6" />
+                        </svg>
+                      </button>
+                    </div>
+                    <!-- End Next Button -->
+                  </div>
+                  <!-- Months -->
+
+                  <!-- Weeks -->
+                  <div class="flex pb-1.5">
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Mo
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Tu
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      We
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Th
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Fr
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Sa
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Su
+                    </span>
+                  </div>
+                  <!-- Weeks -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500" disabled>
+                        26
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500" disabled>
+                        27
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500" disabled>
+                        28
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500" disabled>
+                        29
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500" disabled>
+                        30
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        1
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        2
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        3
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        4
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        5
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        6
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        7
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        8
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        9
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        10
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        11
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        12
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        13
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        14
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        15
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        16
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        17
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        18
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        19
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center bg-blue-600 border-[1.5px] border-transparent text-sm font-medium text-white hover:border-blue-600 rounded-full dark:bg-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:hover:border-neutral-700">
+                        20
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        21
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        22
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        23
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        24
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 rounded-s-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center bg-blue-600 border-[1.5px] border-transparent text-sm font-medium text-white hover:border-blue-600 rounded-full dark:bg-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:hover:border-neutral-700">
+                        25
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        26
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        27
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        28
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        29
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        30
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        31
+                      </button>
+                    </div>
+                    <div class="bg-linear-to-r from-gray-100 dark:from-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        1
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        2
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        3
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        4
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        5
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        6
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+                </div>
+
+                <!-- Calendar -->
+                <div class="p-3 space-y-0.5">
+                  <!-- Months -->
+                  <div class="grid grid-cols-5 items-center gap-x-3 mx-1.5 pb-3">
+                    <!-- Prev Button -->
+                    <div class="col-span-1">
+                      <button type="button" class="opacity-0 pointer-events-none size-8 flex justify-center items-center text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Previous">
+                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m15 18-6-6 6-6" />
+                        </svg>
+                      </button>
+                    </div>
+                    <!-- End Prev Button -->
+
+                    <!-- Month / Year -->
+                    <div class="col-span-3 flex justify-center items-center gap-x-1">
+                      <div class="relative">
+                        <select data-hs-select='{
+                              "placeholder": "Select month",
+                              "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative flex text-nowrap w-full cursor-pointer text-start font-medium text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 before:absolute before:inset-0 before:z-1 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500",
+                              "dropdownClasses": "mt-2 z-50 w-32 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                              "optionClasses": "p-2 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                            }' class="hidden">
+                          <option value="0">January</option>
+                          <option value="1">February</option>
+                          <option value="2">March</option>
+                          <option value="3">April</option>
+                          <option value="4">May</option>
+                          <option value="5">June</option>
+                          <option value="6" selected>July</option>
+                          <option value="7">August</option>
+                          <option value="8">September</option>
+                          <option value="9">October</option>
+                          <option value="10">November</option>
+                          <option value="11">December</option>
+                        </select>
+                      </div>
+
+                      <span class="text-gray-800 dark:text-neutral-200">/</span>
+
+                      <div class="relative">
+                        <select data-hs-select='{
+                              "placeholder": "Select year",
+                              "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                              "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative flex text-nowrap w-full cursor-pointer text-start font-medium text-gray-800 hover:text-blue-600 focus:outline-hidden focus:text-blue-600 before:absolute before:inset-0 before:z-1 dark:text-neutral-200 dark:hover:text-blue-500 dark:focus:text-blue-500",
+                              "dropdownClasses": "mt-2 z-50 w-20 max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900 dark:border-neutral-700",
+                              "optionClasses": "p-2 w-full text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-200 dark:focus:bg-neutral-800",
+                              "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                            }' class="hidden">
+                          <option selected>2023</option>
+                          <option>2024</option>
+                          <option>2025</option>
+                          <option>2026</option>
+                          <option>2027</option>
+                        </select>
+                      </div>
+                    </div>
+                    <!-- End Month / Year -->
+
+                    <!-- Next Button -->
+                    <div class="col-span-1 flex justify-end">
+                      <button type="button" class="size-8 flex justify-center items-center text-gray-800 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800" aria-label="Next">
+                        <svg class="shrink-0 size-4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="m9 18 6-6-6-6" />
+                        </svg>
+                      </button>
+                    </div>
+                    <!-- End Next Button -->
+                  </div>
+                  <!-- Months -->
+
+                  <!-- Weeks -->
+                  <div class="flex pb-1.5">
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Mo
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Tu
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      We
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Th
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Fr
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Sa
+                    </span>
+                    <span class="m-px w-10 block text-center text-sm text-gray-500 dark:text-neutral-500">
+                      Su
+                    </span>
+                  </div>
+                  <!-- Weeks -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div class="bg-linear-to-l from-gray-100 dark:from-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        31
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700">
+                        1
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700">
+                        2
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700">
+                        3
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700">
+                        4
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        5
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        6
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        7
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        8
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        9
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        10
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        11
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        12
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        13
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        14
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        15
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        16
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        17
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        18
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        19
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        20
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        21
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        22
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        23
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 first:rounded-s-full last:rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        24
+                      </button>
+                    </div>
+                    <div class="bg-gray-100 rounded-e-full dark:bg-neutral-800">
+                      <button type="button" class="m-px size-10 flex justify-center items-center bg-blue-600 border-[1.5px] border-transparent text-sm font-medium text-white hover:border-blue-600 rounded-full dark:bg-blue-500 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:hover:border-neutral-700">
+                        25
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        26
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        27
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        28
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        29
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        30
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 rounded-full hover:border-blue-600 hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:border-blue-600 focus:text-blue-600 dark:text-neutral-200 dark:hover:border-blue-500 dark:hover:text-blue-500 dark:focus:border-blue-500 dark:focus:text-blue-500">
+                        31
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        1
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        2
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        3
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+
+                  <!-- Days -->
+                  <div class="flex">
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        4
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        5
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        6
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        7
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        8
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        9
+                      </button>
+                    </div>
+                    <div>
+                      <button type="button" class="m-px size-10 flex justify-center items-center border-[1.5px] border-transparent text-sm text-gray-800 hover:border-blue-600 hover:text-blue-600 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:border-neutral-500 dark:focus:bg-neutral-700" disabled>
+                        10
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Days -->
+                </div>
+              </div>
+              <!-- End Calendar -->
+
+            </div>
+          </div>
+          <!-- End Calendar Dropdown -->
+        </div>
+        <!-- End Button Group -->
+      </div>
+    </div>
+    <!-- End Page Header -->
+
+    <div class="p-2 sm:p-5 flex flex-col gap-y-5">
+      <!-- Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5">
+        <!-- Card -->
+        <div class="p-5 flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700">
+          <!-- Header -->
+          <div class="flex justify-between gap-x-3">
+            <div>
+              <span class="block font-semibold text-xl text-gray-800 dark:text-neutral-200">
+                1,086
+              </span>
+              <h2 class="text-sm text-gray-500 dark:text-neutral-500">
+                Total emails
+              </h2>
+            </div>
+
+            <!-- Avatar Group -->
+            <div class="mt-4 flex -space-x-3">
+              <div class="relative z-2">
+                <div class="bg-white rounded-full overflow-hidden ring-2 ring-white dark:bg-neutral-900 dark:ring-neutral-800">
+                  <svg class="shrink-0 size-6" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.34318 0.00012207H24.6569C28.725 0.00012207 32 3.27516 32 7.34327V24.657C32 28.7251 28.725 32.0001 24.6569 32.0001H7.34318C3.27507 32.0001 2.52724e-05 28.7251 2.52724e-05 24.657V7.34327C2.52724e-05 3.27516 3.27507 0.00012207 7.34318 0.00012207Z" fill="url(#paint0_linear_5465_1620)" />
+                    <path d="M7.01113 9.1001C6.84252 9.1001 6.68368 9.12919 6.53335 9.18899L9.54446 12.289L12.5889 15.4446L12.6445 15.5112L12.8222 15.689L13 15.8779L15.6111 18.5557C15.6546 18.5827 15.7806 18.6994 15.879 18.7486C16.0058 18.812 16.1432 18.8704 16.2849 18.8754C16.4377 18.8809 16.594 18.8371 16.7315 18.7702C16.8345 18.7201 16.8803 18.6483 17 18.5557L20.0222 15.4334L26.0222 9.25566C25.8332 9.15324 25.6239 9.1001 25.4 9.1001H7.01113ZM6.08891 9.47788C5.7678 9.78214 5.56668 10.2395 5.56668 10.7557V20.9334C5.56668 21.3513 5.7009 21.731 5.92224 22.0223L6.34446 21.6223L9.48891 18.5668L12.2778 15.8668L12.2222 15.8001L9.16668 12.6557L6.11113 9.5001L6.08891 9.47788ZM26.4222 9.57788L20.4 15.8001L20.3445 15.8557L23.2445 18.6668L26.3889 21.7223L26.5778 21.9001C26.7471 21.6285 26.8445 21.2938 26.8445 20.9334V10.7557C26.8445 10.2955 26.685 9.87817 26.4222 9.57788ZM12.6333 16.2334L9.85557 18.9334L6.70002 21.989L6.30002 22.3779C6.5109 22.5137 6.75088 22.6001 7.01113 22.6001H25.4C25.7129 22.6001 25.9967 22.4797 26.2334 22.289L26.0334 22.089L22.8778 19.0334L19.9778 16.2334L17.3667 18.9223C17.2254 19.016 17.1309 19.1199 16.9929 19.1837C16.7709 19.2864 16.5275 19.3733 16.2828 19.3696C16.0375 19.3658 15.797 19.2698 15.5768 19.1615C15.4663 19.1072 15.4074 19.0531 15.2778 18.9446L12.6333 16.2334Z" fill="white" />
+                    <defs>
+                      <linearGradient id="paint0_linear_5465_1620" x1="16.2241" y1="31.8717" x2="16.2552" y2="0.386437" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#70EFFF" />
+                        <stop offset="1" stop-color="#5770FF" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+              <div class="relative z-1 -mt-3">
+                <div class="bg-white rounded-full overflow-hidden ring-2 ring-white dark:bg-neutral-900 dark:ring-neutral-800">
+                  <svg class="shrink-0 size-6" width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_41)">
+                      <path d="M32.2566 16.36C32.2566 15.04 32.1567 14.08 31.9171 13.08H16.9166V19.02H25.7251C25.5454 20.5 24.5866 22.72 22.4494 24.22L22.4294 24.42L27.1633 28.1L27.4828 28.14C30.5189 25.34 32.2566 21.22 32.2566 16.36Z" fill="#4285F4" />
+                      <path d="M16.9166 32C21.231 32 24.8463 30.58 27.5028 28.12L22.4694 24.2C21.1111 25.14 19.3135 25.8 16.9366 25.8C12.7021 25.8 9.12677 23 7.84844 19.16L7.66867 19.18L2.71513 23L2.65521 23.18C5.2718 28.4 10.6648 32 16.9166 32Z" fill="#34A853" />
+                      <path d="M7.82845 19.16C7.48889 18.16 7.28915 17.1 7.28915 16C7.28915 14.9 7.48889 13.84 7.80848 12.84V12.62L2.81499 8.73999L2.6552 8.81999C1.55663 10.98 0.937439 13.42 0.937439 16C0.937439 18.58 1.55663 21.02 2.63522 23.18L7.82845 19.16Z" fill="#FBBC05" />
+                      <path d="M16.9166 6.18C19.9127 6.18 21.9501 7.48 23.0886 8.56L27.6027 4.16C24.8263 1.58 21.231 0 16.9166 0C10.6648 0 5.27181 3.6 2.63525 8.82L7.80851 12.84C9.10681 8.98 12.6821 6.18 16.9166 6.18Z" fill="#EB4335" />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_41">
+                        <rect width="32" height="32" fill="white" transform="translate(0.937439)" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+              <div class="relative">
+                <div class="bg-white rounded-full overflow-hidden ring-2 ring-white dark:bg-neutral-900 dark:ring-neutral-800">
+                  <svg class="shrink-0 size-6" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.04 8C0.04 3.5816 3.6208 0 8.04 0C12.4576 0 16.04 3.5816 16.04 8C16.04 12.4184 12.4576 16 8.04 16C3.6208 16 0.04 12.4184 0.04 8Z" fill="#FC3F1D"></path>
+                    <path d="M9.064 4.5328H8.3248C6.9696 4.5328 6.2568 5.2192 6.2568 6.2312C6.2568 7.3752 6.7496 7.9112 7.7616 8.5984L8.5976 9.1616L6.1952 12.7512H4.4L6.556 9.54C5.316 8.6512 4.62 7.788 4.62 6.328C4.62 4.4976 5.896 3.248 8.316 3.248H10.7184V12.7424H9.064V4.5328Z" fill="white"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <!-- Avatar Group -->
+          </div>
+          <!-- End Header -->
+
+          <div class="mt-auto">
+            <div class="pt-5">
+              <!-- List -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2">
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Replied:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                      <path d="m10 7-3 3 3 3" />
+                      <path d="M17 13v-1a2 2 0 0 0-2-2H7" />
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      828
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Tagged:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M11.7 3H5a2 2 0 0 0-2 2v16l4-4h12a2 2 0 0 0 2-2v-2.7" />
+                      <circle cx="18" cy="6" r="3" />
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      9
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+              </div>
+              <!-- End List -->
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              All mailboxes
+            </p>
+          </div>
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div class="p-5 flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700">
+          <!-- Header -->
+          <div class="flex justify-between gap-x-3">
+            <div>
+              <span class="block font-semibold text-xl text-gray-800 dark:text-neutral-200">
+                26
+              </span>
+              <h2 class="text-sm text-gray-500 dark:text-neutral-500">
+                Assigned to me
+              </h2>
+            </div>
+          </div>
+          <!-- End Header -->
+
+          <div class="mt-auto">
+            <div class="pt-5">
+              <!-- List -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2">
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Resolved:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                      <path d="m9 12 2 2 4-4" />
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      32
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Unresolved:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                      <path d="m9.5 14.5 5-5" />
+                      <path d="m9.5 9.5 5 5" />
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      20
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+              </div>
+              <!-- End List -->
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              Last 30 Days
+            </p>
+          </div>
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div class="p-5 flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700">
+          <!-- Header -->
+          <div class="flex justify-between gap-x-3">
+            <div>
+              <span class="block font-semibold text-xl text-gray-800 dark:text-neutral-200">
+                873
+              </span>
+              <h2 class="text-sm text-gray-500 dark:text-neutral-500">
+                Top sources
+              </h2>
+            </div>
+          </div>
+          <!-- End Header -->
+
+          <div class="mt-auto">
+            <div class="pt-5">
+              <!-- List -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2">
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Gmail:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_4132_5805adfqf2134sd2)">
+                        <path d="M32.2566 16.36C32.2566 15.04 32.1567 14.08 31.9171 13.08H16.9166V19.02H25.7251C25.5454 20.5 24.5866 22.72 22.4494 24.22L22.4294 24.42L27.1633 28.1L27.4828 28.14C30.5189 25.34 32.2566 21.22 32.2566 16.36Z" fill="#4285F4" />
+                        <path d="M16.9166 32C21.231 32 24.8463 30.58 27.5028 28.12L22.4694 24.2C21.1111 25.14 19.3135 25.8 16.9366 25.8C12.7021 25.8 9.12677 23 7.84844 19.16L7.66867 19.18L2.71513 23L2.65521 23.18C5.2718 28.4 10.6648 32 16.9166 32Z" fill="#34A853" />
+                        <path d="M7.82845 19.16C7.48889 18.16 7.28915 17.1 7.28915 16C7.28915 14.9 7.48889 13.84 7.80848 12.84V12.62L2.81499 8.73999L2.6552 8.81999C1.55663 10.98 0.937439 13.42 0.937439 16C0.937439 18.58 1.55663 21.02 2.63522 23.18L7.82845 19.16Z" fill="#FBBC05" />
+                        <path d="M16.9166 6.18C19.9127 6.18 21.9501 7.48 23.0886 8.56L27.6027 4.16C24.8263 1.58 21.231 0 16.9166 0C10.6648 0 5.27181 3.6 2.63525 8.82L7.80851 12.84C9.10681 8.98 12.6821 6.18 16.9166 6.18Z" fill="#EB4335" />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_4132_5805adfqf2134sd2">
+                          <rect width="32" height="32" fill="white" transform="translate(0.937439)" />
+                        </clipPath>
+                      </defs>
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      600
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Mail:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7.34318 0.00012207H24.6569C28.725 0.00012207 32 3.27516 32 7.34327V24.657C32 28.7251 28.725 32.0001 24.6569 32.0001H7.34318C3.27507 32.0001 2.52724e-05 28.7251 2.52724e-05 24.657V7.34327C2.52724e-05 3.27516 3.27507 0.00012207 7.34318 0.00012207Z" fill="url(#paint0_linear_5465123)" />
+                      <path d="M7.01113 9.1001C6.84252 9.1001 6.68368 9.12919 6.53335 9.18899L9.54446 12.289L12.5889 15.4446L12.6445 15.5112L12.8222 15.689L13 15.8779L15.6111 18.5557C15.6546 18.5827 15.7806 18.6994 15.879 18.7486C16.0058 18.812 16.1432 18.8704 16.2849 18.8754C16.4377 18.8809 16.594 18.8371 16.7315 18.7702C16.8345 18.7201 16.8803 18.6483 17 18.5557L20.0222 15.4334L26.0222 9.25566C25.8332 9.15324 25.6239 9.1001 25.4 9.1001H7.01113ZM6.08891 9.47788C5.7678 9.78214 5.56668 10.2395 5.56668 10.7557V20.9334C5.56668 21.3513 5.7009 21.731 5.92224 22.0223L6.34446 21.6223L9.48891 18.5668L12.2778 15.8668L12.2222 15.8001L9.16668 12.6557L6.11113 9.5001L6.08891 9.47788ZM26.4222 9.57788L20.4 15.8001L20.3445 15.8557L23.2445 18.6668L26.3889 21.7223L26.5778 21.9001C26.7471 21.6285 26.8445 21.2938 26.8445 20.9334V10.7557C26.8445 10.2955 26.685 9.87817 26.4222 9.57788ZM12.6333 16.2334L9.85557 18.9334L6.70002 21.989L6.30002 22.3779C6.5109 22.5137 6.75088 22.6001 7.01113 22.6001H25.4C25.7129 22.6001 25.9967 22.4797 26.2334 22.289L26.0334 22.089L22.8778 19.0334L19.9778 16.2334L17.3667 18.9223C17.2254 19.016 17.1309 19.1199 16.9929 19.1837C16.7709 19.2864 16.5275 19.3733 16.2828 19.3696C16.0375 19.3658 15.797 19.2698 15.5768 19.1615C15.4663 19.1072 15.4074 19.0531 15.2778 18.9446L12.6333 16.2334Z" fill="white" />
+                      <defs>
+                        <linearGradient id="paint0_linear_5465123" x1="16.2241" y1="31.8717" x2="16.2552" y2="0.386437" gradientUnits="userSpaceOnUse">
+                          <stop stop-color="#70EFFF" />
+                          <stop offset="1" stop-color="#5770FF" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      273
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+              </div>
+              <!-- End List -->
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              Last 30 Days
+            </p>
+          </div>
+        </div>
+        <!-- End Card -->
+
+        <!-- Card -->
+        <div class="p-5 flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700">
+          <!-- Header -->
+          <div class="flex justify-between gap-x-3">
+            <div>
+              <span class="block font-semibold text-xl text-gray-800 dark:text-neutral-200">
+                <span class="flex items-center gap-x-2">18m 44s <span class="py-1 px-2 flex shrink-0 justify-center items-center gap-x-1 font-normal text-xs rounded-full bg-green-300 text-black dark:bg-green-500"><svg class="shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m5 12 7-7 7 7"></path>
+                      <path d="M12 19V5"></path>
+                    </svg>9s</span></span>
+              </span>
+              <h2 class="text-sm text-gray-500 dark:text-neutral-500">
+                Avg. time to action
+              </h2>
+            </div>
+          </div>
+          <!-- End Header -->
+
+          <div class="mt-auto">
+            <div class="pt-5">
+              <!-- List -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-2">
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Replies:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      21m 49s
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex flex-col gap-y-1">
+                  <span class="text-[13px] text-gray-500 dark:text-neutral-500">
+                    Opens:
+                  </span>
+
+                  <div class="flex items-center gap-x-1.5">
+                    <svg class="shrink-0 size-5 text-gray-800 dark:text-neutral-200" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                      <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+                    </svg>
+
+                    <span class="font-medium text-sm text-gray-800 dark:text-neutral-200">
+                      16m 30s
+                    </span>
+                  </div>
+                </div>
+                <!-- End Item -->
+              </div>
+              <!-- End List -->
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <p class="text-xs text-gray-500 dark:text-neutral-500">
+              Last 30 Days
+            </p>
+          </div>
+        </div>
+        <!-- End Card -->
+      </div>
+      <!-- End Grid -->
+
+      <!-- Card -->
+      <div class="flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700">
+        <!-- Header -->
+        <div class="border-b border-gray-200 dark:border-neutral-700">
+          <div class="py-3 px-5 flex flex-wrap justify-between items-center gap-y-2 gap-x-5">
+            <h2 class="font-medium text-gray-800 dark:text-neutral-200">
+              Your email stats
+            </h2>
+
+            <div class="flex justify-end items-center gap-x-2">
+              <p class="text-xs text-gray-500 dark:text-neutral-500">
+                Your performance <span class="py-1 px-2 bg-green-100 text-green-700 text-start text-nowrap text-xs rounded-full dark:bg-green-500/10 dark:text-green-400">Exceeds range</span> to last month
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- End Header -->
+
+        <!-- Body -->
+        <div class="grid grid-cols-12 gap-3">
+          <div class="col-span-12 xl:col-span-8 2xl:col-span-9">
+            <div class="py-4 px-5">
+              <!-- Grid -->
+              <div class="mb-2 flex flex-wrap justify-end gap-y-4 gap-x-6">
+                <!-- Legend Indicator -->
+                <div class="flex items-center gap-2">
+                  <span class="shrink-0 size-2.5 inline-block bg-blue-600 rounded-xs"></span>
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Leads
+                    </span>
+                  </div>
+                </div>
+                <!-- End Legend Indicator -->
+
+                <!-- Legend Indicator -->
+                <div class="flex items-center gap-2">
+                  <span class="shrink-0 size-2.5 inline-block bg-blue-400 rounded-xs"></span>
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Users
+                    </span>
+                  </div>
+                </div>
+                <!-- End Legend Indicator -->
+              </div>
+              <!-- End Grid -->
+
+              <!-- Apex Heatmap Chart -->
+              <div id="hs-pro-iresscch" class="min-h-[255px] -mx-2"></div>
+            </div>
+          </div>
+          <!-- End Col -->
+
+          <div class="col-span-12 xl:col-span-4 2xl:col-span-3 border-t xl:border-t-0 xl:border-s border-gray-200 dark:border-neutral-700">
+            <div class="p-5">
+              <h3 class="mb-3 text-sm text-gray-800 dark:text-neutral-200">
+                Breakdown
+              </h3>
+
+              <!-- List Group -->
+              <div class="flex flex-col gap-y-4">
+                <div class="mb-3">
+                  <!-- Progress -->
+                  <div class="flex gap-x-[3px] w-full h-2.5">
+                    <div class="flex flex-col justify-center overflow-hidden bg-blue-800 text-xs text-white text-center rounded-full whitespace-nowrap" style="width: 42%" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="flex flex-col justify-center overflow-hidden bg-blue-600 text-xs text-white text-center rounded-full whitespace-nowrap" style="width: 27%" role="progressbar" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="flex flex-col justify-center overflow-hidden bg-blue-400 text-xs text-white text-center rounded-full whitespace-nowrap" style="width: 16%" role="progressbar" aria-valuenow="16" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="flex flex-col justify-center overflow-hidden bg-blue-200 text-xs text-white text-center rounded-full whitespace-nowrap" style="width: 6%" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="flex flex-col justify-center overflow-hidden bg-gray-200 text-xs text-white text-center rounded-full whitespace-nowrap dark:bg-neutral-500" style="width: 9%" role="progressbar" aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <!-- End Progress -->
+                </div>
+
+                <!-- List Group -->
+                <ul>
+                  <!-- List Item -->
+                  <li class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                    <div class="grow">
+                      <div class="flex items-center gap-x-2">
+                        <span class="shrink-0 size-2.5 inline-block bg-blue-800 rounded-full"></span>
+                        <span class="text-sm text-gray-800 dark:text-neutral-200">
+                          Emails sent
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <span class="text-sm text-gray-500 dark:text-neutral-500">
+                        164
+                      </span>
+                    </div>
+                  </li>
+                  <!-- End List Item -->
+
+                  <!-- List Item -->
+                  <li class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                    <div class="grow">
+                      <div class="flex items-center gap-x-2">
+                        <span class="shrink-0 size-2.5 inline-block bg-blue-600 rounded-full"></span>
+                        <span class="text-sm text-gray-800 dark:text-neutral-200">
+                          Emails delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <span class="text-sm text-gray-500 dark:text-neutral-500">
+                        49
+                      </span>
+                    </div>
+                  </li>
+                  <!-- End List Item -->
+
+                  <!-- List Item -->
+                  <li class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                    <div class="grow">
+                      <div class="flex items-center gap-x-2">
+                        <span class="shrink-0 size-2.5 inline-block bg-blue-400 rounded-full"></span>
+                        <span class="text-sm text-gray-800 dark:text-neutral-200">
+                          Emails opened
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <span class="text-sm text-gray-500 dark:text-neutral-500">
+                        26
+                      </span>
+                    </div>
+                  </li>
+                  <!-- End List Item -->
+
+                  <!-- List Item -->
+                  <li class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                    <div class="grow">
+                      <div class="flex items-center gap-x-2">
+                        <span class="shrink-0 size-2.5 inline-block bg-blue-200 rounded-full"></span>
+                        <span class="text-sm text-gray-800 dark:text-neutral-200">
+                          Emails replied
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <span class="text-sm text-gray-500 dark:text-neutral-500">
+                        8
+                      </span>
+                    </div>
+                  </li>
+                  <!-- End List Item -->
+
+                  <!-- List Item -->
+                  <li class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                    <div class="grow">
+                      <div class="flex items-center gap-x-2">
+                        <span class="shrink-0 size-2.5 inline-block bg-gray-200 rounded-full dark:bg-neutral-500"></span>
+                        <span class="text-sm text-gray-800 dark:text-neutral-200">
+                          Emails interested
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <span class="text-sm text-gray-500 dark:text-neutral-500">
+                        12
+                      </span>
+                    </div>
+                  </li>
+                  <!-- End List Item -->
+                </ul>
+                <!-- End List Group -->
+              </div>
+              <!-- End List Group -->
+            </div>
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Body -->
+      </div>
+      <!-- End Card -->
+
+      <!-- Card -->
+      <div class="flex flex-col bg-white border border-gray-200 shadow-xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700">
+        <!-- Header -->
+        <div class="border-b border-gray-200 dark:border-neutral-700">
+          <div class="py-3 px-5 flex flex-wrap justify-between items-center gap-y-2 gap-x-5">
+            <h2 class="font-medium text-gray-800 dark:text-neutral-200">
+              Conversations
+            </h2>
+
+            <div class="flex justify-end items-center gap-x-2">
+              <p class="text-xs text-gray-500 dark:text-neutral-500">
+                Your performance <span class="py-1 px-2 bg-orange-100 text-orange-700 text-start text-nowrap text-xs rounded-full dark:bg-orange-500/10 dark:text-orange-400">Below range</span> to last month
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- End Header -->
+
+        <!-- Body -->
+        <div class="grid grid-cols-12 gap-3">
+          <div class="col-span-12 xl:col-span-8 2xl:col-span-9">
+            <div class="py-4 px-5">
+              <!-- Header -->
+              <div class="flex flex-wrap justify-between items-center gap-y-2 gap-x-5">
+                <!-- Select -->
+                <div class="relative inline-block">
+                  <select id="hs-pro-select-revenue" data-hs-select='{
+                      "placeholder": "Select option...",
+                      "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                      "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative -ms-2.5 py-1.5 ps-2.5 pe-6 inline-flex shrink-0 justify-center items-center gap-x-1.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 before:absolute before:inset-0 before:z-1 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+                      "dropdownClasses": "mt-2 z-50 w-60 p-1 space-y-0.5 bg-white rounded-xl shadow-xl dark:bg-neutral-950",
+                      "optionClasses": "hs-selected:bg-gray-100 dark:hs-selected:bg-neutral-800 py-1.5 px-2 w-full text-[13px] text-gray-800 rounded-lg cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700",
+                      "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-gray-800 dark:text-neutral-200\" xmlns=\"http:.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>"
+                    }' class="hidden">
+                    <option value="">Choose</option>
+                    <option selected>New conversations</option>
+                    <option>New inbound conversations</option>
+                    <option>Conversations replied to</option>
+                    <option>Closed conversations</option>
+                    <option>Open conversations</option>
+                    <option>Snoozed conversations</option>
+                    <option>Reopened conversations</option>
+                    <option>Replies sent</option>
+                  </select>
+
+                  <div class="absolute top-1/2 end-2 -translate-y-1/2">
+                    <svg class="shrink-0 size-3.5 text-gray-600 dark:text-neutral-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </div>
+                </div>
+                <!-- End Select -->
+
+                <!-- Legend Indicator -->
+                <div class="flex items-center gap-x-2 whitespace-nowrap">
+                  <span class="text-xs text-gray-800 dark:text-neutral-200">
+                    0
+                  </span>
+                  <div class="inline-flex items-center gap-x-1">
+                    <span class="shrink-0 size-2.5 inline-block border border-gray-200 rounded-xs dark:border-neutral-700"></span>
+                    <span class="shrink-0 size-2.5 inline-block bg-blue-200 rounded-xs"></span>
+                    <span class="shrink-0 size-2.5 inline-block bg-blue-400 rounded-xs"></span>
+                    <span class="shrink-0 size-2.5 inline-block bg-blue-600 rounded-xs"></span>
+                  </div>
+                  <span class="text-xs text-gray-800 dark:text-neutral-200">
+                    4
+                  </span>
+                </div>
+                <!-- End Legend Indicator -->
+              </div>
+              <!-- End Header -->
+
+              <!-- Apex Heatmap Chart -->
+              <div id="hs-pro-irhch" class="min-h-[381px] -mx-2"></div>
+            </div>
+          </div>
+          <!-- End Col -->
+
+          <div class="col-span-12 xl:col-span-4 2xl:col-span-3 border-t xl:border-t-0 xl:border-s border-gray-200 dark:border-neutral-700">
+            <div class="p-5">
+              <!-- List Group -->
+              <div class="flex flex-col">
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Monday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      14 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-orange-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-orange-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          Medium
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Tuesday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      9 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-yellow-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"></span>
+                        <span class="shrink-0 size-2 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          Low
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Wednesday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      21 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          High
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Thursday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      19 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          High
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Friday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      20 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-red-500 rounded-full"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          High
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Saturday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      13 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-orange-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-orange-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          Medium
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+
+                <!-- Item -->
+                <div class="flex justify-between gap-5 py-2.5 first:pt-0 last:pb-0 first:border-t-0 border-t border-dashed border-gray-200 dark:border-neutral-700">
+                  <div class="grow">
+                    <span class="block text-sm text-gray-800 dark:text-neutral-200">
+                      Sunday
+                    </span>
+                    <small class="block text-xs text-gray-500 dark:text-neutral-400">
+                      7 new conversations
+                    </small>
+                  </div>
+
+                  <div class="min-w-22 flex items-center gap-x-1.5 whitespace-nowrap">
+                    <div class="flex items-center gap-2">
+                      <div class="flex items-center gap-0.5">
+                        <span class="shrink-0 size-2 inline-block bg-yellow-500 rounded-full"></span>
+                        <span class="shrink-0 size-2 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"></span>
+                        <span class="shrink-0 size-2 inline-block bg-gray-300 rounded-full dark:bg-neutral-600"></span>
+                      </div>
+                      <div class="grow">
+                        <span class="block text-xs text-gray-500 dark:text-neutral-500">
+                          Low
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Item -->
+              </div>
+              <!-- End List Group -->
+            </div>
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Body -->
+      </div>
+      <!-- End Card -->
+    </div>
+  </main>
+  <!-- ========== END MAIN CONTENT ========== -->
+
+  <!-- JS PLUGINS -->
+  <!-- Required plugins -->
+  <script src="../assets/vendor/preline/dist/index.js?v=3.0.1"></script>
+  <!-- Clipboard -->
+  <script src="../assets/vendor/clipboard/dist/clipboard.min.js"></script>
+  <script src="../assets/js/hs-copy-clipboard-helper.js"></script>
+  <!-- Apexcharts -->
+  <script src="../assets/vendor/lodash/lodash.min.js"></script>
+  <script src="../assets/vendor/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="../assets/vendor/preline/dist/helper-apexcharts.js"></script>
+
+  <!-- JS INITIALIZATIONS -->
+  <script>
+    window.addEventListener('load', () => {
+      // Apex Stacked Column Chart
+      (function () {
+        buildChart('#hs-pro-iresscch', (mode) => ({
+          chart: {
+            type: 'bar',
+            height: 240,
+            stacked: true,
+            toolbar: {
+              show: false
+            },
+            zoom: {
+              enabled: false
+            }
+          },
+          series: [
+            {
+              name: 'Leads',
+              data: [5, 8, 3, 2, 6, 4, 7, 1]
+            },
+            {
+              name: 'Users',
+              data: [4, 6, 2, 3, 5, 3, 6, 2]
+            }
+          ],
+          colors: [
+            'oklch(54.6% 0.245 262.881)',
+            'oklch(70.7% 0.165 254.624)'
+          ],
+          plotOptions: {
+            bar: {
+              horizontal: false,
+              columnWidth: '50%',
+              borderRadius: 3,
+            }
+          },
+          legend: {
+            show: false,
+            position: 'top',
+            horizontalAlign: 'left',
+            offsetX: 0
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            show: true,
+            width: 0,
+            colors: ['transparent']
+          },
+          xaxis: {
+            categories: [
+              '25 July',
+              '26 July',
+              '27 July',
+              '28 July',
+              '29 July', 
+              '30 July',
+              '31 July',
+              '1 June'
+            ],
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false
+            },
+            crosshairs: {
+              show: false
+            },
+            labels: {
+              style: {
+                colors: 'oklch(0.707 0.022 261.325)',
+                fontSize: '13px',
+                fontFamily: 'Inter, ui-sans-serif',
+                fontWeight: 400
+              },
+            }
+          },
+          yaxis: {
+            labels: {
+              align: 'left',
+              minWidth: 0,
+              maxWidth: 140,
+              style: {
+                colors: 'oklch(0.707 0.022 261.325)',
+                fontSize: '13px',
+                fontFamily: 'Inter, ui-sans-serif',
+                fontWeight: 400
+              },
+              formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+            }
+          },
+          tooltip: {
+            custom: function (props) {
+              const { categories } = props.ctx.opts.xaxis;
+              const { dataPointIndex } = props;
+
+              return buildTooltip(props, {
+                title: categories[dataPointIndex],
+                mode,
+                valuePrefix: '',
+                hasCategory: false,
+                hasTextLabel: true,
+                wrapperExtClasses: 'min-w-28',
+                labelDivider: ':',
+                labelExtClasses: 'ms-2'
+              });
+            }
+          },
+          states: {
+            hover: {
+              filter: {
+                type: 'darken',
+                value: 0.9
+              }
+            }
+          },
+        }), {
+          colors: [
+            'oklch(54.6% 0.245 262.881)',
+            'oklch(70.7% 0.165 254.624)'
+          ],
+          grid: {
+            borderColor: 'oklch(0.928 0.006 264.531)'
+          },
+          xaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.707 0.022 261.325)'
+              }
+            }
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.707 0.022 261.325)'
+              }
+            }
+          }
+        }, {
+          grid: {
+            borderColor: 'oklch(0.371 0 0)'
+          },
+          xaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.556 0 0)',
+              }
+            }
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.556 0 0)'
+              }
+            }
+          }
+        });
+      })();
+    });
+  </script>
+  <script>
+    window.addEventListener('load', () => {
+      // Apex Heatmap Chart
+      (function () {
+        const timeSlots = ['9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM'];
+        const days = ['Sun', 'Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'];
+
+        const series = [
+          {
+            name: 'Sun',
+            data: [0, 0, 0, 0, 1, 1, 4, 0, 1, 0]
+          },
+          {
+            name: 'Sat',
+            data: [1, 0, 3, 0, 0, 1, 2, 4, 1, 1]
+          },
+          {
+            name: 'Fri',
+            data: [0, 1, 1, 3, 0, 2, 3, 2, 4, 3]
+          },
+          {
+            name: 'Thu',
+            data: [1, 4, 0, 1, 4, 4, 4, 0, 1, 1]
+          },
+          {
+            name: 'Wed',
+            data: [1, 1, 2, 2, 3, 4, 2, 1, 1, 4]
+          },
+          {
+            name: 'Tue',
+            data: [1, 0, 1, 2, 0, 0, 1, 3, 1, 0]
+          },
+          {
+            name: 'Mon',
+            data: [0, 1, 1, 1, 3, 1, 2, 0, 1, 4]
+          }
+        ];
+
+        buildChart('#hs-pro-irhch', (mode) => ({
+          chart: {
+            type: 'heatmap',
+            height: 350,
+            toolbar: { show: false }
+          },
+          dataLabels: {
+            enabled: true,
+          },
+          stroke: {
+            width: 4
+          },
+          plotOptions: {
+            heatmap: {
+              shadeIntensity: 0,
+              radius: 6,
+              useFillColorAsStroke: false,
+              colorScale: {
+                ranges: [
+                  { from: 0, to: 0, color: '#ffffff', foreColor: '#171717', name: 'Low' },
+                  { from: 1, to: 1, color: '#bfdbfe', foreColor: '#ffffff', name: 'Low' },
+                  { from: 2, to: 3, color: '#60a5fa', foreColor: '#ffffff', name: 'Medium' },
+                  { from: 4, to: 4, color: '#2563eb', foreColor: '#ffffff', name: 'High' }
+                ]
+              }
+            }
+          },
+          series: series,
+          xaxis: {
+            categories: timeSlots,
+            labels: {
+              style: {
+                fontSize: '12px',
+                fontFamily: 'Inter, ui-sans-serif'
+              }
+            },
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+            tooltip: {
+              enabled: true,
+              offsetY: 0,
+              formatter: function(value) {
+                return `${value}`;
+              },
+            },
+          },
+          yaxis: {
+            categories: days,
+            labels: {
+              style: {
+                fontSize: '12px',
+                fontFamily: 'Inter, ui-sans-serif'
+              }
+            }
+          },
+          legend: {
+            show: false
+          },
+          tooltip: {
+            custom: function (props, b, c) {
+              const { dataPointIndex, seriesIndex, series } = props;
+              const val = series[seriesIndex][dataPointIndex];
+              const bgc = () => {
+                switch (val) {
+                  case 2:
+                  case 3:
+                    return '#60a5fa';
+                  case 4:
+                    return '#2563eb';
+                  default:
+                    return '#fff';
+                }
+              };
+
+              return buildHeatmapTooltip(props, {
+                mode,
+                wrapperExtClasses: 'min-w-28',
+                valuePrefix: '',
+                divider: ' : ',
+                valuePostfix: ` hr${val === 1 ? '' : 's'}`,
+                markerExtClasses: '!rounded-full',
+                markerStyles: `background: ${bgc()}`
+              });
+            }
+          },
+        }), {
+          grid: {
+            borderColor: 'oklch(0.928 0.006 264.531)'
+          },
+          stroke: {
+            colors: ['#ffffff']
+          },
+          xaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.707 0.022 261.325)'
+              }
+            }
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.707 0.022 261.325)'
+              }
+            }
+          }
+        }, {
+          grid: {
+            borderColor: 'oklch(0.371 0 0)'
+          },
+          stroke: {
+            colors: ['#171717']
+          },
+          xaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.556 0 0)'
+              }
+            }
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: 'oklch(0.556 0 0)'
+              }
+            }
+          }
+        });
+      })();
+    });
+  </script>
+
+</body>
+</html>

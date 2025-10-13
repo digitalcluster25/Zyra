@@ -1,9 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { Login } from './pages/Login';
+import { Dashboard } from './pages/Dashboard';
 import { Users } from './pages/Users';
 import { Factors } from './pages/Factors';
-import { AdminLayout } from './components/Layout/AdminLayout';
+import { Settings } from './pages/Settings';
+import { Reports } from './pages/Reports';
+import { CRMLayout } from './components/Layout/CRMLayout';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -28,18 +31,20 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
 
-          {/* Protected routes */}
+          {/* Protected routes with CRM Layout */}
           <Route
             path="/"
             element={
               <ProtectedRoute>
-                <AdminLayout />
+                <CRMLayout />
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="/users" replace />} />
+            <Route index element={<Dashboard />} />
             <Route path="users" element={<Users />} />
             <Route path="factors" element={<Factors />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="reports" element={<Reports />} />
           </Route>
 
           {/* Fallback */}
