@@ -15,7 +15,11 @@ app.use(helmet());
 
 // CORS
 app.use(cors({
-  origin: env.ALLOWED_ORIGINS,
+  origin: [
+    ...env.ALLOWED_ORIGINS,
+    'https://zyra-admin-production.up.railway.app',
+    'https://zyra.up.railway.app'
+  ],
   credentials: true,
 }));
 
