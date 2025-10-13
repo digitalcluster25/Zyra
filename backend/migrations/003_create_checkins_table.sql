@@ -37,6 +37,7 @@ CREATE INDEX IF NOT EXISTS idx_checkins_date ON checkins(checkin_date DESC);
 CREATE INDEX IF NOT EXISTS idx_checkins_user_date ON checkins(user_id, checkin_date DESC);
 
 -- Create updated_at trigger
+DROP TRIGGER IF EXISTS update_checkins_updated_at ON checkins;
 CREATE TRIGGER update_checkins_updated_at BEFORE UPDATE ON checkins
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 

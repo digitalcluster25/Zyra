@@ -15,6 +15,7 @@ CREATE INDEX IF NOT EXISTS idx_factors_active ON factors(is_active);
 CREATE INDEX IF NOT EXISTS idx_factors_key ON factors(key);
 
 -- Create updated_at trigger
+DROP TRIGGER IF EXISTS update_factors_updated_at ON factors;
 CREATE TRIGGER update_factors_updated_at BEFORE UPDATE ON factors
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 

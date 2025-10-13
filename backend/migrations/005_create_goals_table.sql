@@ -16,6 +16,7 @@ CREATE INDEX IF NOT EXISTS idx_goals_user ON goals(user_id);
 CREATE INDEX IF NOT EXISTS idx_goals_active ON goals(is_active);
 
 -- Create updated_at trigger
+DROP TRIGGER IF EXISTS update_goals_updated_at ON goals;
 CREATE TRIGGER update_goals_updated_at BEFORE UPDATE ON goals
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
