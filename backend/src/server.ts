@@ -63,7 +63,7 @@ app.use(errorHandler);
 
 // ==================== Server Start ====================
 
-const PORT = process.env.PORT || env.PORT || 3001;
+const PORT = parseInt(process.env.PORT || String(env.PORT || 3001), 10);
 
 async function startServer() {
   try {
