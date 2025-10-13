@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -14,12 +14,12 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Run migrations and seed data
-RUN npm run migrate
-RUN npm run seed
+# Copy entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
 # Expose port
 EXPOSE 3001
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application with migrations
+ENTRYPOINT ["/docker-entrypoint.sh"]
