@@ -355,32 +355,28 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                         </div>
                       </div>
 
-                      {/* Метрики Индекса Хупера */}
+                      {/* Метрики в один ряд */}
                       <div className="mb-3">
-                        <p className="text-xs font-semibold text-slate-600 mb-3">Метрики Хупера (1=отлично, 7=плохо):</p>
-                        <div className="grid grid-cols-5 gap-2">
+                        <div className="flex items-center gap-4 mb-3">
+                          <p className="text-xs font-semibold text-slate-600">Метрики Хупера (1=отлично, 7=плохо):</p>
+                          {(record.data.motivation !== undefined || record.data.focus !== undefined) && (
+                            <p className="text-xs font-semibold text-slate-600">Дополнительно:</p>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-7 gap-2">
                             <MetricSquare value={record.data.sleepQuality} label="Сон" />
                             <MetricSquare value={record.data.fatigue} label="Усталость" />
                             <MetricSquare value={record.data.muscleSoreness} label="Боль" />
                             <MetricSquare value={record.data.stress} label="Стресс" />
                             <MetricSquare value={record.data.mood} label="Настроение" />
-                        </div>
-                      </div>
-
-                      {/* Дополнительные метрики */}
-                      {(record.data.motivation !== undefined || record.data.focus !== undefined) && (
-                        <div className="mb-3">
-                          <p className="text-xs font-semibold text-slate-600 mb-3">Дополнительно:</p>
-                          <div className="grid grid-cols-5 gap-2">
                             {record.data.motivation !== undefined && (
                               <MetricSquare value={record.data.motivation} label="Мотивация" />
                             )}
                             {record.data.focus !== undefined && (
                               <MetricSquare value={record.data.focus} label="Концентрация" />
                             )}
-                          </div>
                         </div>
-                      )}
+                      </div>
 
                       {/* Тренировка */}
                       {record.data.hadTraining && record.data.trainingDuration && record.data.rpe !== undefined && record.dailyLoad && (
