@@ -215,7 +215,10 @@ const HooperChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
 };
 
 // Квадратики метрик (теперь для новой шкалы)
-const MetricSquare: React.FC<{ value: number; label: string }> = ({ value, label }) => {
+const MetricSquare: React.FC<{ value?: number; label: string }> = ({ value, label }) => {
+    // Если значение отсутствует, используем 1 (отлично по умолчанию)
+    const safeValue = (value === undefined || value === null || isNaN(value)) ? 1 : value;
+    
     // Для Индекса Хупера: 1 = отлично (светлый slate), 7 = плохо (темный slate)
     const colorClasses = [
         'bg-slate-100 text-slate-700', // 1 - отлично
@@ -226,11 +229,11 @@ const MetricSquare: React.FC<{ value: number; label: string }> = ({ value, label
         'bg-slate-600 text-slate-50',  // 6
         'bg-slate-700 text-slate-50'   // 7 - плохо
     ];
-    const color = colorClasses[Math.max(0, Math.min(value - 1, 6))];
+    const color = colorClasses[Math.max(0, Math.min(safeValue - 1, 6))];
     return (
       <div className="flex flex-col items-center gap-1">
         <div className={`w-full aspect-square rounded-lg ${color} flex items-center justify-center font-bold text-2xl`}>
-          {value}
+          {safeValue}
         </div>
         <p className="text-xs text-slate-600 text-center leading-tight">{label}</p>
       </div>
@@ -238,14 +241,17 @@ const MetricSquare: React.FC<{ value: number; label: string }> = ({ value, label
 };
 
 // Квадратики для параметров (Индекс Хупера, Нагрузка, TSB)
-const ParameterSquare: React.FC<{ value: number; label: string; type: 'hooper' | 'load' | 'tsb' }> = ({ value, label, type }) => {
+const ParameterSquare: React.FC<{ value?: number; label: string; type: 'hooper' | 'load' | 'tsb' }> = ({ value, label, type }) => {
+    // Если значение отсутствует, используем 0
+    const safeValue = (value === undefined || value === null || isNaN(value)) ? 0 : value;
+    
     let color = 'bg-slate-300 text-slate-800';
-    let displayValue = value.toString();
+    let displayValue = String(safeValue);
     
     if (type === 'hooper') {
         // Индекс Хупера: 5-35 (5=отлично, 35=плохо)
         // Маппим на шкалу 1-7
-        const normalized = Math.max(1, Math.min(7, Math.round(((value - 5) / 30) * 6 + 1)));
+        const normalized = Math.max(1, Math.min(7, Math.round(((safeValue - 5) / 30) * 6 + 1)));
         const colorClasses = [
             'bg-slate-100 text-slate-700',
             'bg-slate-200 text-slate-700',
@@ -256,10 +262,10 @@ const ParameterSquare: React.FC<{ value: number; label: string; type: 'hooper' |
             'bg-slate-700 text-slate-50'
         ];
         color = colorClasses[normalized - 1];
-        displayValue = value.toFixed(0);
+        displayValue = safeValue.toFixed(0);
     } else if (type === 'load') {
         // Тренировочная нагрузка: 0-300+ (чем выше, тем темнее)
-        const normalized = Math.max(1, Math.min(7, Math.round((value / 300) * 6 + 1)));
+        const normalized = Math.max(1, Math.min(7, Math.round((safeValue / 300) * 6 + 1)));
         const colorClasses = [
             'bg-slate-100 text-slate-700',
             'bg-slate-200 text-slate-700',
@@ -270,10 +276,10 @@ const ParameterSquare: React.FC<{ value: number; label: string; type: 'hooper' |
             'bg-slate-700 text-slate-50'
         ];
         color = colorClasses[normalized - 1];
-        displayValue = value.toFixed(0);
+        displayValue = safeValue.toFixed(0);
     } else if (type === 'tsb') {
         // TSB: -30 до +30 (отрицательный=темный/усталость, положительный=светлый/свежесть)
-        const normalized = Math.max(1, Math.min(7, Math.round(((value + 30) / 60) * 6 + 1)));
+        const normalized = Math.max(1, Math.min(7, Math.round(((safeValue + 30) / 60) * 6 + 1)));
         const colorClasses = [
             'bg-slate-700 text-slate-50',  // -30 (усталость)
             'bg-slate-600 text-slate-50',
@@ -284,7 +290,7 @@ const ParameterSquare: React.FC<{ value: number; label: string; type: 'hooper' |
             'bg-slate-100 text-slate-700'  // +30 (свежесть)
         ];
         color = colorClasses[normalized - 1];
-        displayValue = value.toFixed(1);
+        displayValue = safeValue === 0 ? '0' : safeValue.toFixed(1);
     }
     
     return (
@@ -394,34 +400,22 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                   {records.map(record => (
                     <div key={record.id} className="p-4 bg-slate-50 rounded-lg">
                       <div className="mb-3">
-                        <p className="font-semibold text-slate-800 mb-3">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                        <p className="font-semibold text-slate-800 mb-3">
+                          {new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}
+                          {' в '}
+                          {new Date(record.id).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
                         <div className="grid grid-cols-10 gap-2">
                           <ParameterSquare value={record.hooperIndex} label="Индекс Хупера" type="hooper" />
-                          {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 ? (
-                            <ParameterSquare value={record.dailyLoad} label="Нагрузка" type="load" />
-                          ) : (
-                            <div className="w-full aspect-square" />
-                          )}
-                          {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) ? (
-                            <ParameterSquare value={record.tsb} label="Баланс" type="tsb" />
-                          ) : (
-                            <div className="w-full aspect-square" />
-                          )}
+                          <ParameterSquare value={record.dailyLoad} label="Нагрузка" type="load" />
+                          <ParameterSquare value={record.tsb} label="Баланс" type="tsb" />
                           <MetricSquare value={record.data.sleepQuality} label="Сон" />
                           <MetricSquare value={record.data.fatigue} label="Усталость" />
                           <MetricSquare value={record.data.muscleSoreness} label="Боль" />
                           <MetricSquare value={record.data.stress} label="Стресс" />
                           <MetricSquare value={record.data.mood} label="Настроение" />
-                          {record.data.motivation !== undefined ? (
-                            <MetricSquare value={record.data.motivation} label="Мотивация" />
-                          ) : (
-                            <div className="w-full aspect-square" />
-                          )}
-                          {record.data.focus !== undefined ? (
-                            <MetricSquare value={record.data.focus} label="Концентрация" />
-                          ) : (
-                            <div className="w-full aspect-square" />
-                          )}
+                          <MetricSquare value={record.data.motivation} label="Мотивация" />
+                          <MetricSquare value={record.data.focus} label="Концентрация" />
                         </div>
                       </div>
 

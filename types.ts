@@ -55,13 +55,13 @@ export interface CheckInRecord {
   data: CheckInData;
   
   // Расчетные показатели
-  hooperIndex: number;       // Индекс Хупера (5-35)
-  dailyLoad: number;         // Тренировочная нагрузка за день
+  hooperIndex?: number;      // Индекс Хупера (5-35)
+  dailyLoad?: number;        // Тренировочная нагрузка за день
   
   // Модель Фитнес-Усталость (Banister Model)
-  ctl: number;               // Chronic Training Load (долгосрочная адаптация)
-  atl: number;               // Acute Training Load (краткосрочная усталость)
-  tsb: number;               // Training Stress Balance (форма/готовность)
+  ctl?: number;              // Chronic Training Load (долгосрочная адаптация)
+  atl?: number;              // Acute Training Load (краткосрочная усталость)
+  tsb?: number;              // Training Stress Balance (форма/готовность)
   
   // LEGACY FIELD (для обратной совместимости)
   /** @deprecated Используйте hooperIndex */
