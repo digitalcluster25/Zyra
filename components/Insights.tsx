@@ -216,23 +216,23 @@ const HooperChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
 
 // Квадратики метрик (теперь для новой шкалы)
 const MetricSquare: React.FC<{ value: number; label: string }> = ({ value, label }) => {
-    // Для Индекса Хупера: 1 = отлично (зелёный), 7 = плохо (красный)
+    // Для Индекса Хупера: 1 = отлично (светлый slate), 7 = плохо (темный slate)
     const colorClasses = [
-        'bg-green-200', // 1 - отлично
-        'bg-green-300', // 2
-        'bg-yellow-300', // 3-4
-        'bg-yellow-300',
-        'bg-orange-300', // 5
-        'bg-red-300',    // 6
-        'bg-red-400'     // 7 - плохо
+        'bg-slate-100 text-slate-700', // 1 - отлично
+        'bg-slate-200 text-slate-700', // 2
+        'bg-slate-300 text-slate-800', // 3
+        'bg-slate-400 text-slate-900', // 4
+        'bg-slate-500 text-slate-50',  // 5
+        'bg-slate-600 text-slate-50',  // 6
+        'bg-slate-700 text-slate-50'   // 7 - плохо
     ];
     const color = colorClasses[Math.max(0, Math.min(value - 1, 6))];
     return (
-      <div className="flex flex-col items-center">
-        <div className={`w-18 h-18 rounded-md ${color} flex items-center justify-center font-bold text-base text-slate-700`}>
+      <div className="flex flex-col items-center gap-1">
+        <div className={`w-full aspect-square rounded-lg ${color} flex items-center justify-center font-bold text-2xl`}>
           {value}
         </div>
-        <p className="text-xs text-slate-500 mt-1 text-center">{label}</p>
+        <p className="text-xs text-slate-600 text-center leading-tight">{label}</p>
       </div>
     );
 };
@@ -334,33 +334,31 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                   {records.map(record => (
                     <div key={record.id} className="p-4 bg-slate-50 rounded-lg">
                       <div className="flex justify-between items-center mb-4">
-                          <div>
-                              <p className="font-semibold text-slate-800">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                              <div className="flex items-baseline space-x-4">
-                                <div>
-                                  <p className="text-xs text-slate-500">Индекс Хупера:</p>
-                                  <p className="text-2xl font-bold text-slate-800">{record.hooperIndex}</p>
-                                </div>
-                                {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 && (
-                                  <div>
-                                    <p className="text-xs text-slate-500">Training Load:</p>
-                                    <p className="text-2xl font-bold text-slate-800">{record.dailyLoad.toFixed(0)}</p>
-                                  </div>
-                                )}
-                                {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) && (
-                                  <div>
-                                    <p className="text-xs text-slate-500">TSB:</p>
-                                    <p className="text-xl font-bold text-slate-800">{record.tsb.toFixed(1)}</p>
-                                  </div>
-                                )}
-                              </div>
+                        <p className="font-semibold text-slate-800">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                        <div className="flex items-center gap-4">
+                          <div className="text-center">
+                            <p className="text-xs text-slate-500">Индекс Хупера</p>
+                            <p className="text-xl font-bold text-slate-800">{record.hooperIndex}</p>
                           </div>
+                          {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 && (
+                            <div className="text-center">
+                              <p className="text-xs text-slate-500">Training Load</p>
+                              <p className="text-xl font-bold text-slate-800">{record.dailyLoad.toFixed(0)}</p>
+                            </div>
+                          )}
+                          {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) && (
+                            <div className="text-center">
+                              <p className="text-xs text-slate-500">TSB</p>
+                              <p className="text-xl font-bold text-slate-800">{record.tsb.toFixed(1)}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
 
                       {/* Метрики Индекса Хупера */}
                       <div className="mb-3">
-                        <p className="text-xs font-semibold text-slate-600 mb-2">Метрики Хупера (1=отлично, 7=плохо):</p>
-                        <div className="grid grid-cols-5 gap-3">
+                        <p className="text-xs font-semibold text-slate-600 mb-3">Метрики Хупера (1=отлично, 7=плохо):</p>
+                        <div className="grid grid-cols-5 gap-2">
                             <MetricSquare value={record.data.sleepQuality} label="Сон" />
                             <MetricSquare value={record.data.fatigue} label="Усталость" />
                             <MetricSquare value={record.data.muscleSoreness} label="Боль" />
@@ -372,8 +370,8 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                       {/* Дополнительные метрики */}
                       {(record.data.motivation !== undefined || record.data.focus !== undefined) && (
                         <div className="mb-3">
-                          <p className="text-xs font-semibold text-slate-600 mb-2">Дополнительно:</p>
-                          <div className="grid grid-cols-2 gap-3 max-w-xs">
+                          <p className="text-xs font-semibold text-slate-600 mb-3">Дополнительно:</p>
+                          <div className="grid grid-cols-5 gap-2">
                             {record.data.motivation !== undefined && (
                               <MetricSquare value={record.data.motivation} label="Мотивация" />
                             )}
