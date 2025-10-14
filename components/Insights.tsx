@@ -393,33 +393,35 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                 <TabsContent key={weekKey} value={index.toString()} className="space-y-4 mt-4">
                   {records.map(record => (
                     <div key={record.id} className="p-4 bg-slate-50 rounded-lg">
-                      <div className="flex justify-between items-start mb-4">
-                        <p className="font-semibold text-slate-800">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                        <div className="flex items-start gap-2">
-                          <ParameterSquare value={record.hooperIndex} label="Индекс Хупера" type="hooper" />
-                          {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 && (
-                            <ParameterSquare value={record.dailyLoad} label="Нагрузка" type="load" />
-                          )}
-                          {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) && (
-                            <ParameterSquare value={record.tsb} label="Баланс" type="tsb" />
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Метрики в один ряд */}
                       <div className="mb-3">
-                        <div className="grid grid-cols-7 gap-2">
-                            <MetricSquare value={record.data.sleepQuality} label="Сон" />
-                            <MetricSquare value={record.data.fatigue} label="Усталость" />
-                            <MetricSquare value={record.data.muscleSoreness} label="Боль" />
-                            <MetricSquare value={record.data.stress} label="Стресс" />
-                            <MetricSquare value={record.data.mood} label="Настроение" />
-                            {record.data.motivation !== undefined && (
-                              <MetricSquare value={record.data.motivation} label="Мотивация" />
-                            )}
-                            {record.data.focus !== undefined && (
-                              <MetricSquare value={record.data.focus} label="Концентрация" />
-                            )}
+                        <p className="font-semibold text-slate-800 mb-3">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                        <div className="grid grid-cols-10 gap-2">
+                          <ParameterSquare value={record.hooperIndex} label="Индекс Хупера" type="hooper" />
+                          {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 ? (
+                            <ParameterSquare value={record.dailyLoad} label="Нагрузка" type="load" />
+                          ) : (
+                            <div className="w-full aspect-square" />
+                          )}
+                          {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) ? (
+                            <ParameterSquare value={record.tsb} label="Баланс" type="tsb" />
+                          ) : (
+                            <div className="w-full aspect-square" />
+                          )}
+                          <MetricSquare value={record.data.sleepQuality} label="Сон" />
+                          <MetricSquare value={record.data.fatigue} label="Усталость" />
+                          <MetricSquare value={record.data.muscleSoreness} label="Боль" />
+                          <MetricSquare value={record.data.stress} label="Стресс" />
+                          <MetricSquare value={record.data.mood} label="Настроение" />
+                          {record.data.motivation !== undefined ? (
+                            <MetricSquare value={record.data.motivation} label="Мотивация" />
+                          ) : (
+                            <div className="w-full aspect-square" />
+                          )}
+                          {record.data.focus !== undefined ? (
+                            <MetricSquare value={record.data.focus} label="Концентрация" />
+                          ) : (
+                            <div className="w-full aspect-square" />
+                          )}
                         </div>
                       </div>
 
