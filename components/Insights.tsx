@@ -237,6 +237,66 @@ const MetricSquare: React.FC<{ value: number; label: string }> = ({ value, label
     );
 };
 
+// Квадратики для параметров (Индекс Хупера, Нагрузка, TSB)
+const ParameterSquare: React.FC<{ value: number; label: string; type: 'hooper' | 'load' | 'tsb' }> = ({ value, label, type }) => {
+    let color = 'bg-slate-300 text-slate-800';
+    let displayValue = value.toString();
+    
+    if (type === 'hooper') {
+        // Индекс Хупера: 5-35 (5=отлично, 35=плохо)
+        // Маппим на шкалу 1-7
+        const normalized = Math.max(1, Math.min(7, Math.round(((value - 5) / 30) * 6 + 1)));
+        const colorClasses = [
+            'bg-slate-100 text-slate-700',
+            'bg-slate-200 text-slate-700',
+            'bg-slate-300 text-slate-800',
+            'bg-slate-400 text-slate-900',
+            'bg-slate-500 text-slate-50',
+            'bg-slate-600 text-slate-50',
+            'bg-slate-700 text-slate-50'
+        ];
+        color = colorClasses[normalized - 1];
+        displayValue = value.toFixed(0);
+    } else if (type === 'load') {
+        // Тренировочная нагрузка: 0-300+ (чем выше, тем темнее)
+        const normalized = Math.max(1, Math.min(7, Math.round((value / 300) * 6 + 1)));
+        const colorClasses = [
+            'bg-slate-100 text-slate-700',
+            'bg-slate-200 text-slate-700',
+            'bg-slate-300 text-slate-800',
+            'bg-slate-400 text-slate-900',
+            'bg-slate-500 text-slate-50',
+            'bg-slate-600 text-slate-50',
+            'bg-slate-700 text-slate-50'
+        ];
+        color = colorClasses[normalized - 1];
+        displayValue = value.toFixed(0);
+    } else if (type === 'tsb') {
+        // TSB: -30 до +30 (отрицательный=темный/усталость, положительный=светлый/свежесть)
+        const normalized = Math.max(1, Math.min(7, Math.round(((value + 30) / 60) * 6 + 1)));
+        const colorClasses = [
+            'bg-slate-700 text-slate-50',  // -30 (усталость)
+            'bg-slate-600 text-slate-50',
+            'bg-slate-500 text-slate-50',
+            'bg-slate-400 text-slate-900',
+            'bg-slate-300 text-slate-800',
+            'bg-slate-200 text-slate-700',
+            'bg-slate-100 text-slate-700'  // +30 (свежесть)
+        ];
+        color = colorClasses[normalized - 1];
+        displayValue = value.toFixed(1);
+    }
+    
+    return (
+      <div className="flex flex-col items-center gap-1">
+        <div className={`w-full aspect-square rounded-lg ${color} flex items-center justify-center font-bold text-2xl`}>
+          {displayValue}
+        </div>
+        <p className="text-xs text-slate-600 text-center leading-tight">{label}</p>
+      </div>
+    );
+};
+
 // Helper to group check-ins by week
 const getWeeks = (records: CheckInRecord[]) => {
     const weeks: { [key: string]: CheckInRecord[] } = {};
@@ -333,36 +393,21 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                 <TabsContent key={weekKey} value={index.toString()} className="space-y-4 mt-4">
                   {records.map(record => (
                     <div key={record.id} className="p-4 bg-slate-50 rounded-lg">
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex justify-between items-start mb-4">
                         <p className="font-semibold text-slate-800">{new Date(record.id).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                        <div className="flex items-center gap-4">
-                          <div className="text-center">
-                            <p className="text-xs text-slate-500">Индекс Хупера</p>
-                            <p className="text-xl font-bold text-slate-800">{record.hooperIndex}</p>
-                          </div>
+                        <div className="flex items-start gap-2">
+                          <ParameterSquare value={record.hooperIndex} label="Индекс Хупера" type="hooper" />
                           {record.dailyLoad !== undefined && record.dailyLoad !== null && record.dailyLoad > 0 && (
-                            <div className="text-center">
-                              <p className="text-xs text-slate-500">Training Load</p>
-                              <p className="text-xl font-bold text-slate-800">{record.dailyLoad.toFixed(0)}</p>
-                            </div>
+                            <ParameterSquare value={record.dailyLoad} label="Нагрузка" type="load" />
                           )}
                           {(record.tsb !== undefined && record.tsb !== null && record.ctl !== undefined && record.atl !== undefined && (record.ctl > 0 || record.atl > 0)) && (
-                            <div className="text-center">
-                              <p className="text-xs text-slate-500">TSB</p>
-                              <p className="text-xl font-bold text-slate-800">{record.tsb.toFixed(1)}</p>
-                            </div>
+                            <ParameterSquare value={record.tsb} label="Баланс" type="tsb" />
                           )}
                         </div>
                       </div>
 
                       {/* Метрики в один ряд */}
                       <div className="mb-3">
-                        <div className="flex items-center gap-4 mb-3">
-                          <p className="text-xs font-semibold text-slate-600">Метрики Хупера (1=отлично, 7=плохо):</p>
-                          {(record.data.motivation !== undefined || record.data.focus !== undefined) && (
-                            <p className="text-xs font-semibold text-slate-600">Дополнительно:</p>
-                          )}
-                        </div>
                         <div className="grid grid-cols-7 gap-2">
                             <MetricSquare value={record.data.sleepQuality} label="Сон" />
                             <MetricSquare value={record.data.fatigue} label="Усталость" />
@@ -377,16 +422,6 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                             )}
                         </div>
                       </div>
-
-                      {/* Тренировка */}
-                      {record.data.hadTraining && record.data.trainingDuration && record.data.rpe !== undefined && record.dailyLoad && (
-                        <div className="mb-3 p-2 bg-white rounded border border-slate-200">
-                          <p className="text-xs font-semibold text-slate-600 mb-1">Тренировка:</p>
-                          <p className="text-sm text-slate-700">
-                            {record.data.trainingDuration} минут × RPE {record.data.rpe}/10 = <span className="font-bold">{record.dailyLoad.toFixed(0)}</span> TL
-                          </p>
-                        </div>
-                      )}
 
                       {/* Факторы */}
                       {record.data.factors.length > 0 && (
