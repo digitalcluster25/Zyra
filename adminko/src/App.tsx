@@ -6,6 +6,7 @@ import { Users } from './pages/Users';
 import { Factors } from './pages/Factors';
 import { Settings } from './pages/Settings';
 import { Reports } from './pages/Reports';
+import { Formulas } from './pages/Formulas';
 import { CRMLayout } from './components/Layout/CRMLayout';
 
 // Protected Route Component
@@ -43,6 +44,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="users" element={<Users />} />
             <Route path="factors" element={<Factors />} />
+            <Route path="formulas" element={<Formulas />} />
             <Route path="settings" element={<Settings />} />
             <Route path="reports" element={<Reports />} />
           </Route>
