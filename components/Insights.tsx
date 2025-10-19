@@ -69,12 +69,16 @@ const PMCChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
     };
   });
 
+  // Фильтруем данные, чтобы график начинался с первого дня с данными
+  const firstDataIndex = chartData.findIndex(item => item.ctl > 0 || item.atl > 0 || item.tsb !== 0);
+  const filteredChartData = firstDataIndex >= 0 ? chartData.slice(firstDataIndex) : chartData;
+
   return (
     <div className="h-[250px] overflow-hidden">
       <ChartContainer config={pmcChartConfig} className="h-full w-full">
         <LineChart
           accessibilityLayer
-          data={chartData}
+          data={filteredChartData}
           margin={{
             left: 12,
             right: 12,
@@ -159,14 +163,18 @@ const HooperChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
     };
   });
 
+  // Фильтруем данные, чтобы график начинался с первого дня с данными
+  const firstDataIndex = chartData.findIndex(item => item.hooperIndex !== undefined && item.hooperIndex !== null);
+  const filteredChartData = firstDataIndex >= 0 ? chartData.slice(firstDataIndex) : chartData;
+
   return (
     <div className="h-[180px] overflow-hidden">
       <ChartContainer config={hooperChartConfig} className="h-full w-full">
         <LineChart
           accessibilityLayer
-          data={chartData}
+          data={filteredChartData}
           margin={{
-            left: 0,
+            left: 120,
             right: 12,
             top: 12,
             bottom: 0,
@@ -184,17 +192,26 @@ const HooperChart: React.FC<{ data: CheckInRecord[] }> = ({ data }) => {
             tickLine={false}
             axisLine={false}
             tickMargin={8}
+            tickFormatter={(value) => {
+              let label = '';
+              if (value <= 10) {
+                label = 'Отлично';
+              } else if (value <= 15) {
+                label = 'Хорошо';
+              } else if (value <= 20) {
+                label = 'Умеренно';
+              } else if (value <= 25) {
+                label = 'Усталость';
+              } else {
+                label = 'Критично';
+              }
+              return `${value} ${label}`;
+            }}
           />
           <ChartTooltip
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
           />
-          
-          {/* Зоны Индекса Хупера */}
-          <ReferenceLine y={10} stroke="var(--border)" strokeDasharray="2 2" label={{ value: 'Отлично', fontSize: 10 }} />
-          <ReferenceLine y={15} stroke="var(--border)" strokeDasharray="2 2" label={{ value: 'Хорошо', fontSize: 10 }} />
-          <ReferenceLine y={20} stroke="var(--border)" strokeDasharray="2 2" label={{ value: 'Умеренно', fontSize: 10 }} />
-          <ReferenceLine y={25} stroke="var(--border)" strokeDasharray="2 2" label={{ value: 'Высокая усталость', fontSize: 10 }} />
           
           <Line
             dataKey="hooperIndex"
@@ -330,31 +347,70 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
       </div>
 
       {/* График PMC (Performance Management Chart) */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Performance Management Chart (PMC)</CardTitle>
-          <CardDescription>
-            Модель Банистера: отслеживание фитнеса (CTL), усталости (ATL) и формы (TSB)
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <PMCChart data={checkInHistory} />
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600">
-            <div className="p-3 bg-blue-50 rounded">
-              <p className="font-semibold text-blue-900">CTL (Chronic Training Load)</p>
-              <p>Долгосрочная адаптация, "фитнес". Экспоненциальное среднее за 42 дня.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Модель Банистера: отслеживание фитнеса, усталости и формы</CardTitle>
+            <CardDescription>
+              График показывает динамику тренировочной нагрузки и готовности к соревнованиям
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <PMCChart data={checkInHistory} />
+          </CardContent>
+        </Card>
+
+        <div className="space-y-4">
+          <div className="space-y-3">
+            <div className="p-4 bg-slate-50 rounded-lg border border-yellow-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <p className="font-semibold text-slate-900">CTL (Фитнес)</p>
+              </div>
+              <p className="text-sm text-slate-800 mb-2">
+                <strong>Что показывает:</strong> Ваш общий уровень физической подготовки
+              </p>
+              <p className="text-xs text-slate-700">
+                Долгосрочная адаптация за 42 дня. Чем выше CTL, тем лучше ваша базовая форма.
+              </p>
             </div>
-            <div className="p-3 bg-red-50 rounded">
-              <p className="font-semibold text-red-900">ATL (Acute Training Load)</p>
-              <p>Краткосрочная усталость. Экспоненциальное среднее за 7 дней.</p>
+            
+            <div className="p-4 bg-slate-50 rounded-lg border border-blue-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <p className="font-semibold text-slate-900">ATL (Усталость)</p>
+              </div>
+              <p className="text-sm text-slate-800 mb-2">
+                <strong>Что показывает:</strong> Ваш текущий уровень усталости от тренировок
+              </p>
+              <p className="text-xs text-slate-700">
+                Краткосрочная нагрузка за 7 дней. Высокий ATL = нужен отдых.
+              </p>
             </div>
-            <div className="p-3 bg-green-50 rounded">
-              <p className="font-semibold text-green-900">TSB (Training Stress Balance)</p>
-              <p>Форма/готовность. TSB = CTL - ATL. Оптимально: от -10 до +5.</p>
+            
+            <div className="p-4 bg-slate-50 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+                <p className="font-semibold text-slate-900">TSB (Форма)</p>
+              </div>
+              <p className="text-sm text-slate-800 mb-2">
+                <strong>Что показывает:</strong> Ваша готовность к соревнованиям
+              </p>
+              <p className="text-xs text-slate-700">
+                TSB = CTL - ATL. Оптимально: от -10 до +5. Положительный TSB = пик формы.
+              </p>
             </div>
           </div>
-        </CardContent>
-      </Card>
+          
+          <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+            <p className="text-sm text-slate-700">
+              <strong>Как читать график:</strong> Когда желтая линия (CTL) растет - вы становитесь сильнее. 
+              Когда синяя линия (ATL) выше желтой - вы устали. 
+              Серая линия (TSB) показывает вашу готовность: выше нуля = отличная форма для соревнований.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Индекс Хупера и Анализ факторов */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -409,11 +465,11 @@ const Insights: React.FC<InsightsProps> = ({ checkInHistory, factors }) => {
                           <ParameterSquare value={record.hooperIndex} label="Индекс Хупера" type="hooper" />
                           <ParameterSquare value={record.dailyLoad} label="Нагрузка" type="load" />
                           <ParameterSquare value={record.tsb} label="Баланс" type="tsb" />
-                          <MetricSquare value={record.data.sleepQuality} label="Сон" />
-                          <MetricSquare value={record.data.fatigue} label="Усталость" />
-                          <MetricSquare value={record.data.muscleSoreness} label="Боль" />
-                          <MetricSquare value={record.data.stress} label="Стресс" />
-                          <MetricSquare value={record.data.mood} label="Настроение" />
+                            <MetricSquare value={record.data.sleepQuality} label="Сон" />
+                            <MetricSquare value={record.data.fatigue} label="Усталость" />
+                            <MetricSquare value={record.data.muscleSoreness} label="Боль" />
+                            <MetricSquare value={record.data.stress} label="Стресс" />
+                            <MetricSquare value={record.data.mood} label="Настроение" />
                           <MetricSquare value={record.data.motivation} label="Мотивация" />
                           <MetricSquare value={record.data.focus} label="Концентрация" />
                         </div>
