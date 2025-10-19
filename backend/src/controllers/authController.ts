@@ -72,7 +72,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
         id: `user_${Date.now()}`,
         email: input.email,
         nickname: input.nickname,
-        role: 'user',
+        role: 'user' as const,
         is_active: true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -82,7 +82,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       const tokens = generateTokens({
         userId: user.id,
         email: user.email,
-        role: user.role,
+        role: 'user',
       });
 
       res.status(201).json({
@@ -106,31 +106,72 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const input = loginSchema.parse(req.body);
 
-    // Временно принимаем любой email/пароль для разработки
-    const user = {
-      id: `user_${Date.now()}`,
-      email: input.email,
-      nickname: 'Тестовый пользователь',
-      role: 'user',
-      is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+    // В продакшене используем БД, в разработке - временные данные
+    if (env.NODE_ENV === 'production') {
+      // Найти пользователя
+      const user = await UserModel.findByEmail(input.email);
+      if (!user) {
+        throw new AppError(401, 'Invalid credentials');
+      }
 
-    // Генерировать токены
-    const tokens = generateTokens({
-      userId: user.id,
-      email: user.email,
-      role: user.role,
-    });
+      // Проверить активность
+      if (!user.is_active) {
+        throw new AppError(403, 'Account is inactive');
+      }
 
-    res.json({
-      success: true,
-      data: {
-        user,
-        ...tokens,
-      },
-    });
+      // Проверить пароль
+      const isValidPassword = await UserModel.verifyPassword(user, input.password);
+      if (!isValidPassword) {
+        throw new AppError(401, 'Invalid credentials');
+      }
+
+      // Обновить last_login
+      await UserModel.updateLastLogin(user.id);
+
+      // Генерировать токены
+      const tokens = generateTokens({
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+      });
+
+      // Убрать password_hash из ответа
+      const { password_hash, ...userWithoutPassword } = user;
+
+      res.json({
+        success: true,
+        data: {
+          user: userWithoutPassword,
+          ...tokens,
+        },
+      });
+    } else {
+      // Временно принимаем любой email/пароль для разработки
+      const user = {
+        id: `user_${Date.now()}`,
+        email: input.email,
+        nickname: 'Тестовый пользователь',
+        role: 'user' as const,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
+      // Генерировать токены
+      const tokens = generateTokens({
+        userId: user.id,
+        email: user.email,
+        role: 'user',
+      });
+
+      res.json({
+        success: true,
+        data: {
+          user,
+          ...tokens,
+        },
+      });
+    }
   } catch (error) {
     next(error);
   }
@@ -146,21 +187,34 @@ export const me = async (req: AuthRequest, res: Response, next: NextFunction) =>
       throw new AppError(401, 'Not authenticated');
     }
 
-    // Временно возвращаем данные из токена
-    const user = {
-      id: req.user.userId,
-      email: req.user.email,
-      nickname: 'Тестовый пользователь',
-      role: req.user.role,
-      is_active: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
+    // В продакшене используем БД, в разработке - данные из токена
+    if (env.NODE_ENV === 'production') {
+      const user = await UserModel.findById(req.user.userId);
+      if (!user) {
+        throw new AppError(404, 'User not found');
+      }
 
-    res.json({
-      success: true,
-      data: { user },
-    });
+      res.json({
+        success: true,
+        data: { user },
+      });
+    } else {
+      // Временно возвращаем данные из токена
+      const user = {
+        id: req.user.userId,
+        email: req.user.email,
+        nickname: 'Тестовый пользователь',
+        role: req.user.role,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+
+      res.json({
+        success: true,
+        data: { user },
+      });
+    }
   } catch (error) {
     next(error);
   }
