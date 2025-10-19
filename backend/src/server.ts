@@ -71,12 +71,17 @@ const PORT = parseInt(process.env.PORT || '8080', 10);
 
 async function startServer() {
   try {
-    // Проверка подключения к БД
-    const dbConnected = await testConnection();
-    
-    if (!dbConnected) {
-      console.error('❌ Failed to connect to database');
-      process.exit(1);
+    // Проверяем БД только в продакшене
+    if (env.NODE_ENV === 'production') {
+      console.log('🔍 Checking database connection...');
+      const dbConnected = await testConnection();
+      if (!dbConnected) {
+        console.error('❌ Failed to connect to database');
+        process.exit(1);
+      }
+      console.log('✅ Database connected successfully');
+    } else {
+      console.log('⚠️  Database check disabled for development');
     }
 
     // Запуск сервера

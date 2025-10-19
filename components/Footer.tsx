@@ -16,6 +16,20 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <nav className="flex gap-6 text-sm">
               <Button
                 variant="link"
+                onClick={() => onNavigate('AUTH')}
+                className="text-muted-foreground hover:text-foreground p-0 h-auto"
+              >
+                Авторизация
+              </Button>
+              <Button
+                variant="link"
+                onClick={() => onNavigate('SET_PASSWORD')}
+                className="text-muted-foreground hover:text-foreground p-0 h-auto"
+              >
+                Установка пароля
+              </Button>
+              <Button
+                variant="link"
                 onClick={() => onNavigate('TERMS')}
                 className="text-muted-foreground hover:text-foreground p-0 h-auto"
               >
@@ -27,13 +41,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 className="text-muted-foreground hover:text-foreground p-0 h-auto"
               >
                 Контакты
-              </Button>
-              <Button
-                variant="link"
-                onClick={() => onNavigate('LOGIN')}
-                className="text-muted-foreground hover:text-foreground p-0 h-auto"
-              >
-                Вход
               </Button>
             </nav>
         </div>

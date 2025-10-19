@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckInRecord, Factor } from '../types';
 import { useLocalStorage } from '../src/hooks/useLocalStorage';
+import { useAuth } from '../src/contexts/AuthContext';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -10,6 +11,7 @@ interface DashboardProps {
   checkInHistory: CheckInRecord[];
   factors: Factor[];
   onStartCheckIn: () => void;
+  onNavigateToAuth?: () => void;
 }
 
 // Интерпретация для отображения метрик
@@ -56,8 +58,9 @@ const MetricCard: React.FC<{ title: string; value: number | null; fieldName: str
     );
 };
 
-const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartCheckIn }) => {
+const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartCheckIn, onNavigateToAuth }) => {
   const [nickname] = useLocalStorage('userNickname', 'чемпион');
+  const { isAuthenticated, user, tempSessionId } = useAuth();
   const latestCheckIn = checkInHistory?.[0];
   
   // Индекс Хупера
@@ -88,13 +91,42 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
     <div className="space-y-8">
        <header className="flex justify-between items-start">
             <div>
-                <h2 className="text-2xl font-bold text-slate-800">Добрый день, {nickname}</h2>
-                <p className="text-slate-500">
-                  {latestCheckIn 
-                    ? 'Вот ваше последнее обновление на основе научных методологий.'
-                    : 'Добро пожаловать! Начните с первого чекина, чтобы заполнить панель.'
+                <h2 className="text-2xl font-bold text-slate-800">
+                  {isAuthenticated 
+                    ? `Добрый день, ${user?.email || nickname}`
+                    : 'Добро пожаловать в Zyra'
                   }
+                </h2>
+                <p className="text-slate-500">
+                  {isAuthenticated ? (
+                    latestCheckIn 
+                      ? 'Вот ваше последнее обновление на основе научных методологий.'
+                      : 'Начните с первого чекина, чтобы заполнить панель.'
+                  ) : (
+                    'Войдите в систему или зарегистрируйтесь, чтобы сохранить ваши данные и получить персонализированные рекомендации.'
+                  )}
                 </p>
+                
+                {/* CTA для неавторизованных пользователей */}
+                {!isAuthenticated && (
+                  <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-800 mb-3">
+                      💡 <strong>Зачем авторизоваться?</strong><br />
+                      • Сохранение всех ваших чекинов<br />
+                      • Персонализированные рекомендации<br />
+                      • Синхронизация между устройствами
+                    </p>
+                    {onNavigateToAuth && (
+                      <Button 
+                        onClick={onNavigateToAuth}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        size="sm"
+                      >
+                        Войти или зарегистрироваться
+                      </Button>
+                    )}
+                  </div>
+                )}
             </div>
              <Button
                 onClick={onStartCheckIn}
@@ -232,26 +264,6 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
         </Card>
       )}
       
-      {/* Метрики чекина */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          <MetricCard title="Качество сна" value={latestCheckIn?.data.sleepQuality ?? null} fieldName="sleepQuality" />
-          <MetricCard title="Усталость" value={latestCheckIn?.data.fatigue ?? null} fieldName="fatigue" />
-          <MetricCard title="Боль в мышцах" value={latestCheckIn?.data.muscleSoreness ?? null} fieldName="muscleSoreness" />
-          <MetricCard title="Стресс" value={latestCheckIn?.data.stress ?? null} fieldName="stress" />
-          <MetricCard title="Настроение" value={latestCheckIn?.data.mood ?? null} fieldName="mood" />
-      </div>
-
-      {/* Дополнительные метрики (если есть) */}
-      {(latestCheckIn?.data.motivation !== undefined || latestCheckIn?.data.focus !== undefined) && (
-        <div className="grid grid-cols-2 gap-4 max-w-md">
-          {latestCheckIn.data.motivation !== undefined && (
-            <MetricCard title="Мотивация" value={latestCheckIn.data.motivation} fieldName="motivation" />
-          )}
-          {latestCheckIn.data.focus !== undefined && (
-            <MetricCard title="Концентрация" value={latestCheckIn.data.focus} fieldName="focus" />
-          )}
-        </div>
-      )}
 
       {/* Training Load за сегодня */}
       {latestCheckIn && latestCheckIn.data.hadTraining && dailyLoad !== null && dailyLoad > 0 && (
@@ -273,24 +285,6 @@ const Dashboard: React.FC<DashboardProps> = ({ checkInHistory, factors, onStartC
           </CardContent>
         </Card>
       )}
-      
-      {/* Факторы */}
-       <Card>
-          <CardHeader>
-            <CardTitle>Влияющие факторы сегодня</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {latestCheckIn && latestCheckIn.data.factors.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                    {latestCheckIn.data.factors.map((factor, idx) => (
-                        <Badge key={idx} variant="secondary">{factor}</Badge>
-                    ))}
-                </div>
-            ) : (
-                <p className="text-slate-500 text-sm">Факторы, которые вы отметите в чекине, появятся здесь.</p>
-            )}
-          </CardContent>
-      </Card>
 
       {/* Информационная карточка о методологии */}
       <Card className="bg-blue-50 border-blue-200">

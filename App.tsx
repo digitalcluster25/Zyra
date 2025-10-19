@@ -3,12 +3,15 @@ import React, { useState, useCallback } from 'react';
 // import { useCheckIns } from './src/hooks/useCheckIns'; // Временно отключено
 // import { useFactors } from './src/hooks/useFactors'; // Временно отключено
 import { useLocalStorage } from './src/hooks/useLocalStorage';
+import { AuthProvider } from './src/contexts/AuthContext';
 import { INITIAL_FACTORS } from './constants';
 import Dashboard from './components/Dashboard';
 import CheckInFlow from './components/CheckInFlow';
 import Insights from './components/Insights';
 import Profile from './components/Profile';
 import Login from './components/Login';
+import AuthPage from './components/AuthPage';
+import SetPasswordPage from './components/SetPasswordPage';
 import Terms from './components/Terms';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -58,7 +61,8 @@ const App: React.FC = () => {
         return <Dashboard 
           checkInHistory={checkIns} 
           factors={factors}
-          onStartCheckIn={() => setView(View.CheckIn)} 
+          onStartCheckIn={() => setView(View.CheckIn)}
+          onNavigateToAuth={() => setView(View.Auth)}
         />;
       case View.CheckIn:
         return <CheckInFlow 
@@ -70,6 +74,10 @@ const App: React.FC = () => {
         return <Insights checkInHistory={checkIns} factors={factors} />;
       case View.Profile:
         return <Profile />;
+      case View.Auth:
+        return <AuthPage onSuccess={() => setView(View.Dashboard)} />;
+      case View.SetPassword:
+        return <SetPasswordPage />;
       case View.Terms:
         return <Terms />;
       case View.Contact:
@@ -84,7 +92,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
+    <AuthProvider>
+      <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
       <div className="flex-grow">
         <div className="container mx-auto p-4 md:p-8 max-w-[1382px]">
 
@@ -141,8 +150,9 @@ const App: React.FC = () => {
           </main>
         </div>
       </div>
-      <Footer onNavigate={(viewName) => setView(viewName as View)} />
-    </div>
+        <Footer onNavigate={(viewName) => setView(viewName as View)} />
+      </div>
+    </AuthProvider>
   );
 };
 

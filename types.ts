@@ -6,6 +6,8 @@ export enum View {
   Insights = 'INSIGHTS',
   Profile = 'PROFILE',
   Login = 'LOGIN',
+  Auth = 'AUTH',
+  SetPassword = 'SET_PASSWORD',
   Terms = 'TERMS',
   Contact = 'CONTACT',
 }

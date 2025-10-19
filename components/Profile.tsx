@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalStorage } from '../src/hooks/useLocalStorage';
+import { useAuth } from '../src/contexts/AuthContext';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -60,6 +61,7 @@ const EditableField: React.FC<{
 const Profile: React.FC = () => {
   const [nickname, setNickname] = useLocalStorage('userNickname', 'чемпион');
   const [email, setEmail] = useLocalStorage('userEmail', 'alex@example.com');
+  const { isAuthenticated, user, logout } = useAuth();
 
   const handleDeleteAccount = () => {
     if (window.confirm('Вы уверены, что хотите удалить свой аккаунт? Это действие необратимо и сотрет все ваши данные.')) {
@@ -68,11 +70,43 @@ const Profile: React.FC = () => {
     }
   };
 
+  const handleLogout = () => {
+    if (window.confirm('Вы уверены, что хотите выйти из системы?')) {
+      logout();
+    }
+  };
+
   return (
     <div className="space-y-8">
+      {/* Сообщение для неавторизованных пользователей */}
+      {!isAuthenticated && (
+        <Card className="border-orange-200 bg-orange-50">
+          <CardHeader>
+            <CardTitle className="text-orange-800">Вы не авторизованы</CardTitle>
+            <CardDescription className="text-orange-700">
+              Войдите в систему или зарегистрируйтесь, чтобы сохранить ваши данные и получить доступ к полному функционалу.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+
       <Card>
-        <CardHeader>
-          <CardTitle>Профиль</CardTitle>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Профиль</CardTitle>
+            {isAuthenticated && user && (
+              <CardDescription>Вы вошли как {user.email}</CardDescription>
+            )}
+          </div>
+          {isAuthenticated && (
+            <Button 
+              onClick={handleLogout}
+              variant="outline"
+              size="sm"
+            >
+              Выйти
+            </Button>
+          )}
         </CardHeader>
         <CardContent className="space-y-6">
           <EditableField
